@@ -1,0 +1,13 @@
+<div class="header">
+  <span class="title">SMRPO</span>
+  <div class="content">
+    <span class="material-icons item" matTooltip="Domov">home</span>
+    <span class="item" mat-button [matMenuTriggerFor]="menu">klavdijav</span>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()">Odjava</button>
+      <div class="last-login">
+        Zadnja prijava: 2.1.2020 12:44
+      </div>
+    </mat-menu>
+  </div>
+</div>

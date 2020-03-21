@@ -1,0 +1,13 @@
+<app-header></app-header>
+
+<mat-drawer-container class="sidenav-container" autosize>
+
+  <mat-drawer #drawer class="sidenav" mode="side" opened>
+      <div class="sidenav-content">
+          <div class="sidenav-item" routerLink="users" routerLinkActive="active-item">Uporabniki</div>
+          <div class="sidenav-item" routerLink="projects" routerLinkActive="active-item">Projekti</div>
+      </div>
+  </mat-drawer>
+
+  <router-outlet></router-outlet>
+</mat-drawer-container>

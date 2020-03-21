@@ -1,0 +1,44 @@
+@import "../../../variables";
+
+.page-container {
+  width: calc(100% - 60px);
+  padding: 30px;
+
+  .title-section {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .title {
+      font-size: 20px;
+      color: $indigo;
+      font-weight: 500;
+    }
+  }
+}
+
+table {
+  width: 95%;
+  table-layout: fixed;
+  margin-bottom: 20px;
+
+  tr:not(.table-header):hover {
+    background-color: whitesmoke;
+  }
+
+  .options-td {
+    width: 80px;
+    text-align: right;
+  }
+
+  .options-btn {
+    display: inline-block;
+  }
+}
+
+mat-paginator {
+  background-color: transparent;
+  width: 95%;
+}

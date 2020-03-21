@@ -11,12 +11,17 @@ const routes: Routes = [
     resolve: { _: AuthResolver }
   },
   {
-    path: "",
-    loadChildren: () =>
-      import("./dashboard/dashboard.module").then(m => m.DashboardModule),
-    canActivate: [AuthGuard]
+    path: "admin",
+    loadChildren: () => import("./admin/admin.module").then(m => m.AdminModule)
+    //canActivate: [AuthGuard, AdminGuard]
   },
-  { path: "**", redirectTo: "", pathMatch: "full" }
+  {
+    path: "home",
+    loadChildren: () =>
+      import("./dashboard/dashboard.module").then(m => m.DashboardModule)
+    //canActivate: [AuthGuard]
+  },
+  { path: "**", redirectTo: "admin", pathMatch: "full" }
 ];
 
 @NgModule({
