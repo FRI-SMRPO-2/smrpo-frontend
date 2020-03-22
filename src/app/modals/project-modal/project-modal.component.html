@@ -1,0 +1,36 @@
+<div class="modal-container">
+  
+  <form class="modal-form" [formGroup]="form">
+
+    <span class="title">Nov projekt</span>
+
+    <mat-form-field appearance="standard" class="form-input">
+      <mat-label>Ime projekta</mat-label>
+      <input matInput formControlName="name"/>
+    </mat-form-field>
+
+    <mat-form-field class="form-input" style="margin-bottom: 10px;">
+      <input type="text"
+             placeholder="Dodaj člana"
+             matInput
+             [formControl]="search"
+             [matAutocomplete]="auto"
+             #userInput />
+      <mat-autocomplete autoActiveFirstOption
+       (optionSelected)="userSelected($event)" #auto="matAutocomplete">
+        <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+          {{user.firstName}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+
+    <app-project-modal-users-table [users]="selectedUsers" (onRemove)="remove($event)"></app-project-modal-users-table>
+    
+
+    <button mat-raised-button color="accent" class="save-btn" 
+    type="button" (click)="save()">Shrani</button>
+    
+  </form>
+
+</div>

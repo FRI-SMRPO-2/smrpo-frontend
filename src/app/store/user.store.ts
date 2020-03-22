@@ -1,5 +1,6 @@
-import { BehaviorSubject } from "rxjs";
-import { User } from "../interfaces/user.interface";
+import { BehaviorSubject } from 'rxjs';
+
+import { User } from '../interfaces/user.interface';
 
 export class UserStore {
   private _authToken: string;
@@ -22,7 +23,7 @@ export class UserStore {
     localStorage.setItem("authToken", token);
   }
 
-  logOut() {
+  logout() {
     localStorage.clear();
     delete this._authToken;
   }

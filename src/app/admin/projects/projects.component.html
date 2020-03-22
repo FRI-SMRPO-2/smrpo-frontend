@@ -2,7 +2,7 @@
 
   <div class="title-section">
     <span class="title">Projekti</span>
-    <button mat-raised-button color="accent">Dodaj projekt</button>
+    <button mat-raised-button color="accent" (click)="addProject()">Dodaj projekt</button>
   </div>
 
   <table mat-table [dataSource]="ElementData" class="mat-elevation-z8">

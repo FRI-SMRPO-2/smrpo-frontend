@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+import { ProjectModalComponent } from '../../modals/project-modal/project-modal.component';
 
 @Component({
   selector: "app-projects",
@@ -75,9 +78,13 @@ export class ProjectsComponent implements OnInit {
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
-  constructor() {}
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {}
+
+  addProject() {
+    this.dialog.open(ProjectModalComponent);
+  }
 
   changePage(event) {
     console.log(event);

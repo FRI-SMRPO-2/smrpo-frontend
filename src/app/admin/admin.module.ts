@@ -6,6 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { ModalsModule } from '../modals/modals.module';
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
@@ -22,7 +23,8 @@ import { UsersComponent } from './users/users.component';
     MatTableModule,
     MatButtonModule,
     MatTooltipModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ModalsModule
   ]
 })
 export class AdminModule {}
