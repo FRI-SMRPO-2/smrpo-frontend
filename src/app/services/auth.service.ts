@@ -1,7 +1,9 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { tap } from "rxjs/operators";
-import { RootStore } from "../store/root.store";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { tap } from 'rxjs/operators';
+
+import { environment } from '../../environments/environment.prod';
+import { RootStore } from '../store/root.store';
 
 @Injectable({
   providedIn: "root"
@@ -11,10 +13,9 @@ export class AuthService {
 
   //TODO:
   login(data: { username: string; password: string }) {
-    return this.http.post("todo url", data).pipe(
-      tap(res => {
-        console.log(res);
-        this.rootStore.userStore.authToken = ""; //TODO: token iz responsa
+    return this.http.post(`${environment.apiURL}/api/auth`, data).pipe(
+      tap((res: { token: string }) => {
+        this.rootStore.userStore.authToken = res.token; //TODO: token iz responsa
       })
     );
   }

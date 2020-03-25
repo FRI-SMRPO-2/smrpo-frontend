@@ -1,16 +1,11 @@
-import { Injectable } from "@angular/core";
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpErrorResponse
-} from "@angular/common/http";
-import { Router } from "@angular/router";
-import { RootStore } from "../store/root.store";
-import { Observable, throwError } from "rxjs";
-import { environment } from "../../environments/environment";
-import { catchError } from "rxjs/operators";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+import { environment } from '../../environments/environment';
+import { RootStore } from '../store/root.store';
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
@@ -31,15 +26,16 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     const token = this.rootStore.userStore.authToken;
     if (token)
       req = req.clone({
-        headers: req.headers.set("Authorization", `Bearer ${token}`)
-      }); //TODO: Spremeni auth glede na kaj mamo
+        headers: req.headers.set("Authorization", `Token ${token}`)
+      });
 
     // Če api vrne 401, redirectaj na login (Če user ni prijavljen)
     return next.handle(req).pipe(
       catchError(err => {
         if (err instanceof HttpErrorResponse) {
+          console.log(err);
           if (err.status === 401) {
-            this.rootStore.userStore.logOut();
+            this.rootStore.userStore.logout();
             this.router.navigate(["/login"]);
           }
           // Če želiš preoblikovat daš v objekt
