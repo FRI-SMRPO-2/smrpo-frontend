@@ -1,0 +1,27 @@
+@import "../../../../variables";
+
+.task-card {
+  background-color: white;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.priority-text {
+  display: inline-block;
+  font-size: 12px;
+
+  &.orange {
+    color: orange;
+  }
+  &.green {
+    color: #22b922;
+  }
+  &.blue {
+    color: #455de4;
+  }
+}
+
+.task-title {
+  font-weight: 500;
+}

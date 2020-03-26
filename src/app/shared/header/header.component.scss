@@ -9,10 +9,9 @@
   align-items: center;
   justify-content: space-between;
 
-  box-shadow: $material-shadow;
-
-  .title {
+  .header-title {
     font-weight: 500;
+    color: white;
   }
 
   .content {
@@ -26,6 +25,12 @@
         color: $pink;
         cursor: pointer;
       }
+    }
+  }
+
+  .menu-icon {
+    &:hover {
+      cursor: pointer;
     }
   }
 }

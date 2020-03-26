@@ -10,11 +10,11 @@ import { ModalsModule } from '../modals/modals.module';
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
-import { ProjectsComponent } from './projects/projects.component';
+import { ProjectsListComponent } from './projects-list/projects-list.component';
 import { UsersComponent } from './users/users.component';
 
 @NgModule({
-  declarations: [UsersComponent, ProjectsComponent, AdminComponent],
+  declarations: [UsersComponent, ProjectsListComponent, AdminComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

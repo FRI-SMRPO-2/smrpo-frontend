@@ -1,5 +1,13 @@
 <div class="header">
-  <span class="title">SMRPO</span>
+  <span *ngIf="sidenav; else blank" class="material-icons menu-icon" (click)="toggleNav()">
+    {{navOpened ? 'menu_open' : 'menu'}}
+  </span>
+  <ng-template #blank>
+    <span></span>
+  </ng-template>
+
+  <span class="header-title">{{title}}</span>
+  
   <div class="content">
     <span class="material-icons item" matTooltip="Domov">home</span>
     <span class="item" mat-button [matMenuTriggerFor]="menu">klavdijav</span>

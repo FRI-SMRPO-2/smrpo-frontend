@@ -1,0 +1,8 @@
+<div class="task-card">
+  <div class="priority-text" [ngClass]="{
+    'orange': task.priority === 'musthave', 
+    'blue': task.priority === 'couldhave',
+    'green': task.priority === 'shouldhave'}">
+    {{task.priority | priority}}</div>
+  <div class="task-title">{{task.title}}</div>
+</div>

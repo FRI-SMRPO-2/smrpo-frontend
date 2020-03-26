@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminComponent } from './admin.component';
-import { ProjectsComponent } from './projects/projects.component';
+import { ProjectsListComponent } from './projects-list/projects-list.component';
 import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
@@ -11,7 +11,7 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       { path: "users", component: UsersComponent },
-      { path: "projects", component: ProjectsComponent },
+      { path: "projects", component: ProjectsListComponent },
       { path: "", redirectTo: "projects", pathMatch: "full" }
     ]
   }

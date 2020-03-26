@@ -1,0 +1,32 @@
+<div class="page-container">
+  <span class="title">Moj projekt #1</span>
+
+  <div class="table-container">
+    <div>
+      <span class="droplist-title">Product backlog</span>
+    
+      <div
+        cdkDropList
+        #productList="cdkDropList"
+        [cdkDropListData]="productBacklog"
+        [cdkDropListConnectedTo]="[sprintList]"
+        class="dragdrop-list"
+        (cdkDropListDropped)="drop($event)">
+          <app-task-card [task]="item" *ngFor="let item of productBacklog" cdkDrag></app-task-card>
+      </div>
+    </div>
+    
+    <div>
+      <span class="droplist-title">Sprint backlog</span>
+      <div
+        cdkDropList
+        #sprintList="cdkDropList"
+        [cdkDropListData]="sprintBacklog"
+        [cdkDropListConnectedTo]="[productList]"
+        class="dragdrop-list"
+        (cdkDropListDropped)="drop($event)">
+          <app-task-card *ngFor="let item of sprintBacklog" [task]="item" cdkDrag></app-task-card>
+      </div>
+    </div>
+  </div>
+</div>

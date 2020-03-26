@@ -4,11 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProjectModalComponent } from '../../modals/project-modal/project-modal.component';
 
 @Component({
-  selector: "app-projects",
-  templateUrl: "./projects.component.html",
-  styleUrls: ["./projects.component.scss"]
+  selector: "app-projects-list",
+  templateUrl: "./projects-list.component.html",
+  styleUrls: ["./projects-list.component.scss"]
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsListComponent implements OnInit {
   columns = ["name", "leader", "metodologija", "members", "options"];
   ElementData = [
     {

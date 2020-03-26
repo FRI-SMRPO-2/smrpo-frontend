@@ -4,10 +4,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { HeaderComponent } from './header/header.component';
+import { PriorityPipe } from './priority.pipe';
 
 @NgModule({
-  declarations: [HeaderComponent],
+  declarations: [HeaderComponent, PriorityPipe],
   imports: [CommonModule, MatMenuModule, MatTooltipModule],
-  exports: [HeaderComponent]
+  exports: [HeaderComponent, PriorityPipe]
 })
 export class SharedModule {}
