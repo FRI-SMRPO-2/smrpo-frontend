@@ -1,5 +1,4 @@
-<div class="page-container">
-  <span class="title">Moj projekt #1</span>
+<div *ngIf="isLoaded; else progressSpinner"class="page-container">
 
   <div class="table-container">
     <div>
@@ -30,3 +29,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #progressSpinner>
+  <app-progress-spinner></app-progress-spinner>
+</ng-template>

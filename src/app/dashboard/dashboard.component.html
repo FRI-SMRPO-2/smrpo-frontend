@@ -1,11 +1,12 @@
-<app-header [sidenav]="drawer" [title]="'Projektič'"></app-header>
+<app-header [sidenav]="drawer" [title]="title"></app-header>
 <mat-drawer-container class="sidenav-container" autosize>
 
   <mat-drawer #drawer class="sidenav" mode="side" opened>
       <div class="sidenav-content">
-          <div class="sidenav-item" routerLink="/project/1" routerLinkActive="active-item">Moj projekt #1</div>
-          <div class="sidenav-item" routerLink="/project/2" routerLinkActive="active-item">Moj projekt #2</div>
-          <div class="sidenav-item" routerLink="/project/3" routerLinkActive="active-item">Moj projekt #3</div>
+          <div *ngFor="let project of projectList; let i = index " class="sidenav-item" 
+            routerLink="/project/{{project.id}}" routerLinkActive="active-item" (click)="projectSelected(i)">
+            {{project.name}}
+          </div>
       </div>
   </mat-drawer>
 

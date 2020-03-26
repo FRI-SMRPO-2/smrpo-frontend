@@ -6,10 +6,10 @@
     <span></span>
   </ng-template>
 
-  <span class="header-title">{{title}}</span>
+  <span class="header-title">{{(activeProject$ | async)?.name}}</span>
   
   <div class="content">
-    <span class="material-icons item" matTooltip="Domov">home</span>
+    <span *ngIf="showHome" class="material-icons item" matTooltip="Domov">home</span>
     <span class="item" mat-button [matMenuTriggerFor]="menu">klavdijav</span>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="logout()">Odjava</button>

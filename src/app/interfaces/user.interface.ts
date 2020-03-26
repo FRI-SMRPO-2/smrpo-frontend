@@ -6,9 +6,10 @@ export enum USER_ROLE {
 export interface User {
   id: number;
   username: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
+  name?: string;
   email: string;
   role: USER_ROLE;
-  lastLoginTime: Date;
+  lastLoginTime?: Date;
 }

@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
+import { Project } from '../../interfaces/project.interface';
 import { RootStore } from '../../store/root.store';
 
 @Component({
@@ -11,13 +13,16 @@ import { RootStore } from '../../store/root.store';
 })
 export class HeaderComponent implements OnInit {
   @Input() sidenav: MatSidenav;
-  @Input() title: string;
+  @Input() showHome: boolean = false;
 
   navOpened = true;
+  activeProject$: Observable<Project>;
 
   constructor(private router: Router, private rootStore: RootStore) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.activeProject$ = this.rootStore.projectStore.activeProject$;
+  }
 
   toggleNav() {
     this.navOpened = !this.navOpened;

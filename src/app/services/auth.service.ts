@@ -11,11 +11,10 @@ import { RootStore } from '../store/root.store';
 export class AuthService {
   constructor(private http: HttpClient, private rootStore: RootStore) {}
 
-  //TODO:
   login(data: { username: string; password: string }) {
     return this.http.post(`${environment.apiURL}/api/auth`, data).pipe(
       tap((res: { token: string }) => {
-        this.rootStore.userStore.authToken = res.token; //TODO: token iz responsa
+        this.rootStore.userStore.authToken = res.token;
       })
     );
   }
