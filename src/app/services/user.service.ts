@@ -1,8 +1,9 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { RootStore } from "../store/root.store";
-import { User } from "../interfaces/user.interface";
-import { tap } from "rxjs/operators";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { tap } from 'rxjs/operators';
+
+import { User } from '../interfaces/user.interface';
+import { RootStore } from '../store/root.store';
 
 @Injectable({
   providedIn: "root"
@@ -12,7 +13,7 @@ export class UserService {
 
   getMe() {
     return this.http
-      .get<User>("user/me")
+      .get<User>("api/user/me")
       .pipe(tap(user => this.rootStore.userStore.setUser(user)));
   }
 }

@@ -15,7 +15,9 @@ export class AuthGuard implements CanActivate {
      *  prijavljen, ga preusmeri na login
      */
     return this.userService.getMe().pipe(
-      map(() => true),
+      map(data => {
+        return true;
+      }),
       catchError(() => {
         this.router.navigate(["/login"]);
         return of(false); // of vrne Observable

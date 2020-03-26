@@ -20,9 +20,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.projectService.getAllProjects().subscribe(data => {
       this.projectList = data;
+      console.log(data);
     });
-
-    this.route.params.subscribe(console.log);
   }
 
   projectSelected(index: number) {
