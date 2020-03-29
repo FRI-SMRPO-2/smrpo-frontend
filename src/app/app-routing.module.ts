@@ -6,22 +6,22 @@ import { AuthResolver } from './resolvers/auth.resolver';
 
 const routes: Routes = [
   {
-    path: "login",
-    loadChildren: () => import("./auth/auth.module").then(m => m.AuthModule),
+    path: 'login',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
     resolve: { _: AuthResolver }
   },
   {
-    path: "admin",
-    loadChildren: () => import("./admin/admin.module").then(m => m.AdminModule),
-    canActivate: [AuthGuard] //AdminGuard
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    canActivate: [AuthGuard] // AdminGuard
   },
   {
-    path: "",
+    path: '',
     loadChildren: () =>
-      import("./dashboard/dashboard.module").then(m => m.DashboardModule),
+      import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [AuthGuard]
   },
-  { path: "**", redirectTo: "admin", pathMatch: "full" }
+  { path: '**', redirectTo: 'admin', pathMatch: 'full' }
 ];
 
 @NgModule({

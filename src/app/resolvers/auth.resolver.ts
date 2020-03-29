@@ -12,7 +12,7 @@ export class AuthResolver implements Resolve<void> {
    */
   resolve() {
     if (this.rootStore.userStore.authToken) {
-      this.router.navigate(["/"]);
+      this.router.navigate(['/']);
     }
   }
 }

@@ -7,14 +7,14 @@
   </ng-template>
 
   <span class="header-title">{{(activeProject$ | async)?.name}}</span>
-  
+
   <div class="content">
     <span *ngIf="showHome" class="material-icons item" matTooltip="Domov">home</span>
-    <span class="item" mat-button [matMenuTriggerFor]="menu">klavdijav</span>
+    <span class="item" mat-button [matMenuTriggerFor]="menu">{{(user$ | async)?.username}}</span>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="logout()">Odjava</button>
       <div class="last-login">
-        Zadnja prijava: 2.1.2020 12:44
+        Zadnja prijava: {{(user$ | async)?.last_login}}
       </div>
     </mat-menu>
   </div>

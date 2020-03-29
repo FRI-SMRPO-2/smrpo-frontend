@@ -7,12 +7,12 @@ import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: AdminComponent,
     children: [
-      { path: "users", component: UsersComponent },
-      { path: "projects", component: ProjectsListComponent },
-      { path: "", redirectTo: "projects", pathMatch: "full" }
+      { path: 'users', component: UsersComponent },
+      { path: 'projects', component: ProjectsListComponent },
+      { path: '', redirectTo: 'projects', pathMatch: 'full' }
     ]
   }
 ];

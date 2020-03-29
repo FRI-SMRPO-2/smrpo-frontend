@@ -19,15 +19,16 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     req = req.clone({
       url:
         environment.apiURL +
-        (req.url.charAt(0) === "/" ? req.url : `/${req.url}`)
+        (req.url.charAt(0) === '/' ? req.url : `/${req.url}`)
     });
 
     // Če v userStore obstaja user token, ga dodamo v request header
     const token = this.rootStore.userStore.authToken;
-    if (token)
+    if (token) {
       req = req.clone({
-        headers: req.headers.set("Authorization", `Token ${token}`)
+        headers: req.headers.set('Authorization', `Token ${token}`)
       });
+    }
 
     // Če api vrne 401, redirectaj na login (Če user ni prijavljen)
     return next.handle(req).pipe(
@@ -35,7 +36,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
             this.rootStore.userStore.logout();
-            this.router.navigate(["/login"]);
+            this.router.navigate(['/login']);
           }
           return throwError(err);
         }

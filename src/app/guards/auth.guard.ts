@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
         return true;
       }),
       catchError(() => {
-        this.router.navigate(["/login"]);
+        this.router.navigate(['/login']);
         return of(false); // of vrne Observable
       })
     );

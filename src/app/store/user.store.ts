@@ -5,22 +5,28 @@ import { User } from '../interfaces/user.interface';
 export class UserStore {
   private _authToken: string;
   private _user = new BehaviorSubject<User>(null);
+  private _userRole = new BehaviorSubject<string>(null);
 
   get user$() {
     return this._user.asObservable();
   }
+
   get user() {
     return this._user.value;
   }
 
+  get userRole$() {
+    return this._userRole.asObservable();
+  }
+
   get authToken() {
-    if (!this._authToken) this._authToken = localStorage.getItem("authToken");
+    if (!this._authToken) { this._authToken = localStorage.getItem('authToken'); }
     return this._authToken;
   }
 
   set authToken(token: string) {
     this._authToken = token;
-    localStorage.setItem("authToken", token);
+    localStorage.setItem('authToken', token);
   }
 
   logout() {
@@ -30,5 +36,9 @@ export class UserStore {
 
   setUser(user: User) {
     this._user.next(user);
+  }
+
+  setProjectRole(role: string) {
+    this._userRole.next(role);
   }
 }

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiURL: "https://lukatavcer.com/smrpo"
+  apiURL: 'https://lukatavcer.com/smrpo'
 };
 
 /*

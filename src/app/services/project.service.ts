@@ -4,13 +4,13 @@ import { Injectable } from '@angular/core';
 import { Project } from '../interfaces/project.interface';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class ProjectService {
   constructor(private http: HttpClient) {}
 
   getAllProjects() {
-    return this.http.get<Project[]>("api/project");
+    return this.http.get<Project[]>('api/project');
   }
 
   getProjectById(id: number) {

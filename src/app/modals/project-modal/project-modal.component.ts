@@ -7,21 +7,21 @@ import { debounceTime, filter, map, startWith } from 'rxjs/operators';
 import { User } from '../../interfaces/user.interface';
 
 @Component({
-  selector: "app-project-modal",
-  templateUrl: "./project-modal.component.html",
-  styleUrls: ["./project-modal.component.scss"]
+  selector: 'app-project-modal',
+  templateUrl: './project-modal.component.html',
+  styleUrls: ['./project-modal.component.scss']
 })
 export class ProjectModalComponent implements OnInit {
-  @ViewChild("userInput") userInput: ElementRef;
+  @ViewChild('userInput') userInput: ElementRef;
 
   form: FormGroup;
   search = new FormControl();
 
   // Dokler ni apija
   users: User[] = [
-    { firstName: "Luka", username: "luka" } as any,
-    { firstName: "Klavdija", username: "klavdija" },
-    { firstName: "Eva", username: "eva" }
+    { firstName: 'Luka', username: 'luka' } as any,
+    { firstName: 'Klavdija', username: 'klavdija' },
+    { firstName: 'Eva', username: 'eva' }
   ];
   filteredUsers: Observable<User[]>;
 
@@ -31,16 +31,16 @@ export class ProjectModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: ["", Validators.required],
+      name: ['', Validators.required],
       members: this.formBuilder.array([])
     });
 
     this.filteredUsers = this.search.valueChanges.pipe(
-      startWith(""),
-      filter(value => typeof value === "string"),
+      startWith(''),
+      filter(value => typeof value === 'string'),
       debounceTime(500),
 
-      //TODO: ko bo api uporabi switchMap
+      // TODO: ko bo api uporabi switchMap
       map(value => this._filter(value))
     );
   }
@@ -59,11 +59,11 @@ export class ProjectModalComponent implements OnInit {
     this._members.push(
       this.formBuilder.group({
         username: user.username,
-        role: "MEMBER"
+        role: 'MEMBER'
       })
     );
     this.selectedUsers = [...this._members.controls];
-    this.search.patchValue("");
+    this.search.patchValue('');
     this.userInput.nativeElement.blur();
   }
 
@@ -76,6 +76,6 @@ export class ProjectModalComponent implements OnInit {
   }
 
   get _members() {
-    return this.form.get("members") as FormArray;
+    return this.form.get('members') as FormArray;
   }
 }

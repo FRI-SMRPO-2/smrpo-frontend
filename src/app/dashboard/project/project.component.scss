@@ -9,22 +9,50 @@
   display: grid;
   min-width: 800px;
   grid-template-columns: repeat(2, 400px);
-  grid-column-gap: 20px;
+  grid-column-gap: 30px;
   grid-row-gap: 0px;
   height: 90%;
 }
 
+.dialog-button{
+  float: right;
+}
+
 .droplist-title {
   font-weight: 500;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .dragdrop-list {
-  height: 100%;
   background-color: #eaeaea;
-  padding: 5px;
-  margin-top: 5px;
+  padding: 10px;
+  padding-top: 5px;
+  margin-top: 20px;
+  margin-bottom: 5px;
   border-radius: 5px;
+}
+
+.sprint-list {
+
+  padding: 10px;
+  padding-top: 5px;
+  margin: 0px;
+  border-radius: 5px;
+}
+
+.sprint-expansion-panel {
+  background-color: #ffffff;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.sprint-expansion-panel-body{
+  padding: 0px;
+}
+
+.sprint-expansion-panel-title{
+  font-weight: 500;
 }
 
 .example-box {

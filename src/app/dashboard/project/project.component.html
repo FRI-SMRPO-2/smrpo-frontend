@@ -3,21 +3,40 @@
   <div class="table-container">
     <div>
       <span class="droplist-title">Product backlog</span>
-    
+      <button
+        mat-raised-button
+        color="accent"
+        *ngIf="userRole==='Methodology master' || userRole==='Project manager'"
+        class="dialog-button"
+        (click)="addStory()">Dodaj zgodbo</button>
+
+      <!-- TODO: zaenkrat ni povezave z naslednjimi droplisti -->
       <div
         cdkDropList
         #productList="cdkDropList"
         [cdkDropListData]="productBacklog"
-        [cdkDropListConnectedTo]="[sprintList]"
         class="dragdrop-list"
         (cdkDropListDropped)="drop($event)">
+          <div *ngIf="!productBacklog">V projektu trenutno ni zgodb.</div>
           <app-task-card [task]="item" *ngFor="let item of productBacklog" cdkDrag></app-task-card>
       </div>
     </div>
-    
+
     <div>
       <span class="droplist-title">Sprint backlog</span>
-      <div
+      <button
+        mat-raised-button
+        *ngIf="userRole==='Methodology master'"
+        color="accent"
+        class="dialog-button"
+        (click)="addSprint()">
+      Dodaj sprint</button>
+      <!--
+        TODO: drag-droppanje zgodb v različne sprinte - dinamično spreminjanje [cdkDropListConnectedTo] (glede na seznam sprintov - vsak sprint bo svoj droplist)
+              ta funkcionalnost še ne implementiramo (šele kartica #13)
+
+        <div
+        *ngFor="let sprint of sprints"
         cdkDropList
         #sprintList="cdkDropList"
         [cdkDropListData]="sprintBacklog"
@@ -26,6 +45,33 @@
         (cdkDropListDropped)="drop($event)">
           <app-task-card *ngFor="let item of sprintBacklog" [task]="item" cdkDrag></app-task-card>
       </div>
+      -->
+
+      <!-- brez povezave z ostalimi droplisti -->
+      <mat-expansion-panel
+        *ngFor="let sprint of sprints"
+        class="sprint-expansion-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="sprint-expansion-panel-title">
+            {{sprint.start_date}} - {{sprint.end_date}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div
+          cdkDropList
+          #sprintList="cdkDropList"
+          class="dragdrop-list sprint-list"
+          [cdkDropListData]="productBacklog"
+        >
+          <!--- TEMP -->
+          <div *ngIf="!productBacklog">V sprintu trenutno ni zgodb.</div>
+          <app-task-card [task]="item" *ngFor="let item of productBacklog" cdkDrag></app-task-card>
+        </div>
+
+      </mat-expansion-panel>
+
+
+
     </div>
   </div>
 </div>

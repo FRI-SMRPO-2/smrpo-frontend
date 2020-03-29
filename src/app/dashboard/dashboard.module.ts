@@ -10,6 +10,9 @@ import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/project.component';
 import { TaskCardComponent } from './project/task-card/task-card.component';
+import { ModalsModule } from '../modals/modals.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -23,9 +26,12 @@ import { TaskCardComponent } from './project/task-card/task-card.component';
     DashboardRoutingModule,
     SharedModule,
     MatSidenavModule,
+    MatButtonModule,
     DragDropModule,
     MatTooltipModule,
-    SharedModule
+    SharedModule,
+    ModalsModule,
+    MatExpansionModule
   ]
 })
 export class DashboardModule {}

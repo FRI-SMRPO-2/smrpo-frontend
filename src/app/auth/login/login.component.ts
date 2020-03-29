@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
@@ -21,20 +21,20 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required]
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
   onLogin() {
-    if (this.form.invalid || this.loading) return;
+    if (this.form.invalid || this.loading) { return; }
     this.loading = true;
     this.authService.login(this.form.value).subscribe(
       () => {
-        this.router.navigate(["/"]);
+        this.router.navigate(['/']);
       },
       err => {
-        //TODO: Handle errors
+        // TODO: Handle errors
         this.loading = false;
       }
     );

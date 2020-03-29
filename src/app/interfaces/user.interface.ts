@@ -1,6 +1,6 @@
 export enum USER_ROLE {
-  ADMIN = "ADMIN",
-  USER = "USER"
+  ADMIN = 'ADMIN',
+  USER = 'USER'
 }
 
 export interface User {
@@ -11,5 +11,6 @@ export interface User {
   name?: string;
   email: string;
   role: USER_ROLE;
-  lastLoginTime?: Date;
+  last_login?: Date;
+  is_superuser?: boolean;
 }
