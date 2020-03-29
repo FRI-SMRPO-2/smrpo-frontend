@@ -18,9 +18,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-story-modal',
-  templateUrl: './story-modal.component.html',
-  styleUrls: ['./story-modal.component.scss']
+  selector: "app-story-modal",
+  templateUrl: "./story-modal.component.html",
+  styleUrls: ["./story-modal.component.scss"]
 })
 export class StoryModalComponent implements OnInit {
   form: FormGroup;
@@ -42,13 +42,13 @@ export class StoryModalComponent implements OnInit {
 
     this.priorities =
     [
-      {id: 4, name: 'Won\'t have this time'},
-      {id: 3, name: 'Could have'},
-      {id: 2, name: 'Should have'},
-      {id: 1, name: 'Must have'},
-    ];
+      {id: 4, name: "Won't have this time"},
+      {id: 3, name: "Could have"},
+      {id: 2, name: "Should have"},
+      {id: 1, name: "Must have"},
+    ]
 
-    this.addingStory = false;
+    this.addingStory= false;
 
     this.form = this.formBuilder.group({
       storyName: [''],
@@ -59,33 +59,33 @@ export class StoryModalComponent implements OnInit {
     });
   }
 
-  createTest() {
+  createTest(){
     return this.formBuilder.group({
       testDescription: ''
-    });
+    })
   }
 
   addTest() {
     this.tests = this.form.get('tests') as FormArray;
-    this.tests.push(this.createTest());
+    this.tests.push(this.createTest())
   }
 
-  removeTest(i) {
+  removeTest(i){
     this.tests.removeAt(i);
   }
 
-  onChange(i) {
-   if (!this.form.get('tests').value[i + 1]) {
-      this.addTest();
+  onChange(i){
+   if (!this.form.get('tests').value[i+1]) {
+      this.addTest()
     }
   }
 
-  checkInput(i) {
-    return this.form.get('tests').value[i].testDescription != '';
+  checkInput(i){
+    return this.form.get('tests').value[i].testDescription != ""
   }
 
   get testControls() {
-    return this.form.get('tests').controls;
+    return this.form.get('tests')['controls'];
   }
 
   save() {
@@ -93,29 +93,29 @@ export class StoryModalComponent implements OnInit {
 
     this.addingStory = true;
 
-    const data = {name: '', text: '', priority: '', business_value: '', tests: []};
+    let data = {name: "", text: "", priority: "", business_value: "", tests: []}
     data.name = this.form.value.storyName;
-    data.text = this.form.value.storyDescription;
-    data.priority = this.form.value.priority;
-    data.business_value = this.form.value.businessValue;
-    data.tests = this.form.value.tests.map(test => test.testDescription);
+    data.text = this.form.value.storyDescription
+    data.priority = this.form.value.priority
+    data.business_value = this.form.value.businessValue
+    data.tests = this.form.value.tests.map(test=>test.testDescription)
     data.tests.pop();
-    console.log(data);
+    console.log(data)
 
     this.activeProject$.subscribe((activeProject) =>
       this.storyService.addStory(activeProject.id, data).subscribe(
         () => {
           this.storyService.getAllStories(activeProject.id).subscribe((stories) => {
-            this.rootStore.storyStore.setAllStories(stories);
+            this.rootStore.storyStore.setAllStories(stories)
             this.storyModalDialogRef.close(stories);
-          });
+          })
         },
         (err) => {
-          console.log(err);
+          console.log(err)
           this.addingStory = false;
-          this.errorMessage = err.error.__all__[0];
+          this.errorMessage = err.error.__all__[0]
         }
       )
-    );
+    )
   }
 }
