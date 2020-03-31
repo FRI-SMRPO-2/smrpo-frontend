@@ -6,7 +6,13 @@
 
     <mat-form-field appearance="standard" class="form-input">
       <mat-label>Ime projekta</mat-label>
-      <input matInput formControlName="name"/>
+      <input matInput formControlName="name" [errorStateMatcher]="errorMatcher"/>
+      <mat-error *ngIf="name.hasError('required')">
+        Ime projekta je <strong>obvezno</strong>
+      </mat-error>
+      <mat-error *ngIf="name.hasError('duplicateName')">
+        {{ name.errors.duplicateName }}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="form-input" style="margin-bottom: 10px;">
@@ -15,17 +21,22 @@
              matInput
              [formControl]="search"
              [matAutocomplete]="auto"
+             [errorStateMatcher]="errorMatcher"
              #userInput />
+      <mat-error *ngIf="search.hasError('noUsers')">
+        Projekt mora vsebovati <strong>vsaj enega člana</strong>
+      </mat-error>
       <mat-autocomplete autoActiveFirstOption
        (optionSelected)="userSelected($event)" #auto="matAutocomplete">
         <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
-          {{user.firstName}}
+          {{user.username}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 
 
-    <app-project-modal-users-table [users]="selectedUsers" (onRemove)="remove($event)"></app-project-modal-users-table>
+    <app-project-modal-users-table [users]="selectedUsers" [roles]="roles" (onRemove)="remove($event)">
+    </app-project-modal-users-table>
     
 
     <button mat-raised-button color="accent" class="save-btn" 

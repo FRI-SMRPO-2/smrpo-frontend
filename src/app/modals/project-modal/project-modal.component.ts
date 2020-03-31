@@ -1,81 +1,121 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable } from 'rxjs';
-import { debounceTime, filter, map, startWith } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { debounceTime, filter, switchMap } from 'rxjs/operators';
 
+import { FormErrorStateMatcher } from '../../../utils/form-error-state-matcher';
 import { User } from '../../interfaces/user.interface';
+import { ProjectService } from '../../services/project.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-project-modal',
-  templateUrl: './project-modal.component.html',
-  styleUrls: ['./project-modal.component.scss']
+  selector: "app-project-modal",
+  templateUrl: "./project-modal.component.html",
+  styleUrls: ["./project-modal.component.scss"]
 })
 export class ProjectModalComponent implements OnInit {
-  @ViewChild('userInput') userInput: ElementRef;
+  @ViewChild("userInput") userInput: ElementRef;
+
+  roles;
 
   form: FormGroup;
   search = new FormControl();
 
-  // Dokler ni apija
-  users: User[] = [
-    { firstName: 'Luka', username: 'luka' } as any,
-    { firstName: 'Klavdija', username: 'klavdija' },
-    { firstName: 'Eva', username: 'eva' }
-  ];
+  selectedUsers: AbstractControl[] = [];
   filteredUsers: Observable<User[]>;
 
-  selectedUsers: AbstractControl[] = [];
+  errorMatcher = new FormErrorStateMatcher();
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private dialogRef: MatDialogRef<ProjectModalComponent>,
+    private projectService: ProjectService
+  ) {}
 
   ngOnInit() {
+    this.projectService.getProjectRoles().subscribe(data => {
+      this.roles = data;
+    });
+
     this.form = this.formBuilder.group({
-      name: ['', Validators.required],
+      name: ["", Validators.required],
       members: this.formBuilder.array([])
     });
 
-    this.filteredUsers = this.search.valueChanges.pipe(
-      startWith(''),
-      filter(value => typeof value === 'string'),
-      debounceTime(500),
+    this.search.setValidators(() => {
+      if (!this.selectedUsers.length) return { noUsers: true };
+    });
 
-      // TODO: ko bo api uporabi switchMap
-      map(value => this._filter(value))
+    this.filteredUsers = this.search.valueChanges.pipe(
+      filter(value => typeof value === "string"),
+      debounceTime(500),
+      switchMap(value => (value ? this.userService.searchUser(value) : of([])))
     );
   }
 
   save() {
-    console.log(this.form.value);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.search.markAsTouched();
+      return;
+    }
+
+    this.projectService
+      .createProject(this.generateAddProjectRequest(this.form.value))
+      .subscribe(
+        res => this.dialogRef.close(res),
+        err => {
+          console.log(err);
+          this.name.setErrors({ duplicateName: err.error.message });
+        }
+      );
   }
 
   remove(i) {
-    this._members.removeAt(i);
-    this.selectedUsers = [...this._members.controls];
+    this.members.removeAt(i);
+    this.selectedUsers = [...this.members.controls];
   }
 
   userSelected(event: MatAutocompleteSelectedEvent) {
     const user: User = event.option.value;
-    this._members.push(
+    this.members.push(
       this.formBuilder.group({
         username: user.username,
-        role: 'MEMBER'
+        user_id: user.id,
+        role_id: this.roles.filter(r => r.title === "Developer")[0].id
       })
     );
-    this.selectedUsers = [...this._members.controls];
-    this.search.patchValue('');
+    this.selectedUsers = [...this.members.controls];
+    this.search.patchValue("");
     this.userInput.nativeElement.blur();
   }
 
-  private _filter(value: string): User[] {
-    const filterValue = value.toLowerCase();
+  generateAddProjectRequest(data) {
+    this.members.controls.forEach((fg: FormGroup) => {
+      fg.addControl(
+        "role",
+        this.formBuilder.control(
+          this.roles.filter(r => r.id === fg.get("role_id").value)[0].title
+        )
+      );
+    });
 
-    return this.users.filter(user =>
-      user.firstName.toLowerCase().includes(filterValue)
-    );
+    return {
+      name: data.name,
+      user_roles: data.members.map(m => ({
+        user_id: m.user_id,
+        role_id: m.role_id
+      }))
+    };
   }
 
-  get _members() {
-    return this.form.get('members') as FormArray;
+  get name() {
+    return this.form.get("name");
+  }
+  get members() {
+    return this.form.get("members") as FormArray;
   }
 }

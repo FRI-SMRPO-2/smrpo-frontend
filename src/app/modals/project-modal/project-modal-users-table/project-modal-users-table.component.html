@@ -9,10 +9,8 @@
     <th mat-header-cell *matHeaderCellDef> Vloga </th>
     <td mat-cell *matCellDef="let formGroup">
       <mat-form-field [formGroup]="formGroup">
-        <mat-select  formControlName="role">
-          <mat-option value="LEADER">Vodja projekta</mat-option>
-          <mat-option value="OWNER">Skrbnik metodologije</mat-option>
-          <mat-option value="MEMBER">Član</mat-option>
+        <mat-select  formControlName="role_id">
+          <mat-option *ngFor="let role of roles" [value]="role.id">{{role.title}}</mat-option>
         </mat-select>
       </mat-form-field>  
     </td>

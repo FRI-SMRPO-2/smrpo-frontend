@@ -1,7 +1,4 @@
-export enum USER_ROLE {
-  ADMIN = 'ADMIN',
-  USER = 'USER'
-}
+import { ProjectRoleType } from './project.interface';
 
 export interface User {
   id: number;
@@ -10,7 +7,7 @@ export interface User {
   lastName?: string;
   name?: string;
   email: string;
-  role: USER_ROLE;
+  role?: ProjectRoleType;
   last_login?: Date;
   is_superuser?: boolean;
 }
