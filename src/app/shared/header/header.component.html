@@ -9,8 +9,9 @@
   <span class="header-title">{{(activeProject$ | async)?.name}}</span>
 
   <div class="content">
-    <span *ngIf="showHome" class="material-icons item" matTooltip="Domov">home</span>
-    <span class="item" mat-button [matMenuTriggerFor]="menu">{{(user$ | async)?.username}}</span>
+    <mat-icon *ngIf="showHome" matTooltip="Domov" (click)="navToHome()">home</mat-icon>
+    <mat-icon *ngIf="!showHome && (isAdmin$ | async)" matTooltip="Admin" (click)="navToAdmin()">business_center</mat-icon>
+    <span class="item" mat-button [matMenuTriggerFor]="menu">{{ (user$ | async)?.username }}</span>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="logout()">Odjava</button>
       <div class="last-login">

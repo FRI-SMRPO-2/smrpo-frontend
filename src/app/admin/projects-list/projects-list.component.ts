@@ -48,6 +48,8 @@ export class ProjectsListComponent implements OnInit {
       .open(ProjectModalComponent)
       .afterClosed()
       .subscribe(res => {
+        if (!res) return;
+
         this.projects = [...this.projects, this.mapUsersByRoles(res)];
       });
   }

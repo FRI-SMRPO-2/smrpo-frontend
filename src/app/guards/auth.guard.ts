@@ -14,12 +14,13 @@ export class AuthGuard implements CanActivate {
      * Na začetku, ko pride v app pokliče getMe, da dobi podatke o userju, oz. če ni
      *  prijavljen, ga preusmeri na login
      */
+    console.log("auth");
     return this.userService.getMe().pipe(
       map(data => {
         return true;
       }),
       catchError(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(["/login"]);
         return of(false); // of vrne Observable
       })
     );

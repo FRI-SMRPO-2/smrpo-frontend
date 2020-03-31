@@ -4,13 +4,6 @@
   <mat-drawer #drawer class="sidenav" mode="side" opened>
 
     <div class="sidenav-content">
-      <button
-        mat-raised-button
-        color="accent"
-        *ngIf="isSuperuser"
-        class="dialog-button"
-        routerLink="/admin">Pregled projektov</button>
-
       <div *ngFor="let project of projectList; let i = index " class="sidenav-item"
         routerLink="/project/{{project.id}}" routerLinkActive="active-item" (click)="projectSelected(i)">
         {{project.name}}
