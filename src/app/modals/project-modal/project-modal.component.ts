@@ -57,7 +57,7 @@ export class ProjectModalComponent implements OnInit {
   }
 
   save() {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.search.invalid) {
       this.form.markAllAsTouched();
       this.search.markAsTouched();
       return;
