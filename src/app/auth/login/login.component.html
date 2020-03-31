@@ -4,17 +4,26 @@
     <span class="login-title">Prijava</span>
 
     <mat-form-field appearance="standard">
-      <mat-label>Username</mat-label>
+      <mat-label>Uporabniško ime</mat-label>
       <input matInput formControlName="username"/>
+      <mat-error *ngIf="username.hasError('required')">
+        Uporabniško ime je <strong>obvezno</strong>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="standard">
-      <mat-label>Password</mat-label>
+      <mat-label>Geslo</mat-label>
       <input matInput formControlName="password" type="password" />
+      <mat-error *ngIf="password.hasError('required')">
+        Geslo je <strong>obvezno</strong>
+      </mat-error>
     </mat-form-field>
 
+
+    <span class="error-text">{{ errorMessage && 'Napačno uporabniško ime ali geslo' || '' }}</span>
+
     <button mat-raised-button color="accent" class="login-button" 
-        type="submit" (click)="onLogin()">Login</button>
+        type="submit" (click)="onLogin()">Prijava</button>
 
   </form>
 </div>
