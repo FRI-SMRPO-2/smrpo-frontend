@@ -2,7 +2,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { Sprint } from 'src/app/interfaces/sprint.interface';
 import { Story } from 'src/app/interfaces/story.interface';
 import { SprintModalComponent } from 'src/app/modals/sprint-modal/sprint-modal.component';
@@ -10,6 +11,7 @@ import { StoryModalComponent } from 'src/app/modals/story-modal/story-modal.comp
 import { StoryService } from 'src/app/services/story.service';
 import { UserService } from 'src/app/services/user.service';
 
+import { User } from '../../interfaces/user.interface';
 import { ProjectService } from '../../services/project.service';
 import { SprintService } from '../../services/sprint.service';
 import { RootStore } from '../../store/root.store';
@@ -51,64 +53,41 @@ export class ProjectComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // TODO: to se najbrz da zdruzit? :D
-
     // BUG: če si admin, in pogledaš projekt, v katerem nisi member, getProjectRole(id) returna 404 in
     // se vse podere (tisti subscription se ne več izvede, tud če izbereš spet drug projekt)
     this.route.params
       .pipe(
         switchMap(({ id }) => {
-          this.isLoaded = false;
-          return this.projectService.getProjectById(id);
+          console.log("fork");
+          return forkJoin({
+            project: this.projectService.getProjectById(id),
+            sprints: this.sprintService.getAllSprints(id),
+            stories: this.storyService.getAllStories(id),
+            user: this.userService
+              .getProjectRole(id)
+              .pipe(catchError(() => null))
+          });
         })
       )
-      .subscribe(project => {
+      .subscribe(({ project, sprints, stories, user }) => {
         this.rootStore.projectStore.setActiveProject(project);
+
+        this.rootStore.sprintStore.setAllSprints(sprints);
+        this.sprints = sprints;
+
+        this.rootStore.storyStore.setAllStories(stories);
+        this.productBacklog = this.stories;
+        this.stories = stories;
+
+        if (user) {
+          this.rootStore.userStore.setProjectRole((user as User).role);
+          this.userRole = (user as User).role;
+        }
+
         setTimeout(() => {
           this.isLoaded = true;
         }, 300);
       });
-
-    this.route.params
-      .pipe(
-        switchMap(({ id }) => {
-          this.isLoaded = false;
-          return this.sprintService.getAllSprints(id);
-        })
-      )
-      .subscribe(sprints => {
-        this.rootStore.sprintStore.setAllSprints(sprints);
-        this.sprints = sprints;
-      });
-
-    this.route.params
-      .pipe(
-        switchMap(({ id }) => {
-          this.isLoaded = false;
-          return this.storyService.getAllStories(id);
-        })
-      )
-      .subscribe(stories => {
-        this.rootStore.storyStore.setAllStories(stories);
-        console.log(stories);
-        this.stories = stories;
-        this.productBacklog = this.stories;
-      });
-
-    this.route.params
-      .pipe(
-        switchMap(({ id }) => {
-          this.isLoaded = false;
-          return this.userService.getProjectRole(id);
-        })
-      )
-      .subscribe(
-        user => {
-          this.rootStore.userStore.setProjectRole(user.role);
-          this.userRole = user.role;
-        },
-        error => console.log(error.detail)
-      );
   }
 
   ngOnDestroy() {

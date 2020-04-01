@@ -1,0 +1,68 @@
+<div class="modal-container">
+  
+  <form class="modal-form" [formGroup]="form">
+
+    <span class="title">Nov projekt</span>
+
+    <mat-form-field class="form-input">
+      <mat-label>Sistemske pravice</mat-label>
+     <mat-select formControlName="is_superuser">
+        <mat-option [value]="false">Uporabnik</mat-option>
+        <mat-option [value]="true">Administrator</mat-option>
+     </mat-select>
+    </mat-form-field>
+
+    <div class="input-row">
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Uporabniško ime</mat-label>
+        <input matInput formControlName="username" [errorStateMatcher]="errorMatcher"/>
+        <mat-error *ngIf="username.hasError('duplicateName')">
+          {{ username.errors.duplicateName }} 
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" [errorStateMatcher]="errorMatcher"/>
+        <mat-error *ngIf="email.hasError('wrongEmail')">
+          {{ email.errors.wrongEmail }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-row">
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Ime</mat-label>
+        <input matInput formControlName="first_name" [errorStateMatcher]="errorMatcher"/>
+      </mat-form-field>
+  
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Priimek</mat-label>
+        <input matInput formControlName="last_name" [errorStateMatcher]="errorMatcher"/>
+      </mat-form-field>
+    </div>
+
+    <div class="input-row">
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Geslo</mat-label>
+        <input matInput formControlName="password1" [errorStateMatcher]="errorMatcher" type="password" />
+        <mat-error *ngIf="password1.hasError('minlength')">
+          Geslo mora imeti <strong>najmanj 8</strong> znakov
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Ponovi geslo</mat-label>
+        <input matInput formControlName="password2" [errorStateMatcher]="passwordErrorMatcher" type="password" />
+        <mat-error *ngIf="form.hasError('passwordError')">
+          {{ form.getError('passwordError')}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="accent" class="save-btn" 
+    type="button" (click)="save()">Shrani</button>
+    
+  </form>
+
+</div>

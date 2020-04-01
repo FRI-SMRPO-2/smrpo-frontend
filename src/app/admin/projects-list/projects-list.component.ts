@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject } from 'rxjs';
 
-import { Project, ProjectRoleType } from '../../interfaces/project.interface';
+import { ProjectRoleType } from '../../interfaces/project.interface';
 import { ProjectModalComponent } from '../../modals/project-modal/project-modal.component';
 import { ProjectService } from '../../services/project.service';
 
@@ -18,8 +17,6 @@ export class ProjectsListComponent implements OnInit {
   totalResults = 100;
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-
-  projects$ = new BehaviorSubject<Project[]>([]);
 
   constructor(
     private dialog: MatDialog,

@@ -1,0 +1,29 @@
+@import "../../../variables";
+
+.title-section {
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 95%;
+  table-layout: fixed;
+  margin-bottom: 20px;
+
+  tr:not(.table-header):hover {
+    background-color: whitesmoke;
+  }
+
+  .options-td {
+    width: 80px;
+    text-align: right;
+  }
+}
+
+mat-paginator {
+  background-color: transparent;
+  width: 95%;
+}

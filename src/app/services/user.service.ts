@@ -28,4 +28,8 @@ export class UserService {
   searchUser(name: string) {
     return this.http.get<User[]>(`api/user/?search=${name}`);
   }
+
+  addUser(data: User) {
+    return this.http.post<User>("api/user/", data);
+  }
 }

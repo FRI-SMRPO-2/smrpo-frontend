@@ -19,13 +19,15 @@ import {
 import { ProjectModalComponent } from './project-modal/project-modal.component';
 import { SprintModalComponent } from './sprint-modal/sprint-modal.component';
 import { StoryModalComponent } from './story-modal/story-modal.component';
+import { UserModalComponent } from './user-modal/user-modal.component';
 
 @NgModule({
   declarations: [
     ProjectModalComponent,
     ProjectModalUsersTableComponent,
     SprintModalComponent,
-    StoryModalComponent
+    StoryModalComponent,
+    UserModalComponent
   ],
   imports: [
     CommonModule,
