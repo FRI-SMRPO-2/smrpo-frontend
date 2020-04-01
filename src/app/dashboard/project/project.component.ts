@@ -1,27 +1,26 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { Sprint } from 'src/app/interfaces/sprint.interface';
+import { Story } from 'src/app/interfaces/story.interface';
+import { SprintModalComponent } from 'src/app/modals/sprint-modal/sprint-modal.component';
+import { StoryModalComponent } from 'src/app/modals/story-modal/story-modal.component';
+import { StoryService } from 'src/app/services/story.service';
+import { UserService } from 'src/app/services/user.service';
 
 import { ProjectService } from '../../services/project.service';
 import { SprintService } from '../../services/sprint.service';
 import { RootStore } from '../../store/root.store';
-import { SprintModalComponent } from 'src/app/modals/sprint-modal/sprint-modal.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { StoryModalComponent } from 'src/app/modals/story-modal/story-modal.component';
-import { Sprint } from 'src/app/interfaces/sprint.interface';
-import { StoryService } from 'src/app/services/story.service';
-import { Story } from 'src/app/interfaces/story.interface';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss']
+  selector: "app-project",
+  templateUrl: "./project.component.html",
+  styleUrls: ["./project.component.scss"]
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
   isLoaded = false;
-
 
   productBacklog: Story[];
   /*[
@@ -32,12 +31,11 @@ export class ProjectComponent implements OnInit {
   ];
   */
 
-
   sprints: Sprint[];
   stories: Story[];
   userRole: string;
 
-  sprintBacklog = [{ title: 'Zgodba #4', priority: 'musthave' }];
+  sprintBacklog = [{ title: "Zgodba #4", priority: "musthave" }];
 
   sprintModalDialogRef: MatDialogRef<SprintModalComponent>;
   storyModalDialogRef: MatDialogRef<StoryModalComponent>;
@@ -53,7 +51,6 @@ export class ProjectComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
     // TODO: to se najbrz da zdruzit? :D
 
     // BUG: če si admin, in pogledaš projekt, v katerem nisi member, getProjectRole(id) returna 404 in
@@ -105,37 +102,36 @@ export class ProjectComponent implements OnInit {
           return this.userService.getProjectRole(id);
         })
       )
-      .subscribe(user => {
-        this.rootStore.userStore.setProjectRole(user.role);
-        this.userRole = user.role;
+      .subscribe(
+        user => {
+          this.rootStore.userStore.setProjectRole(user.role);
+          this.userRole = user.role;
         },
         error => console.log(error.detail)
       );
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    // Add '${implements OnChanges}' to the class.
-    console.log('CHANG');
+  ngOnDestroy() {
+    this.rootStore.projectStore.setActiveProject(null);
   }
 
   addSprint() {
     this.sprintModalDialogRef = this.dialog.open(SprintModalComponent);
     this.sprintModalDialogRef.afterClosed().subscribe(newSprints => {
-        if (newSprints) {
-          this.sprints = newSprints;
-        }
-      });
+      if (newSprints) {
+        this.sprints = newSprints;
+      }
+    });
   }
 
   addStory() {
     this.storyModalDialogRef = this.dialog.open(StoryModalComponent);
     this.storyModalDialogRef.afterClosed().subscribe(newStories => {
-        if (newStories) {
-          this.stories = newStories;
-          this.productBacklog = newStories;
-        }
-      });
+      if (newStories) {
+        this.stories = newStories;
+        this.productBacklog = newStories;
+      }
+    });
     /*
     this.storyModalDialogRef.afterClosed().subscribe(newSprints =>
       { if (newSprints)
