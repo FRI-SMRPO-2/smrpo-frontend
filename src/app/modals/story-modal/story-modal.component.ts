@@ -1,9 +1,9 @@
-import { Component, OnInit,  } from '@angular/core';
+import { Component, OnInit, Input,  } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormArray } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-
+import { Inject } from '@angular/core';
 import { Project } from 'src/app/interfaces/project.interface';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { RootStore } from 'src/app/store/root.store';
 import { StoryService } from 'src/app/services/story.service';
@@ -34,7 +34,8 @@ export class StoryModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private storyModalDialogRef: MatDialogRef<StoryModalComponent>,
     private storyService: StoryService,
-    private rootStore: RootStore
+    private rootStore: RootStore,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit() {
@@ -89,7 +90,6 @@ export class StoryModalComponent implements OnInit {
   }
 
   save() {
-    // TODO: da ne pošiljamo zadnjega empty testa naprej
 
     this.addingStory = true;
 
@@ -100,22 +100,18 @@ export class StoryModalComponent implements OnInit {
     data.business_value = this.form.value.businessValue
     data.tests = this.form.value.tests.map(test=>test.testDescription)
     data.tests.pop();
-    console.log(data)
 
-    this.activeProject$.subscribe((activeProject) =>
-      this.storyService.addStory(activeProject.id, data).subscribe(
-        () => {
-          this.storyService.getAllStories(activeProject.id).subscribe((stories) => {
-            this.rootStore.storyStore.setAllStories(stories)
-            this.storyModalDialogRef.close(stories);
-          })
-        },
-        (err) => {
-          console.log(err)
-          this.addingStory = false;
-          this.errorMessage = err.error.__all__[0]
-        }
-      )
+    this.storyService.addStory(this.data.projectId, data).subscribe(
+      () => {
+        this.storyService.getAllStories(this.data.projectId).subscribe((stories) => {
+          this.rootStore.storyStore.setAllStories(stories)
+          this.storyModalDialogRef.close(stories);
+        })
+      },
+      (err) => {
+        this.addingStory = false;
+        this.errorMessage = err.error.__all__[0]
+      }
     )
   }
 }

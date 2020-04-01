@@ -8,9 +8,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { HeaderComponent } from './header/header.component';
 import { PriorityPipe } from './priority.pipe';
 import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
+import { SprintDatePipe } from './sprintDate.pipe';
 
 @NgModule({
-  declarations: [HeaderComponent, PriorityPipe, ProgressSpinnerComponent],
+  declarations: [HeaderComponent, PriorityPipe, ProgressSpinnerComponent, SprintDatePipe],
   imports: [
     CommonModule,
     MatMenuModule,
@@ -18,6 +19,6 @@ import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.co
     MatProgressSpinnerModule,
     MatIconModule
   ],
-  exports: [HeaderComponent, PriorityPipe, ProgressSpinnerComponent]
+  exports: [HeaderComponent, PriorityPipe, ProgressSpinnerComponent, SprintDatePipe]
 })
 export class SharedModule {}

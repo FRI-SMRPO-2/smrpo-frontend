@@ -13,13 +13,15 @@ import { TaskCardComponent } from './project/task-card/task-card.component';
 import { ModalsModule } from '../modals/modals.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SprintPanelComponent } from './project/sprint-panel/sprint-panel.component';
 
 @NgModule({
   declarations: [
     ProjectComponent,
     HomeComponent,
     DashboardComponent,
-    TaskCardComponent
+    TaskCardComponent,
+    SprintPanelComponent
   ],
   imports: [
     CommonModule,

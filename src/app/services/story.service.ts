@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 
 import { RootStore } from '../store/root.store';
 import { Story } from '../interfaces/story.interface';
+import { catchError} from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 // TODO
 @Injectable({
@@ -23,7 +25,7 @@ export class StoryService {
         'Content-Type':  'application/json'
         })
       }
-    );
+    ).pipe(catchError((e) => throwError(e)));
   }
 
 }

@@ -13,12 +13,12 @@ export class UserService {
 
   getMe() {
     return this.http
-      .get<User>("api/user/me")
+      .get<User>("api/user/me/")
       .pipe(tap(user => this.rootStore.userStore.setUser(user)));
   }
 
   getProjectRole(projectId: number) {
-    return this.http.get<User>(`api/project/${projectId}/user/me`);
+    return this.http.get<User>(`api/project/${projectId}/user/me/`);
   }
 
   getAllUsers() {

@@ -6,7 +6,7 @@
       <button
         mat-raised-button
         color="accent"
-        *ngIf="userRole==='Methodology master' || userRole==='Project manager'"
+        *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
         class="dialog-button"
         (click)="addStory()">Dodaj zgodbo</button>
 
@@ -17,7 +17,7 @@
         [cdkDropListData]="productBacklog"
         class="dragdrop-list"
         (cdkDropListDropped)="drop($event)">
-          <div *ngIf="!productBacklog">V projektu trenutno ni zgodb.</div>
+          <div *ngIf="productBacklog.length ==0" class = "no-items-message">V projektu trenutno ni zgodb.</div>
           <app-task-card [task]="item" *ngFor="let item of productBacklog" cdkDrag></app-task-card>
       </div>
     </div>
@@ -26,7 +26,7 @@
       <span class="droplist-title">Sprint backlog</span>
       <button
         mat-raised-button
-        *ngIf="userRole==='Methodology master'"
+        *ngIf="userRole==='Methodology master' || isAdmin"
         color="accent"
         class="dialog-button"
         (click)="addSprint()">
@@ -48,29 +48,13 @@
       -->
 
       <!-- brez povezave z ostalimi droplisti -->
-      <mat-expansion-panel
+      <div *ngIf="sprints.length ==0" class = "no-items-message">V projektu trenutno ni sprintov.</div>
+      <app-sprint-panel
         *ngFor="let sprint of sprints"
-        class="sprint-expansion-panel">
-        <mat-expansion-panel-header>
-          <mat-panel-title class="sprint-expansion-panel-title">
-            {{sprint.start_date}} - {{sprint.end_date}}
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <div
-          cdkDropList
-          #sprintList="cdkDropList"
-          class="dragdrop-list sprint-list"
-          [cdkDropListData]="productBacklog"
-        >
-          <!--- TEMP -->
-          <div *ngIf="!productBacklog">V sprintu trenutno ni zgodb.</div>
-          <app-task-card [task]="item" *ngFor="let item of productBacklog" cdkDrag></app-task-card>
-        </div>
-
-      </mat-expansion-panel>
-
-
+        [startDate] = "sprint.start_date"
+        [endDate] = "sprint.end_date"
+        [stories] = "stories"
+      ></app-sprint-panel>
 
     </div>
   </div>

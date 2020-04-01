@@ -15,7 +15,7 @@
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="logout()">Odjava</button>
       <div class="last-login">
-        Zadnja prijava: {{(user$ | async)?.last_login}}
+        Zadnja prijava: {{(user$ | async)?.last_login | date:'MMM d, y HH:mm'}}
       </div>
     </mat-menu>
   </div>

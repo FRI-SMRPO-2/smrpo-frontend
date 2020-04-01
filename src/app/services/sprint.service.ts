@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 
 import { RootStore } from '../store/root.store';
 import { Sprint } from '../interfaces/sprint.interface';
+import { catchError} from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,11 @@ export class SprintService {
   constructor(private http: HttpClient, private rootStore: RootStore) {}
 
   getAllSprints(projectId: number) {
-    return this.http.get<Sprint[]>(`api/project/${projectId}/sprint`);
+    return this.http.get<Sprint[]>(`api/project/${projectId}/sprint/`);
   }
 
   addSprint(projectId: number, data: FormData) {
-    return this.http.post<any>(`api/project/${projectId}/sprint/`, data);
+    return this.http.post<any>(`api/project/${projectId}/sprint/`, data)
+    .pipe(catchError((e) => throwError(e)));
   }
 }

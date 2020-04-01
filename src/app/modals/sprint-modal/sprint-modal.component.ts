@@ -2,9 +2,10 @@ import { Component, OnInit,  } from '@angular/core';
 import { FormBuilder,  FormGroup,  Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { SprintService } from 'src/app/services/sprint.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RootStore } from 'src/app/store/root.store';
 import { Observable } from 'rxjs';
+import { Inject } from '@angular/core';
 import { Project } from 'src/app/interfaces/project.interface';
 
 
@@ -25,7 +26,8 @@ export class SprintModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sprintService: SprintService,
     private sprintModalDialogRef: MatDialogRef<SprintModalComponent>,
-    private rootStore: RootStore) {}
+    private rootStore: RootStore,
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit() {
     this.activeProject$ = this.rootStore.projectStore.activeProject$;
@@ -49,18 +51,18 @@ export class SprintModalComponent implements OnInit {
     formData.append('end_date', formatDate(this.form.value.endDate, 'yyyy-MM-dd', 'en-GB'));
     formData.append('expected_speed', this.form.value.expectedSpeed);
 
-    this.activeProject$.subscribe((activeProject) =>
-      this.sprintService.addSprint(activeProject.id, formData).subscribe(
-        () => {
-          this.sprintService.getAllSprints(activeProject.id).subscribe((sprints) => {
-            this.rootStore.sprintStore.setAllSprints(sprints);
-            this.sprintModalDialogRef.close(sprints);
-          });
-        },
-        (err) => {
-          this.addingSprint = false;
-          this.errorMessage = err.error.message;
-        })
-    );
+
+    this.sprintService.addSprint(this.data.projectId, formData).subscribe(
+      () => {
+        this.sprintService.getAllSprints(this.data.projectId).subscribe((sprints) => {
+          this.rootStore.sprintStore.setAllSprints(sprints);
+          this.sprintModalDialogRef.close(sprints);
+        });
+      },
+      (err) => {
+        this.addingSprint = false;
+        this.errorMessage = err.error.message;
+      })
+
   }
 }

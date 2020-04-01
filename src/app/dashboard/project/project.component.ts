@@ -15,6 +15,7 @@ import { User } from '../../interfaces/user.interface';
 import { ProjectService } from '../../services/project.service';
 import { SprintService } from '../../services/sprint.service';
 import { RootStore } from '../../store/root.store';
+import { Project } from 'src/app/interfaces/project.interface';
 
 @Component({
   selector: "app-project",
@@ -36,6 +37,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   sprints: Sprint[];
   stories: Story[];
   userRole: string;
+  isAdmin: boolean;
+  projectId: number;
 
   sprintBacklog = [{ title: "Zgodba #4", priority: "musthave" }];
 
@@ -53,33 +56,40 @@ export class ProjectComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.rootStore.userStore.user$.subscribe((user) => this.isAdmin = user.is_superuser);
+
     // BUG: če si admin, in pogledaš projekt, v katerem nisi member, getProjectRole(id) returna 404 in
     // se vse podere (tisti subscription se ne več izvede, tud če izbereš spet drug projekt)
     this.route.params
       .pipe(
         switchMap(({ id }) => {
-          console.log("fork");
+          this.isLoaded = false;
+          this.projectId = id;
           return forkJoin({
-            project: this.projectService.getProjectById(id),
-            sprints: this.sprintService.getAllSprints(id),
-            stories: this.storyService.getAllStories(id),
-            user: this.userService
-              .getProjectRole(id)
-              .pipe(catchError(() => null))
+            project: this.projectService.getProjectById(id).pipe(catchError(() => null)),
+            sprints: this.sprintService.getAllSprints(id).pipe(catchError(() => null)),
+            stories: this.storyService.getAllStories(id).pipe(catchError(() => null)),
+            user: this.isAdmin ? 'Project manager' : this.userService.getProjectRole(id).pipe(catchError(() => null))
           });
         })
       )
       .subscribe(({ project, sprints, stories, user }) => {
-        this.rootStore.projectStore.setActiveProject(project);
+        if (project) {
+          this.rootStore.projectStore.setActiveProject(project as Project);
+        }
 
-        this.rootStore.sprintStore.setAllSprints(sprints);
-        this.sprints = sprints;
+        if (sprints){
+          this.rootStore.sprintStore.setAllSprints(sprints as Sprint[]);
+          this.sprints = sprints as Sprint[];
+        }
 
-        this.rootStore.storyStore.setAllStories(stories);
-        this.productBacklog = this.stories;
-        this.stories = stories;
+        if (stories){
+          this.rootStore.storyStore.setAllStories(stories as Story[]);
+          this.productBacklog = stories as Story[];
+          this.stories = stories as Story[];
+        }
 
-        if (user) {
+        if (user && !this.isAdmin) {
           this.rootStore.userStore.setProjectRole((user as User).role);
           this.userRole = (user as User).role;
         }
@@ -95,7 +105,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   addSprint() {
-    this.sprintModalDialogRef = this.dialog.open(SprintModalComponent);
+    this.sprintModalDialogRef = this.dialog.open(SprintModalComponent, {data: {projectId: this.projectId}});
     this.sprintModalDialogRef.afterClosed().subscribe(newSprints => {
       if (newSprints) {
         this.sprints = newSprints;
@@ -104,19 +114,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   addStory() {
-    this.storyModalDialogRef = this.dialog.open(StoryModalComponent);
+
+    this.storyModalDialogRef = this.dialog.open(StoryModalComponent, {data: {projectId: this.projectId}});
     this.storyModalDialogRef.afterClosed().subscribe(newStories => {
       if (newStories) {
         this.stories = newStories;
         this.productBacklog = newStories;
       }
     });
-    /*
-    this.storyModalDialogRef.afterClosed().subscribe(newSprints =>
-      { if (newSprints)
-          this.sprints=newSprints
-      });
-    */
   }
 
   drop(event: CdkDragDrop<string[]>) {
