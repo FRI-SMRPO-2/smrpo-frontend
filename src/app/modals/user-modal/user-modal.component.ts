@@ -60,7 +60,6 @@ export class UserModalComponent implements OnInit {
         this.dialogRef.close(data);
       },
       err => {
-        console.log(err);
         if (err.error.username && err.error.username.length)
           this.username.setErrors({ duplicateName: err.error.username[0] });
         if (err.error.password2 && err.error.password2.length)

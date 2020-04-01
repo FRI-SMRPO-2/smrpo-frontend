@@ -26,6 +26,9 @@
       <mat-error *ngIf="search.hasError('noUsers')">
         Projekt mora vsebovati <strong>vsaj enega člana</strong>
       </mat-error>
+      <mat-error *ngIf="search.hasError('userError')">
+        {{ search.getError('userError') }}
+      </mat-error>
       <mat-autocomplete autoActiveFirstOption
        (optionSelected)="userSelected($event)" #auto="matAutocomplete">
         <mat-option *ngFor="let user of filteredUsers | async" [value]="user">

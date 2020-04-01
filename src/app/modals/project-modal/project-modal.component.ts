@@ -45,8 +45,9 @@ export class ProjectModalComponent implements OnInit {
       members: this.formBuilder.array([])
     });
 
-    this.search.setValidators(() => {
+    this.search.setErrors(() => {
       if (!this.selectedUsers.length) return { noUsers: true };
+      return null;
     });
 
     this.filteredUsers = this.search.valueChanges.pipe(
@@ -68,8 +69,9 @@ export class ProjectModalComponent implements OnInit {
       .subscribe(
         res => this.dialogRef.close(res),
         err => {
-          console.log(err);
-          this.name.setErrors({ duplicateName: err.error.message });
+          if (err.error.message === "Uporabnik ima lahko samo eno vlogo.")
+            this.search.setErrors({ userError: err.error.message });
+          else this.name.setErrors({ duplicateName: err.error.message });
         }
       );
   }
@@ -77,6 +79,7 @@ export class ProjectModalComponent implements OnInit {
   remove(i) {
     this.members.removeAt(i);
     this.selectedUsers = [...this.members.controls];
+    if (this.search.hasError("userError")) this.search.setErrors(null);
   }
 
   userSelected(event: MatAutocompleteSelectedEvent) {
