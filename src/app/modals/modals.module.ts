@@ -27,7 +27,7 @@ import { UserModalComponent } from './user-modal/user-modal.component';
     ProjectModalUsersTableComponent,
     SprintModalComponent,
     StoryModalComponent,
-    UserModalComponent
+    UserModalComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +43,7 @@ import { UserModalComponent } from './user-modal/user-modal.component';
     MatNativeDateModule,
     MatTabsModule,
     MatDatepickerModule,
-    MatSnackBarModule
-  ]
+    MatSnackBarModule,
+  ],
 })
 export class ModalsModule {}

@@ -1,8 +1,3 @@
-export type ProjectRoleType =
-  | "Project manager"
-  | "Methodology master"
-  | "Developer";
-
 export interface Project {
   id: number;
   name: string;
@@ -14,5 +9,5 @@ export interface Project {
 
 export interface ProjectRole {
   id: number;
-  title: ProjectRoleType;
+  title: string;
 }

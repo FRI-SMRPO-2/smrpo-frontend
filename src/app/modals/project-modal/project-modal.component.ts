@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
-import { debounceTime, filter, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { FormErrorStateMatcher } from '../../../utils/form-error-state-matcher';
 import { User } from '../../interfaces/user.interface';
@@ -13,7 +13,7 @@ import { UserService } from '../../services/user.service';
 @Component({
   selector: "app-project-modal",
   templateUrl: "./project-modal.component.html",
-  styleUrls: ["./project-modal.component.scss"]
+  styleUrls: ["./project-modal.component.scss"],
 })
 export class ProjectModalComponent implements OnInit {
   @ViewChild("userInput") userInput: ElementRef;
@@ -28,6 +28,8 @@ export class ProjectModalComponent implements OnInit {
 
   errorMatcher = new FormErrorStateMatcher();
 
+  errorMessage: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -36,42 +38,51 @@ export class ProjectModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.projectService.getProjectRoles().subscribe(data => {
+    this.projectService.getProjectRoles().subscribe((data) => {
       this.roles = data;
     });
 
-    this.form = this.formBuilder.group({
-      name: ["", Validators.required],
-      members: this.formBuilder.array([])
-    });
-
-    this.search.setErrors(() => {
-      if (!this.selectedUsers.length) return { noUsers: true };
-      return null;
-    });
+    this.form = this.formBuilder.group(
+      {
+        name: ["", Validators.required],
+        members: this.formBuilder.array([]),
+      },
+      {
+        validators: this.userValidator,
+      }
+    );
 
     this.filteredUsers = this.search.valueChanges.pipe(
-      filter(value => typeof value === "string"),
+      filter((value) => typeof value === "string"),
       debounceTime(500),
-      switchMap(value => (value ? this.userService.searchUser(value) : of([])))
+      switchMap((value) =>
+        value ? this.userService.searchUser(value) : of([])
+      ),
+      map((users) =>
+        users.filter(
+          (user) => !this.members.value.some((u) => u.user_id === user.id)
+        )
+      )
     );
   }
 
   save() {
-    if (this.form.invalid || this.search.invalid) {
+    console.log(this.form.invalid, this.form.errors);
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.search.markAsTouched();
       return;
     }
+    delete this.errorMessage;
 
     this.projectService
       .createProject(this.generateAddProjectRequest(this.form.value))
       .subscribe(
-        res => this.dialogRef.close(res),
-        err => {
-          if (err.error.message === "Uporabnik ima lahko samo eno vlogo.")
-            this.search.setErrors({ userError: err.error.message });
-          else this.name.setErrors({ duplicateName: err.error.message });
+        (res) => this.dialogRef.close(res),
+        (err) => {
+          if (err.error.message === "Projekt s tem imenom že obstaja")
+            this.name.setErrors({ duplicateName: err.error.message });
+          else this.errorMessage = err.error.message;
         }
       );
   }
@@ -79,20 +90,24 @@ export class ProjectModalComponent implements OnInit {
   remove(i) {
     this.members.removeAt(i);
     this.selectedUsers = [...this.members.controls];
-    if (this.search.hasError("userError")) this.search.setErrors(null);
   }
 
   userSelected(event: MatAutocompleteSelectedEvent) {
     const user: User = event.option.value;
+    this.search.patchValue("");
+
+    if (this.members.value.some((u) => u.user_id === user.id)) {
+      return;
+    }
+
     this.members.push(
       this.formBuilder.group({
         username: user.username,
         user_id: user.id,
-        role_id: this.roles.filter(r => r.title === "Developer")[0].id
+        role_id: this.roles.filter((r) => r.title === "Developer")[0].id,
       })
     );
     this.selectedUsers = [...this.members.controls];
-    this.search.patchValue("");
     this.userInput.nativeElement.blur();
   }
 
@@ -101,18 +116,22 @@ export class ProjectModalComponent implements OnInit {
       fg.addControl(
         "role",
         this.formBuilder.control(
-          this.roles.filter(r => r.id === fg.get("role_id").value)[0].title
+          this.roles.filter((r) => r.id === fg.get("role_id").value)[0].title
         )
       );
     });
 
     return {
       name: data.name,
-      user_roles: data.members.map(m => ({
+      user_roles: data.members.map((m) => ({
         user_id: m.user_id,
-        role_id: m.role_id
-      }))
+        role_id: m.role_id,
+      })),
     };
+  }
+
+  private userValidator(form: FormGroup) {
+    return form.get("members").value.length > 1 ? null : { noUsers: true };
   }
 
   get name() {

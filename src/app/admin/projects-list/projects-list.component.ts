@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { ProjectRoleType } from '../../interfaces/project.interface';
 import { ProjectModalComponent } from '../../modals/project-modal/project-modal.component';
 import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: "app-projects-list",
   templateUrl: "./projects-list.component.html",
-  styleUrls: ["./projects-list.component.scss"]
+  styleUrls: ["./projects-list.component.scss"],
 })
 export class ProjectsListComponent implements OnInit {
   columns = ["name", "leader", "metodologija", "members", "options"];
@@ -24,18 +23,18 @@ export class ProjectsListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.projectService.getAllProjects().subscribe(data => {
-      this.projects = data.map(p => this.mapUsersByRoles(p));
+    this.projectService.getAllProjects().subscribe((data) => {
+      this.projects = data.map((p) => this.mapUsersByRoles(p));
     });
   }
 
   private mapUsersByRoles(project) {
-    const mapByRole = (role: ProjectRoleType) =>
-      project.users.filter(u => u.role === role).map(u => u.username);
+    const mapByRole = (role) =>
+      project.users.filter((u) => u.role === role).map((u) => u.username);
 
     project.developers = mapByRole("Developer");
-    project.projectManager = mapByRole("Project manager");
-    project.methodologyMaster = mapByRole("Methodology master");
+    project.productOwner = mapByRole("Product Owner");
+    project.scrumMaster = mapByRole("Scrum Master");
 
     return project;
   }
@@ -44,7 +43,7 @@ export class ProjectsListComponent implements OnInit {
     this.dialog
       .open(ProjectModalComponent)
       .afterClosed()
-      .subscribe(res => {
+      .subscribe((res) => {
         if (!res) return;
 
         this.projects = [...this.projects, this.mapUsersByRoles(res)];

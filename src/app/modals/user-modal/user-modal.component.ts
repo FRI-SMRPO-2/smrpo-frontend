@@ -9,7 +9,7 @@ import { UserService } from '../../services/user.service';
 @Component({
   selector: "app-user-modal",
   templateUrl: "./user-modal.component.html",
-  styleUrls: ["./user-modal.component.scss"]
+  styleUrls: ["./user-modal.component.scss"],
 })
 export class UserModalComponent implements OnInit {
   form: FormGroup;
@@ -33,10 +33,10 @@ export class UserModalComponent implements OnInit {
         password2: ["", Validators.required],
         first_name: ["", Validators.required],
         last_name: ["", Validators.required],
-        is_superuser: false
+        is_superuser: false,
       },
       {
-        validators: this.passwordValidators
+        validators: this.passwordValidators,
       }
     );
   }
@@ -56,10 +56,10 @@ export class UserModalComponent implements OnInit {
     }
 
     this.userService.addUser(this.form.value).subscribe(
-      data => {
+      (data) => {
         this.dialogRef.close(data);
       },
-      err => {
+      (err) => {
         if (err.error.username && err.error.username.length)
           this.username.setErrors({ duplicateName: err.error.username[0] });
         if (err.error.password2 && err.error.password2.length)

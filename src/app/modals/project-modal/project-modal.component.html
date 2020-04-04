@@ -23,12 +23,6 @@
              [matAutocomplete]="auto"
              [errorStateMatcher]="errorMatcher"
              #userInput />
-      <mat-error *ngIf="search.hasError('noUsers')">
-        Projekt mora vsebovati <strong>vsaj enega člana</strong>
-      </mat-error>
-      <mat-error *ngIf="search.hasError('userError')">
-        {{ search.getError('userError') }}
-      </mat-error>
       <mat-autocomplete autoActiveFirstOption
        (optionSelected)="userSelected($event)" #auto="matAutocomplete">
         <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
@@ -41,10 +35,12 @@
     <app-project-modal-users-table [users]="selectedUsers" [roles]="roles" (onRemove)="remove($event)">
     </app-project-modal-users-table>
     
+    <mat-error class="error-text" [ngStyle]="{opacity: errorMessage ? 1 : 0}">{{errorMessage}}</mat-error>
 
-    <button mat-raised-button color="accent" class="save-btn" 
+    <button mat-raised-button color="accent" class="save-btn" [disabled]="form.invalid"
     type="button" (click)="save()">Shrani</button>
     
+
   </form>
 
 </div>
