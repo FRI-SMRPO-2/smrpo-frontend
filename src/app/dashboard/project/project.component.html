@@ -6,7 +6,7 @@
       <button
         mat-raised-button
         color="accent"
-        *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
+        *ngIf="userRole==='Scrum Master' || userRole==='Product Owner' || isAdmin"
         class="dialog-button"
         (click)="addStory()">Dodaj zgodbo</button>
 
@@ -26,7 +26,7 @@
       <span class="droplist-title">Sprint backlog</span>
       <button
         mat-raised-button
-        *ngIf="userRole==='Methodology master' || isAdmin"
+        *ngIf="userRole==='Scrum Master' || isAdmin"
         color="accent"
         class="dialog-button"
         (click)="addSprint()">
