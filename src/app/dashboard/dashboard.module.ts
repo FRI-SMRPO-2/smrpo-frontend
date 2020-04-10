@@ -1,19 +1,22 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { ModalsModule } from '../modals/modals.module';
 import { SharedModule } from '../shared/shared.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from './home/home.component';
+import { ProductBacklogComponent } from './project/product-backlog/product-backlog.component';
 import { ProjectComponent } from './project/project.component';
-import { TaskCardComponent } from './project/task-card/task-card.component';
-import { ModalsModule } from '../modals/modals.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { SprintBacklogComponent } from './project/sprint-backlog/sprint-backlog.component';
 import { SprintPanelComponent } from './project/sprint-panel/sprint-panel.component';
+import { TaskCardComponent } from './project/task-card/task-card.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { SprintPanelComponent } from './project/sprint-panel/sprint-panel.compon
     HomeComponent,
     DashboardComponent,
     TaskCardComponent,
-    SprintPanelComponent
+    SprintPanelComponent,
+    ProductBacklogComponent,
+    SprintBacklogComponent,
   ],
   imports: [
     CommonModule,
@@ -33,7 +38,8 @@ import { SprintPanelComponent } from './project/sprint-panel/sprint-panel.compon
     MatTooltipModule,
     SharedModule,
     ModalsModule,
-    MatExpansionModule
-  ]
+    MatExpansionModule,
+    MatCardModule,
+  ],
 })
 export class DashboardModule {}

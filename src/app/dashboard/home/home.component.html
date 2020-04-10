@@ -1,3 +1,9 @@
+<app-header></app-header>
 <div class="page-container">
-    <p class="big-text">Izberite projekt za prikaz podatkov</p>
+    <p class="title pink">Moji projekti</p>
+
+    <div class="list-container">
+        <mat-card *ngFor="let project of projects" class="small-card" (click)="openProject(project.id)">{{project.name}}</mat-card>
+    </div>
+
 </div>

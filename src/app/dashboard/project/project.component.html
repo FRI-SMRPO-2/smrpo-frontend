@@ -1,65 +1,13 @@
-<div *ngIf="isLoaded; else progressSpinner"class="page-container">
+<app-header [sidenav]="drawer" [title]="project.name"></app-header>
+<mat-drawer-container class="sidenav-container" autosize>
 
-  <div class="table-container">
-    <div>
-      <span class="droplist-title">Product backlog</span>
-      <button
-        mat-raised-button
-        color="accent"
-        *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
-        class="dialog-button"
-        (click)="addStory()">Dodaj zgodbo</button>
+  <mat-drawer #drawer class="sidenav" mode="side" opened>
 
-      <!-- TODO: zaenkrat ni povezave z naslednjimi droplisti -->
-      <div
-        cdkDropList
-        #productList="cdkDropList"
-        [cdkDropListData]="productBacklog"
-        class="dragdrop-list"
-        (cdkDropListDropped)="drop($event)">
-          <div *ngIf="productBacklog.length ==0" class = "no-items-message">V projektu trenutno ni zgodb.</div>
-          <app-task-card [task]="item" *ngFor="let item of productBacklog" cdkDrag></app-task-card>
-      </div>
+    <div class="sidenav-content">
+      <div class="sidenav-item" routerLink="product-backlog" routerLinkActive="active-item">Product backlog</div>
+      <div class="sidenav-item" routerLink="sprint-backlog" routerLinkActive="active-item">Sprint backlog</div>
     </div>
+  </mat-drawer>
+  <router-outlet></router-outlet>
 
-    <div>
-      <span class="droplist-title">Sprint backlog</span>
-      <button
-        mat-raised-button
-        *ngIf="userRole==='Methodology master' || isAdmin"
-        color="accent"
-        class="dialog-button"
-        (click)="addSprint()">
-      Dodaj sprint</button>
-      <!--
-        TODO: drag-droppanje zgodb v različne sprinte - dinamično spreminjanje [cdkDropListConnectedTo] (glede na seznam sprintov - vsak sprint bo svoj droplist)
-              ta funkcionalnost še ne implementiramo (šele kartica #13)
-
-        <div
-        *ngFor="let sprint of sprints"
-        cdkDropList
-        #sprintList="cdkDropList"
-        [cdkDropListData]="sprintBacklog"
-        [cdkDropListConnectedTo]="[productList]"
-        class="dragdrop-list"
-        (cdkDropListDropped)="drop($event)">
-          <app-task-card *ngFor="let item of sprintBacklog" [task]="item" cdkDrag></app-task-card>
-      </div>
-      -->
-
-      <!-- brez povezave z ostalimi droplisti -->
-      <div *ngIf="sprints.length ==0" class = "no-items-message">V projektu trenutno ni sprintov.</div>
-      <app-sprint-panel
-        *ngFor="let sprint of sprints"
-        [startDate] = "sprint.start_date"
-        [endDate] = "sprint.end_date"
-        [stories] = "stories"
-      ></app-sprint-panel>
-
-    </div>
-  </div>
-</div>
-
-<ng-template #progressSpinner>
-  <app-progress-spinner></app-progress-spinner>
-</ng-template>
+</mat-drawer-container>

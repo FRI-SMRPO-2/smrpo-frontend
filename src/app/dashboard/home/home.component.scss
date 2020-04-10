@@ -1,17 +1,27 @@
 @import "../../../variables";
 
 .page-container {
-  height: calc(100% - 50px);
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: calc(100% - 110px);
+  width: calc(100% - 150px);
+  padding: 30px 30px 30px 120px;
 }
 
-.big-text {
-  margin-top: 30px;
-  color: $lightgrey;
-  font-size: 16px;
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.small-card {
+  width: 190px;
   font-weight: 500;
-  opacity: 0.5;
+  margin-top: 20px;
+  margin-right: 10px;
+  display: inline-block;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(1.2);
+    z-index: 10;
+  }
 }

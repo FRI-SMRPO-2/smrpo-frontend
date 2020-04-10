@@ -14,7 +14,7 @@
   height: 90%;
 }
 
-.dialog-button{
+.dialog-button {
   float: right;
 }
 
@@ -23,7 +23,7 @@
   font-size: 18px;
 }
 
-.no-items-message{
+.no-items-message {
   margin-top: 15px;
 }
 
@@ -37,7 +37,6 @@
 }
 
 .sprint-list {
-
   padding: 10px;
   padding-top: 5px;
   margin: 0px;
@@ -51,11 +50,11 @@
   border-radius: 5px;
 }
 
-.sprint-expansion-panel-body{
+.sprint-expansion-panel-body {
   padding: 0px;
 }
 
-.sprint-expansion-panel-title{
+.sprint-expansion-panel-title {
   font-weight: 500;
 }
 
@@ -84,4 +83,45 @@
 
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.sidenav-container {
+  height: calc(100vh - 50px);
+
+  .sidenav {
+    background: $darkgrey;
+    color: white;
+    padding: 10px;
+  }
+
+  .sidenav-content {
+    padding-top: 10px;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .sidenav-title {
+      color: $pink;
+      padding-bottom: 15px;
+      border-bottom: 1px solid white;
+      margin-bottom: 15px;
+    }
+
+    .sidenav-item {
+      padding: 10px 0;
+      text-align: center;
+      opacity: 0.6;
+      outline: none;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &.active-item {
+        opacity: 1;
+        color: white;
+      }
+    }
+  }
 }

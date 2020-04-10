@@ -11,7 +11,7 @@ import { RootStore } from '../../store/root.store';
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"]
+  styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit {
   @Input() sidenav: MatSidenav;
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.activeProject$ = this.rootStore.projectStore.activeProject$;
     this.user$ = this.rootStore.userStore.user$;
-    this.isAdmin$ = this.user$.pipe(map(user => user.is_superuser));
+    this.isAdmin$ = this.user$.pipe(map((user) => user.is_superuser));
   }
 
   toggleNav() {
