@@ -5,7 +5,7 @@ import { User } from '../interfaces/user.interface';
 export class UserStore {
   private _authToken: string;
   private _user = new BehaviorSubject<User>(null);
-  private _userRole = new BehaviorSubject<string>(null);
+  private _userRoles = new BehaviorSubject<string[]>(null);
 
   get user$() {
     return this._user.asObservable();
@@ -15,8 +15,8 @@ export class UserStore {
     return this._user.value;
   }
 
-  get userRole$() {
-    return this._userRole.asObservable();
+  get userRoles$() {
+    return this._userRoles.asObservable();
   }
 
   get authToken() {
@@ -38,7 +38,7 @@ export class UserStore {
     this._user.next(user);
   }
 
-  setProjectRole(role: string) {
-    this._userRole.next(role);
+  setProjectRoles(roles: string[]) {
+    this._userRoles.next(roles);
   }
 }

@@ -36,7 +36,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   sprints: Sprint[];
   stories: Story[];
-  userRole: string;
+  userRoles: string[];
   isAdmin: boolean;
   projectId: number;
 
@@ -53,7 +53,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     private storyService: StoryService,
     private userService: UserService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.userRoles = [];
+  }
 
   ngOnInit() {
     this.rootStore.userStore.user$.subscribe((user) => this.isAdmin = user.is_superuser);
@@ -90,8 +92,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
         }
 
         if (user && !this.isAdmin) {
-          this.rootStore.userStore.setProjectRole((user as User).role);
-          this.userRole = (user as User).role;
+          this.rootStore.userStore.setProjectRoles((user as User).role);
+          this.userRoles = (user as User).role;
         }
 
         setTimeout(() => {
