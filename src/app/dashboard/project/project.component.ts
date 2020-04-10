@@ -22,7 +22,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   sprints: Sprint[];
   stories: Story[];
-  userRole: string;
+  userRoles: string[];
   isAdmin: boolean;
   projectId: number;
 
@@ -35,7 +35,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private rootStore: RootStore,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.userRoles = [];
+  }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {

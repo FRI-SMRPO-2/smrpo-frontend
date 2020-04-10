@@ -5,7 +5,7 @@ export interface User {
   lastName?: string;
   name?: string;
   email: string;
-  role?: string;
+  role?: string[];
   last_login?: Date;
   is_superuser?: boolean;
 }
