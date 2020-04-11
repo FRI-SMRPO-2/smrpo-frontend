@@ -19,7 +19,7 @@ export class ProductBacklogComponent implements OnInit {
   user: User;
   userRole;
 
-  project: Project;
+  project;
   stories;
   sprints: Sprint[];
 
@@ -53,9 +53,10 @@ export class ProductBacklogComponent implements OnInit {
   }
 
   addStory() {
+    console.log(this.project)
     this.dialog
       .open(StoryModalComponent, {
-        data: { projectId: this.project.id },
+        data: { projectId: this.project.project.id },
       })
       .afterClosed()
       .subscribe((newStories) => {

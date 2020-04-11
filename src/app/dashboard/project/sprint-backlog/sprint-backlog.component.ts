@@ -18,7 +18,7 @@ export class SprintBacklogComponent implements OnInit {
   user: User;
   userRole;
 
-  project: Project;
+  project;
   stories;
   sprints;
 
@@ -54,7 +54,7 @@ export class SprintBacklogComponent implements OnInit {
   addSprint() {
     this.dialog
       .open(SprintModalComponent, {
-        data: { projectId: this.project.id },
+        data: { projectId: this.project.project.id },
       })
       .afterClosed()
       .subscribe((newSprints) => {
