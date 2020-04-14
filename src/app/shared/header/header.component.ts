@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   @Input() showHome = false;
 
   navOpened = true;
+  isHome;
 
   activeProject$: Observable<Project>;
   user$: Observable<User>;
@@ -29,6 +30,9 @@ export class HeaderComponent implements OnInit {
     this.activeProject$ = this.rootStore.projectStore.activeProject$;
     this.user$ = this.rootStore.userStore.user$;
     this.isAdmin$ = this.user$.pipe(map((user) => user.is_superuser));
+
+    console.log(this.router.url);
+    this.isHome = this.router.url === "/home";
   }
 
   toggleNav() {

@@ -1,9 +1,24 @@
-// TODO - niso vsi fieldi
 export interface Story {
   id: number;
+  project_id: number;
   name: string;
   text: string;
+  business_value: number;
+  priority: Priority;
   tests: any[];
-  project_id: number;
+  created_by: string;
+  created: Date;
+  updated: Date;
+  tasks; //TODO:
 }
 
+export interface ProductBacklog {
+  assigned: Story[];
+  realized: Story[];
+  unassigned: Story[];
+}
+
+export interface Priority {
+  id: number;
+  name: string;
+}

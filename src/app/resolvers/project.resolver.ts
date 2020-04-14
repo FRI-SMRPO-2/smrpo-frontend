@@ -4,7 +4,7 @@ import { forkJoin, of } from 'rxjs';
 
 import { Project } from '../interfaces/project.interface';
 import { Sprint } from '../interfaces/sprint.interface';
-import { Story } from '../interfaces/story.interface';
+import { ProductBacklog } from '../interfaces/story.interface';
 import { User } from '../interfaces/user.interface';
 import { ProjectService } from '../services/project.service';
 import { SprintService } from '../services/sprint.service';
@@ -18,7 +18,7 @@ export class ProjectResolver
     Resolve<{
       project: Project;
       sprints: Sprint[];
-      stories: Story[];
+      stories: ProductBacklog;
       user: User;
     }> {
   constructor(

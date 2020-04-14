@@ -6,6 +6,7 @@
   margin-top: 10px;
   border-radius: 5px;
   width: 90%;
+  box-shadow: $material-shadow;
 }
 
 .priority-text {
@@ -13,13 +14,13 @@
   font-size: 12px;
 
   &.orange {
-    color: orange;
+    color: $orange;
   }
   &.green {
-    color: #22b922;
+    color: $green;
   }
   &.blue {
-    color: #455de4;
+    color: $blue;
   }
   &.grey {
     color: #464646;

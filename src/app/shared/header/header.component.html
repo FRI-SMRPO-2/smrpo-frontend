@@ -1,10 +1,13 @@
 <div class="header">
-  <span *ngIf="sidenav; else blank" class="material-icons menu-icon" (click)="toggleNav()">
-    {{navOpened ? 'menu_open' : 'menu'}}
-  </span>
-  <ng-template #blank>
-    <span></span>
-  </ng-template>
+  <div class="content">
+    <span *ngIf="sidenav; else blank" class="material-icons menu-icon" (click)="toggleNav()">
+      {{navOpened ? 'menu_open' : 'menu'}}
+    </span>
+    <ng-template #blank>
+      <span></span>
+    </ng-template>
+    <span *ngIf="!isHome" class="item" mat-button (click)="navToHome()">Projekti</span>
+  </div>
 
   <span class="header-title">{{(activeProject$ | async)?.name}}</span>
 

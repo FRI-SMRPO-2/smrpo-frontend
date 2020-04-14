@@ -9,22 +9,27 @@
     class="add-project-btn"
     (click)="addStory()">Dodaj zgodbo</button>
 
+  <div class="sorting-titles">
+    <div class="unrealized">Nerealizirane zgodbe</div>
+    <div class="realized">Realizirane zgodbe</div>
+  </div>
+  <div class="sorting-line"></div>
   <div class="data-container">
     <div class="data-section">
       <span class="section-title"> Nedodeljene zgodbe </span>
       <div class="data-column">
-        <app-task-card *ngFor="let item of stories" [task]="item" cdkDrag></app-task-card>
+        <app-task-card *ngFor="let item of stories.unassigned" [task]="item" cdkDrag></app-task-card>
       </div>
     </div>
     <div class="data-section">
       <span class="section-title"> Dodeljene zgodbe </span>
       <div class="data-column">
-
+        <app-task-card *ngFor="let item of stories.assigned" [task]="item" cdkDrag></app-task-card>
       </div></div>
     <div class="data-section">
-      <span class="section-title"> Realizirane zgodbe </span>
+      <span class="section-title">Realizirane zgodbe</span>
       <div class="data-column">
-
+        <app-task-card *ngFor="let item of stories.realized" [task]="item" cdkDrag></app-task-card>
       </div></div>
   </div>
 </div>

@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { Project } from '../../../interfaces/project.interface';
-import { Sprint } from '../../../interfaces/sprint.interface';
+import { ProductBacklog } from '../../../interfaces/story.interface';
 import { User } from '../../../interfaces/user.interface';
 import { StoryModalComponent } from '../../../modals/story-modal/story-modal.component';
 import { RootStore } from '../../../store/root.store';
@@ -21,7 +20,7 @@ export class ProductBacklogComponent implements OnInit {
 
   project;
   stories;
-  sprints: Sprint[];
+  sprints: ProductBacklog;
 
   productBacklog = [];
 
@@ -40,6 +39,7 @@ export class ProductBacklogComponent implements OnInit {
       this.project = data.project;
       this.stories = data.project.stories;
       this.sprints = data.project.sprints;
+      console.log(this.stories);
 
       if (data.user) {
         this.user = data.user;
@@ -53,7 +53,7 @@ export class ProductBacklogComponent implements OnInit {
   }
 
   addStory() {
-    console.log(this.project)
+    console.log(this.project);
     this.dialog
       .open(StoryModalComponent, {
         data: { projectId: this.project.project.id },
