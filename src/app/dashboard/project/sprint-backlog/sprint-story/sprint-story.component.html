@@ -1,0 +1,56 @@
+<mat-expansion-panel class="sprint-story">
+  <mat-expansion-panel-header>
+    <mat-panel-title class="sprint-story-priority" [ngClass]="{
+      'orange': story.priority.id === 1,
+      'blue': story.priority.id === 2,
+      'green': story.priority.id === 3,
+      'grey': story.priority.id === 4}">
+      {{story.priority.id | priority}}
+    </mat-panel-title>
+    <mat-panel-description class = "sprint-story-header">
+      <div class="sprint-story-description">
+        <div class="sprint-story-name">
+          {{story.name}}
+        </div>
+        <div class="sprint-story-complexity">
+          Časovna zahtevnost:
+        </div>
+      </div>
+      <div class = "sprint-story-edit">
+        <button mat-icon-button color="white" aria-label="Edit Story" (click)="editStory($event)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <mat-divider></mat-divider>
+
+  <div class = "tasks-container">
+    <div class="data-container">
+      <div class="data-section">
+        <span class="section-title"> Nedodeljene naloge </span>
+        <div class="data-column">
+          <!-- <app-task-card *ngFor="let item of tasks" [task]="item" cdkDrag></app-task-card>
+ -->        </div>
+      </div>
+      <div class="data-section">
+        <span class="section-title"> Dodeljene naloge </span>
+        <div class="data-column">
+        </div>
+      </div>
+      <div class="data-section">
+        <span class="section-title"> Aktivne naloge </span>
+        <div class="data-column">
+
+        </div>
+      </div>
+      <div class="data-section">
+        <span class="section-title"> Zaključene naloge </span>
+        <div class="data-column">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</mat-expansion-panel>

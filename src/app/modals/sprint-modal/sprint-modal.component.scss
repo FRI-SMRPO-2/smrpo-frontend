@@ -1,7 +1,22 @@
 @import "../../../variables";
 
 .modal-container {
-  width: 500px;
+  width: 700px;
+}
+
+.sprints-card{
+  padding: 0;
+  border-radius: 10px;
+}
+
+.sprint-list{
+  height: 300px;
+  width: 100%;
+
+  .sprint-list-viewport {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .title {
@@ -9,7 +24,7 @@
   margin-bottom: 10px;
   text-align: center;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .modal-form {
@@ -26,5 +41,20 @@
 }
 
 .save-btn {
-  margin-top: 30px;
+  margin-top: 10px;
 }
+
+.add-sprint-panel{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.add-sprint-header{
+  justify-content: space-between;
+}
+
+.add-sprint-title{
+  color: $pink;
+  font-weight: 500;
+}
+

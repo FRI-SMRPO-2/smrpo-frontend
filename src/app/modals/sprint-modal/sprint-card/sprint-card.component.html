@@ -1,0 +1,25 @@
+<!-- <div class="sprint-card">
+  <div class="sprint-card-date">
+
+    {{(startDate | sprintDate)}} - {{endDate | sprintDate}}
+  </div>
+  <div>
+    <button mat-icon-button color="primary" class="options-btn" (click)="editSprint()">
+        <span class="material-icons">edit</span>
+    </button>
+  </div>
+</div> -->
+
+<mat-card class="sprint-card">
+  <mat-card-header class="sprint-card-header">
+    <mat-card-title class="sprint-card-title">
+      {{startDate}} - {{endDate}}
+    </mat-card-title>
+    <div class="activeSprintTitle" *ngIf="active">
+      AKTIVNI SPRINT
+    </div>
+    <button mat-icon-button color="primary" class="options-btn" (click)="editSprint()">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-card-header>
+</mat-card>

@@ -32,12 +32,7 @@
 
       </mat-tab>
 
-      <mat-tab label="Naloge">
-        <p>Naloge</p>
-      </mat-tab>
-
       <mat-tab label="Sprejemni testi">
-
         <div formArrayName="tests" *ngFor="let test of testControls; let i=index">
           <div [formGroupName]=i>
             <mat-form-field appearance="standard" class="form-input">
@@ -47,13 +42,8 @@
                 <span class="material-icons">delete_forever</span>
               </button>
             </mat-form-field>
-
           </div>
         </div>
-      </mat-tab>
-
-      <mat-tab label="Komentarji">
-        <p>Komentarji</p>
       </mat-tab>
 
     </mat-tab-group>

@@ -1,42 +1,27 @@
 <div class="page-container">
 
-  <span class="title">Sprint backlog</span>
-  <button
-    mat-raised-button
-    color="accent"
-    *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
-    class="dialog-button"
-    class="add-project-btn"
-    (click)="addSprint()">Dodaj sprint</button>
+  <div class="header">
+    <span class="title">Sprint backlog</span>
+    <button
+      mat-raised-button
+      color="accent"
+      *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
+      class="dialog-button"
+      class="view-sprints-btn"
+      (click)="viewSprints()">
+      Pregled sprintov
+    </button>
+  </div>
+
 
   <div id="info-section">
-    Trenutni sprint: datum - datum ali prihajajoči sprint: datum - datum
+    <div *ngIf="activeSprint!=undefined; else noActiveSprint">Aktivni sprint: {{activeSprint.start_date}} - {{activeSprint.end_date}}</div>
+    <ng-template #noActiveSprint>Trenutno ni aktivnega sprinta.</ng-template>
   </div>
 
-  <div class="data-container">
-    <div class="data-section">
-      <span class="section-title"> Nedodeljene zgodbe </span>
-      <div class="data-column">
-        <app-task-card *ngFor="let item of stories" [task]="item" cdkDrag></app-task-card>
-      </div>
-    </div>
-    <div class="data-section">
-      <span class="section-title"> Dodeljene zgodbe </span>
-      <div class="data-column">
+ <app-sprint-story
+    *ngFor="let story of stories"
+    [story] = "story"
+  ></app-sprint-story>
 
-      </div>
-    </div>
-    <div class="data-section">
-      <span class="section-title"> Aktivne zgodbe </span>
-      <div class="data-column">
-
-      </div>
-    </div>
-    <div class="data-section">
-      <span class="section-title"> Zaključene zgodbe </span>
-      <div class="data-column">
-
-      </div>
-    </div>
-  </div>
 </div>

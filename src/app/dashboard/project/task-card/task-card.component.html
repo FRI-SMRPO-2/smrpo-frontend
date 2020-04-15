@@ -1,9 +1,17 @@
 <div class="task-card">
-  <div class="priority-text" [ngClass]="{
-    'orange': task.priority.id === 1,
-    'blue': task.priority.id === 2,
-    'green': task.priority.id === 3,
-    'grey': task.priority.id === 4}">
-    {{task.priority.id | priority}}</div>
-  <div class="task-title">{{task.name}}</div>
+    <div>
+      <div class="priority-text" [ngClass]="{
+        'orange': task.priority.id === 1,
+        'blue': task.priority.id === 2,
+        'green': task.priority.id === 3,
+        'grey': task.priority.id === 4}">
+        {{task.priority.id | priority}}</div>
+      <div class="task-title">{{task.name}}</div>
+      <div class="task-complexity">Časovna zahtevnost: {{complexity || "/"}}</div>
+    </div>
+    <div>
+    <button mat-icon-button color="primary" class="options-btn" (click)="editButtonClick.emit()">
+        <span class="material-icons">edit</span>
+      </button>
+    </div>
 </div>

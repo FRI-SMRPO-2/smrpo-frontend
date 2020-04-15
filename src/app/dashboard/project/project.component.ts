@@ -34,7 +34,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private rootStore: RootStore,
-    private dialog: MatDialog
   ) {
     this.userRoles = [];
   }

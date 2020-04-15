@@ -51,19 +51,31 @@ export class StoryModalComponent implements OnInit {
 
     this.addingStory= false;
 
+    console.log(this.data.tests)
+
     this.form = this.formBuilder.group({
-      storyName: [''],
-      storyDescription: [''],
-      businessValue: ['', Validators.min(0)],
-      priority: [''],
-      tests: this.formBuilder.array([this.createTest()])
+      storyName: [this.data.title ?? ''],
+      storyDescription: [this.data.description ?? ''],
+      businessValue: [this.data.businessValue ?? '', Validators.min(0)],
+      priority: [this.data.priorityId ?? ''],
+      tests: this.formBuilder.array(this.data.tests.length == 0 ? [this.createTest()] : this.createTests(this.data.tests))
     });
   }
 
-  createTest(){
+  createTest(testDescription = ''){
     return this.formBuilder.group({
-      testDescription: ''
+      testDescription
     })
+  }
+
+  createTests(testArray){
+    let tests = []
+    for (let testDescription of testArray){
+      tests.push(this.createTest(testDescription.text))
+    }
+    tests.push(this.createTest())
+
+    return tests
   }
 
   addTest() {

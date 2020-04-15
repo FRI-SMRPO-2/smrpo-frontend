@@ -1,13 +1,16 @@
 <div class="page-container">
 
-  <span class="title">Product backlog</span>
-  <button
-    mat-raised-button
-    color="accent"
-    *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
-    class="dialog-button"
-    class="add-project-btn"
-    (click)="addStory()">Dodaj zgodbo</button>
+  <div class="header">
+    <span class="title">Product backlog</span>
+    <button
+      mat-raised-button
+      color="accent"
+      *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
+      class="dialog-button"
+      class="add-project-btn"
+      (click)="addStory()">Dodaj zgodbo
+    </button>
+  </div>
 
   <div class="sorting-titles">
     <div class="unrealized">Nerealizirane zgodbe</div>
@@ -18,18 +21,33 @@
     <div class="data-section">
       <span class="section-title"> Nedodeljene zgodbe </span>
       <div class="data-column">
-        <app-task-card *ngFor="let item of stories.unassigned" [task]="item" cdkDrag></app-task-card>
+        <app-task-card
+          *ngFor="let item of stories.unassigned"
+          [task]="item"
+          (editButtonClick)="editStory(item.name, item.text, item.tests, item.business_value, item.priority.id)"
+          cdkDrag>
+        </app-task-card>
       </div>
     </div>
     <div class="data-section">
       <span class="section-title"> Dodeljene zgodbe </span>
       <div class="data-column">
-        <app-task-card *ngFor="let item of stories.assigned" [task]="item" cdkDrag></app-task-card>
+        <app-task-card
+          *ngFor="let item of stories.assigned"
+          [task]="item"
+          (editButtonClick)="editStory(item.name, item.text, item.tests, item.business_value, item.priority.id)"
+          cdkDrag>
+        </app-task-card>
       </div></div>
     <div class="data-section">
       <span class="section-title">Realizirane zgodbe</span>
       <div class="data-column">
-        <app-task-card *ngFor="let item of stories.realized" [task]="item" cdkDrag></app-task-card>
+        <app-task-card
+          *ngFor="let item of stories.realized"
+          [task]="item"
+          (editButtonClick)="editStory(item.name, item.text, item.tests, item.business_value, item.priority.id)"
+          cdkDrag>
+        </app-task-card>
       </div></div>
   </div>
 </div>
