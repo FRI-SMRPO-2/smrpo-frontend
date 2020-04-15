@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-task-card',
@@ -7,8 +7,16 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TaskCardComponent implements OnInit {
   @Input() task;
+  @Input() complexity;
+  @Output() editButtonClick: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
+
 }
+
+
+//TODO: to komponento je potrebno renamat oz meli bomo story card,
+//      task card bo za naloge

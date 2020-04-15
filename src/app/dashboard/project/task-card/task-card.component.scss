@@ -6,6 +6,11 @@
   margin-top: 10px;
   border-radius: 5px;
   width: 90%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .priority-text {
@@ -28,4 +33,8 @@
 
 .task-title {
   font-weight: 500;
+}
+
+.task-complexity{
+  margin-top: 10px;
 }

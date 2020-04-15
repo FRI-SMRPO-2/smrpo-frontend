@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { ModalsModule } from '../modals/modals.module';
 import { SharedModule } from '../shared/shared.module';
@@ -17,6 +18,8 @@ import { ProjectComponent } from './project/project.component';
 import { SprintBacklogComponent } from './project/sprint-backlog/sprint-backlog.component';
 import { SprintPanelComponent } from './project/sprint-panel/sprint-panel.component';
 import { TaskCardComponent } from './project/task-card/task-card.component';
+import { SprintStoryComponent } from './project/sprint-backlog/sprint-story/sprint-story.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { TaskCardComponent } from './project/task-card/task-card.component';
     SprintPanelComponent,
     ProductBacklogComponent,
     SprintBacklogComponent,
+    SprintStoryComponent,
   ],
   imports: [
     CommonModule,
@@ -40,6 +44,8 @@ import { TaskCardComponent } from './project/task-card/task-card.component';
     ModalsModule,
     MatExpansionModule,
     MatCardModule,
+    MatDividerModule,
+    MatIconModule
   ],
 })
 export class DashboardModule {}

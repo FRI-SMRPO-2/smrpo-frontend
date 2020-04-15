@@ -53,10 +53,30 @@ export class ProductBacklogComponent implements OnInit {
   }
 
   addStory() {
-    console.log(this.project)
     this.dialog
       .open(StoryModalComponent, {
         data: { projectId: this.project.project.id },
+      })
+      .afterClosed()
+      .subscribe((newStories) => {
+        if (newStories) {
+          this.stories = newStories;
+          this.productBacklog = newStories;
+        }
+      });
+  }
+
+  editStory(title: string, description: string, tests: string[], businessValue: number, priority: number) {
+    this.dialog
+      .open(StoryModalComponent, {
+        data: {
+          projectId: this.project.project.id,
+          title,
+          description,
+          tests,
+          businessValue,
+          priority
+        },
       })
       .afterClosed()
       .subscribe((newStories) => {

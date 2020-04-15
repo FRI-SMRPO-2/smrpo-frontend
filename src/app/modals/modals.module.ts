@@ -20,6 +20,11 @@ import { ProjectModalComponent } from './project-modal/project-modal.component';
 import { SprintModalComponent } from './sprint-modal/sprint-modal.component';
 import { StoryModalComponent } from './story-modal/story-modal.component';
 import { UserModalComponent } from './user-modal/user-modal.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { SprintCardComponent } from './sprint-modal/sprint-card/sprint-card.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -28,6 +33,7 @@ import { UserModalComponent } from './user-modal/user-modal.component';
     SprintModalComponent,
     StoryModalComponent,
     UserModalComponent,
+    SprintCardComponent
   ],
   imports: [
     CommonModule,
@@ -44,6 +50,10 @@ import { UserModalComponent } from './user-modal/user-modal.component';
     MatTabsModule,
     MatDatepickerModule,
     MatSnackBarModule,
+    ScrollingModule,
+    MatCardModule,
+    MatIconModule,
+    MatExpansionModule
   ],
 })
 export class ModalsModule {}

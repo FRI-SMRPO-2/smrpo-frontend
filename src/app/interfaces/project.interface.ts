@@ -3,6 +3,7 @@ export interface Project {
   name: string;
   documentation: string;
   users;
+  created_by: string;
   created: Date;
   updated: Date;
 }

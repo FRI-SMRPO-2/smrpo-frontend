@@ -11,6 +11,7 @@ import { SprintService } from '../services/sprint.service';
 import { StoryService } from '../services/story.service';
 import { UserService } from '../services/user.service';
 import { RootStore } from '../store/root.store';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ProjectResolver
@@ -18,6 +19,7 @@ export class ProjectResolver
     Resolve<{
       project: Project;
       sprints: Sprint[];
+      activeSprint: Sprint;
       stories: Story[];
       user: User;
     }> {
@@ -33,6 +35,7 @@ export class ProjectResolver
     return forkJoin({
       project: this.projectService.getProjectById(route.params.id),
       sprints: this.sprintService.getAllSprints(route.params.id),
+      activeSprint: this.sprintService.getActiveSprint(route.params.id),
       stories: this.storyService.getAllStories(route.params.id),
       user: this.rootStore.userStore.user.is_superuser
         ? of(null)

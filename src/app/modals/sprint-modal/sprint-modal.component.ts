@@ -1,4 +1,4 @@
-import { Component, OnInit,  } from '@angular/core';
+import { Component, OnInit, Input,  } from '@angular/core';
 import { FormBuilder,  FormGroup,  Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { SprintService } from 'src/app/services/sprint.service';
@@ -7,6 +7,7 @@ import { RootStore } from 'src/app/store/root.store';
 import { Observable } from 'rxjs';
 import { Inject } from '@angular/core';
 import { Project } from 'src/app/interfaces/project.interface';
+import { Sprint } from 'src/app/interfaces/sprint.interface';
 
 
 
@@ -19,8 +20,10 @@ export class SprintModalComponent implements OnInit {
   form: FormGroup;
   startDateMin: Date;
   errorMessage: string;
-  activeProject$: Observable<Project>;
   addingSprint: boolean;
+  activeSprintId: number;
+  sprintList: Sprint[];
+  disableAnimation = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,17 +33,23 @@ export class SprintModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit() {
-    this.activeProject$ = this.rootStore.projectStore.activeProject$;
 
     this.startDateMin = new Date();
 
     this.addingSprint = false;
+
+    this.sprintList = this.data.sprints;
+    this.activeSprintId = this.data.activeSprintId;
 
     this.form = this.formBuilder.group({
       startDate: [''],
       endDate: [''],
       expectedSpeed : ['', Validators.min(0)]
     });
+  }
+
+  ngAfterViewInit() : void{
+    setTimeout(()=>this.disableAnimation=false);
   }
 
   save() {
@@ -56,7 +65,9 @@ export class SprintModalComponent implements OnInit {
       () => {
         this.sprintService.getAllSprints(this.data.projectId).subscribe((sprints) => {
           this.rootStore.sprintStore.setAllSprints(sprints);
-          this.sprintModalDialogRef.close(sprints);
+          this.sprintList = sprints;
+          this.addingSprint = false;
+          //this.sprintModalDialogRef.close(sprints);
         });
       },
       (err) => {
