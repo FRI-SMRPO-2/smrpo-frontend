@@ -40,7 +40,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     DragDropModule,
     MatTooltipModule,
-    SharedModule,
     ModalsModule,
     MatExpansionModule,
     MatCardModule,

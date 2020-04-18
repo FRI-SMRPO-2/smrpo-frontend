@@ -5,7 +5,7 @@
     <button
       mat-raised-button
       color="accent"
-      *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
+      *ngIf="userRoles.includes('Scrum Master') || userRoles.includes('Product Owner') || isAdmin"
       class="dialog-button"
       class="add-project-btn"
       (click)="addStory()">Dodaj zgodbo
@@ -22,7 +22,7 @@
       <span class="section-title"> Nedodeljene zgodbe </span>
       <div class="data-column">
         <app-task-card
-          *ngFor="let item of stories.unassigned"
+          *ngFor="let item of productBacklog.unassigned"
           [task]="item"
           (editButtonClick)="editStory(item.name, item.text, item.tests, item.business_value, item.priority.id)"
           cdkDrag>
@@ -33,7 +33,7 @@
       <span class="section-title"> Dodeljene zgodbe </span>
       <div class="data-column">
         <app-task-card
-          *ngFor="let item of stories.assigned"
+          *ngFor="let item of productBacklog.assigned"
           [task]="item"
           (editButtonClick)="editStory(item.name, item.text, item.tests, item.business_value, item.priority.id)"
           cdkDrag>
@@ -43,7 +43,7 @@
       <span class="section-title">Realizirane zgodbe</span>
       <div class="data-column">
         <app-task-card
-          *ngFor="let item of stories.realized"
+          *ngFor="let item of productBacklog.realized"
           [task]="item"
           (editButtonClick)="editStory(item.name, item.text, item.tests, item.business_value, item.priority.id)"
           cdkDrag>

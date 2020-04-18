@@ -7,6 +7,7 @@ import { ProductBacklog} from '../../../interfaces/story.interface';
 import { User } from '../../../interfaces/user.interface';
 import { StoryModalComponent } from '../../../modals/story-modal/story-modal.component';
 import { RootStore } from '../../../store/root.store';
+import { Project } from 'src/app/interfaces/project.interface';
 
 @Component({
   selector: "app-product-backlog",
@@ -16,13 +17,11 @@ import { RootStore } from '../../../store/root.store';
 export class ProductBacklogComponent implements OnInit {
   isAdmin: boolean;
   user: User;
-  userRole;
+  userRoles: string[];
 
-  project;
-  stories;
-  sprints: ProductBacklog;
+  project: Project;
 
-  productBacklog = [];
+  productBacklog: ProductBacklog;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,35 +34,32 @@ export class ProductBacklogComponent implements OnInit {
       this.isAdmin = user.is_superuser;
     });
 
-    this.route.parent.data.subscribe((data) => {
-      this.project = data.project;
-      this.stories = data.project.stories;
-      this.sprints = data.project.sprints;
-
-      if (data.user) {
-        this.user = data.user;
-        this.userRole = data.user.role;
-      }
-
-      if (this.stories) {
-        this.productBacklog = data.stories;
-      }
+    this.rootStore.projectStore.activeProject$.subscribe((project) => {
+      this.project = project;
     });
+
+    this.rootStore.storyStore.allStories$.subscribe((stories) => {
+      this.productBacklog = stories;
+    });
+
+    this.rootStore.userStore.userRoles$.subscribe((userRoles)=>{
+      this.userRoles = userRoles ?? [];
+    })
   }
 
   addStory() {
     this.dialog
       .open(StoryModalComponent, {
         data: {
-          projectId: this.project.project.id,
+          projectId: this.project.id,
           tests: []
         },
       })
       .afterClosed()
       .subscribe((newStories) => {
         if (newStories) {
-          this.stories = newStories;
           this.productBacklog = newStories;
+          this.rootStore.storyStore.setAllStories(newStories);
         }
       });
   }

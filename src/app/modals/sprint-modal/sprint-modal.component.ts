@@ -23,6 +23,7 @@ export class SprintModalComponent implements OnInit {
   addingSprint: boolean;
   activeSprintId: number;
   sprintList: Sprint[];
+  userRoles: string[];
   disableAnimation = true;
 
   constructor(
@@ -40,12 +41,14 @@ export class SprintModalComponent implements OnInit {
 
     this.sprintList = this.data.sprints;
     this.activeSprintId = this.data.activeSprintId;
+    this.userRoles = this.data.userRoles;
 
     this.form = this.formBuilder.group({
       startDate: [''],
       endDate: [''],
       expectedSpeed : ['', Validators.min(0)]
     });
+
   }
 
   ngAfterViewInit() : void{
@@ -66,6 +69,16 @@ export class SprintModalComponent implements OnInit {
         this.sprintService.getAllSprints(this.data.projectId).subscribe((sprints) => {
           this.rootStore.sprintStore.setAllSprints(sprints);
           this.sprintList = sprints;
+
+          this.sprintService.getActiveSprint(this.data.projectId).subscribe((activeSprint) => {
+
+            if (activeSprint){
+              this.rootStore.sprintStore.setActiveSprint(activeSprint);
+              this.rootStore.storyStore.setActiveSprintStories(activeSprint.stories);
+              this.activeSprintId = activeSprint.id;
+            }
+          }),
+          (err) => {}
           this.addingSprint = false;
           //this.sprintModalDialogRef.close(sprints);
         });

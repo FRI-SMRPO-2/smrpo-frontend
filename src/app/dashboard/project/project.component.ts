@@ -1,10 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Sprint } from 'src/app/interfaces/sprint.interface';
-import { Story } from 'src/app/interfaces/story.interface';
-import { SprintModalComponent } from 'src/app/modals/sprint-modal/sprint-modal.component';
-import { StoryModalComponent } from 'src/app/modals/story-modal/story-modal.component';
+import { Story, ProductBacklog } from 'src/app/interfaces/story.interface';
 
 import { Project } from '../../interfaces/project.interface';
 import { RootStore } from '../../store/root.store';
@@ -21,15 +18,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
   productBacklog: Story[];
 
   sprints: Sprint[];
-  stories: Story[];
+  activeSprint: Sprint;
+  stories: ProductBacklog;
   userRoles: string[];
   isAdmin: boolean;
   projectId: number;
 
   sprintBacklog = [{ title: "Zgodba #4", priority: "musthave" }];
-
-  sprintModalDialogRef: MatDialogRef<SprintModalComponent>;
-  storyModalDialogRef: MatDialogRef<StoryModalComponent>;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +37,22 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.route.data.subscribe((data) => {
       this.project = data.project.project;
       this.rootStore.projectStore.setActiveProject(this.project);
+
+      this.stories = data.project.stories;
+      this.rootStore.storyStore.setAllStories(this.stories);
+
+      this.sprints = data.project.sprints;
+      this.rootStore.sprintStore.setAllSprints(this.sprints);
+
+      this.activeSprint = data.project.activeSprint;
+      this.rootStore.sprintStore.setActiveSprint(this.activeSprint);
+
+      if (this.activeSprint){
+        this.rootStore.storyStore.setActiveSprintStories(data.project.activeSprint.stories);
+      }
+
+      this.userRoles = data.project.user ? data.project.user.role : [];
+      this.rootStore.userStore.setProjectRoles(this.userRoles);
     });
 
     this.rootStore.userStore.user$.subscribe(

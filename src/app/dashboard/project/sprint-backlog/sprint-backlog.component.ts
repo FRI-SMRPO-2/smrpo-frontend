@@ -18,14 +18,12 @@ import { Sprint } from 'src/app/interfaces/sprint.interface';
 export class SprintBacklogComponent implements OnInit {
   isAdmin: boolean;
   user: User;
-  userRole;
+  userRoles: string[];
 
   project: Project;
   stories: Story[];
   sprints: Sprint[];
   activeSprint: Sprint;
-
-  productBacklog = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -38,33 +36,25 @@ export class SprintBacklogComponent implements OnInit {
       this.isAdmin = user.is_superuser;
     });
 
-    this.route.parent.data.subscribe((data) => {
-      this.project = data.project.project;
-      this.sprints = data.project.sprints;
-      this.activeSprint = data.project.activeSprint;
-
-      if (data.user) {
-        this.user = data.user;
-        this.userRole = data.user.role;
-      }
-
-      if (this.activeSprint) {
-        this.stories = this.activeSprint.stories;
-      }
+    this.rootStore.projectStore.activeProject$.subscribe((project) => {
+      this.project = project;
     });
-  }
 
-  addSprint() {
-    this.dialog
-      .open(SprintModalComponent, {
-        data: { projectId: this.project.id },
-      })
-      .afterClosed()
-      .subscribe((newSprints) => {
-        if (newSprints) {
-          this.sprints = newSprints;
-        }
-      });
+    this.rootStore.storyStore.activeSprintStories$.subscribe((stories) => {
+      this.stories = stories;
+    });
+
+    this.rootStore.sprintStore.allSprints$.subscribe((sprints) => {
+      this.sprints = sprints;
+    })
+
+    this.rootStore.sprintStore.activeSprint$.subscribe((activeSprint) => {
+      this.activeSprint = activeSprint;
+    })
+
+    this.rootStore.userStore.userRoles$.subscribe((userRoles)=>{
+      this.userRoles = userRoles ?? [];
+    })
   }
 
   viewSprints() {
@@ -73,18 +63,10 @@ export class SprintBacklogComponent implements OnInit {
         data: {
           projectId: this.project.id,
           sprints: this.sprints,
-          activeSprintId: this.activeSprint === undefined ? 0 : this.activeSprint.id
+          activeSprintId: this.activeSprint==null ? 0 : this.activeSprint.id,
+          userRoles: this.isAdmin ? ['Admin'] : this.userRoles
         },
       });
-      // TODO: fix subscribe - trenutno dialog ne vrača nič nazaj
-      // TODO: POMEMBNO - trenutno se novi sprinti ne shranijo - vedno dobimo iste vrednosti iz this.route.parent.data
-      //.afterClosed()
-      /* .subscribe((newStories) => {
-        if (newStories) {
-          this.stories = newStories;
-          this.productBacklog = newStories;
-        }
-      }); */
   }
 
   drop(event: CdkDragDrop<string[]>) {

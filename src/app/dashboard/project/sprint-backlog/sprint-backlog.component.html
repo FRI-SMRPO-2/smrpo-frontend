@@ -5,7 +5,6 @@
     <button
       mat-raised-button
       color="accent"
-      *ngIf="userRole==='Methodology master' || userRole==='Project manager' || isAdmin"
       class="dialog-button"
       class="view-sprints-btn"
       (click)="viewSprints()">
@@ -15,13 +14,18 @@
 
 
   <div id="info-section">
-    <div *ngIf="activeSprint!=undefined; else noActiveSprint">Aktivni sprint: {{activeSprint.start_date}} - {{activeSprint.end_date}}</div>
+    <div *ngIf="activeSprint!=null; else noActiveSprint">Aktivni sprint: {{activeSprint.start_date | sprintDate}} - {{activeSprint.end_date | sprintDate}}</div>
     <ng-template #noActiveSprint>Trenutno ni aktivnega sprinta.</ng-template>
   </div>
 
- <app-sprint-story
+  <div>
+    <div *ngIf="activeSprint!=null && stories.length === 0">
+      V aktivnem sprintu trenutno ni zgodb.
+    </div>
+    <app-sprint-story
     *ngFor="let story of stories"
     [story] = "story"
   ></app-sprint-story>
+  </div>
 
 </div>

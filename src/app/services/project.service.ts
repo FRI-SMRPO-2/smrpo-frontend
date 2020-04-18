@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Project, ProjectRole } from '../interfaces/project.interface';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 @Injectable({
   providedIn: "root"

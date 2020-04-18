@@ -25,6 +25,8 @@ import { SprintCardComponent } from './sprint-modal/sprint-card/sprint-card.comp
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SharedModule } from '../shared/shared.module';
+import { SprintDatePipe } from '../shared/sprintDate.pipe';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ScrollingModule,
     MatCardModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    SharedModule,
   ],
 })
 export class ModalsModule {}

@@ -51,14 +51,13 @@ export class StoryModalComponent implements OnInit {
 
     this.addingStory= false;
 
-    console.log(this.data.tests)
 
     this.form = this.formBuilder.group({
       storyName: [this.data.title ?? ''],
       storyDescription: [this.data.description ?? ''],
       businessValue: [this.data.businessValue ?? '', Validators.min(0)],
       priority: [this.data.priorityId ?? ''],
-      tests: this.formBuilder.array(this.data.tests.length == 0 ? [this.createTest()] : this.createTests(this.data.tests))
+      tests: this.formBuilder.array(this.data.tests.length === 0 ? [this.createTest()] : this.createTests(this.data.tests))
     });
   }
 
@@ -116,13 +115,12 @@ export class StoryModalComponent implements OnInit {
     this.storyService.addStory(this.data.projectId, data).subscribe(
       () => {
         this.storyService.getAllStories(this.data.projectId).subscribe((stories) => {
-          this.rootStore.storyStore.setAllStories(stories)
           this.storyModalDialogRef.close(stories);
         })
       },
       (err) => {
         this.addingStory = false;
-        this.errorMessage = err.error.__all__[0]
+        this.errorMessage = err.error.__all__ === undefined ? 'Something went wrong, try again later' : err.error.__all__[0];
       }
     )
   }
