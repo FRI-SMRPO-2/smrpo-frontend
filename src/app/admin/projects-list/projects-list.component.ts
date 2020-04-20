@@ -29,12 +29,9 @@ export class ProjectsListComponent implements OnInit {
   }
 
   private mapUsersByRoles(project) {
-    const mapByRole = (role) =>
-      project.users.filter((u) => u.role === role).map((u) => u.username);
-
-    project.developers = mapByRole("Developer");
-    project.productOwner = mapByRole("Product Owner");
-    project.scrumMaster = mapByRole("Scrum Master");
+    project.devs = project.developers.map((d) => d.username);
+    project.productOwner = project.product_owner.username;
+    project.scrumMaster = project.scrum_master.username;
 
     return project;
   }

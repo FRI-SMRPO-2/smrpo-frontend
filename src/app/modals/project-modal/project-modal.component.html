@@ -15,19 +15,58 @@
       </mat-error>
     </mat-form-field>
 
+    <mat-form-field appearance="standard" class="form-input">
+      <mat-label>Project owner</mat-label>
+      <input type="text"
+             matInput
+             [formControl]="product_owner"
+             [matAutocomplete]="autoPO"
+             [errorStateMatcher]="errorMatcher"
+             #userInput />
+      <mat-autocomplete autoActiveFirstOption
+       #autoPO="matAutocomplete" [displayWith]="mapValue">
+        <mat-option *ngFor="let user of filteredUsersPO | async" [value]="user">
+          {{user.username}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="product_owner.hasError('required')">
+        Polje Project owner je <strong>obvezno</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="form-input">
+      <mat-label>Scrum master</mat-label>
+      <input type="text"
+             matInput
+             [formControl]="scrum_master"
+             [matAutocomplete]="autoSM"
+             [errorStateMatcher]="errorMatcher"
+             #userInput />
+      <mat-autocomplete autoActiveFirstOption
+        #autoSM="matAutocomplete" [displayWith]="mapValue">
+        <mat-option *ngFor="let user of filteredUsersSM | async" [value]="user">
+          {{user.username}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="product_owner.hasError('required')">
+        Polje Scrum master je <strong>obvezno</strong>
+      </mat-error>
+    </mat-form-field>
+
     <mat-form-field class="form-input" style="margin-bottom: 10px;">
+      <mat-label>Član razvojne skupine</mat-label>
       <input type="text"
              placeholder="Dodaj člana"
              matInput
              [formControl]="search"
-             [matAutocomplete]="auto"
+             [matAutocomplete]="autoDEV"
              [errorStateMatcher]="errorMatcher"
              #userInput />
       <mat-autocomplete autoActiveFirstOption
-       (optionSelected)="userSelected($event)" #auto="matAutocomplete">
-       <!--  <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+       (optionSelected)="userSelected($event)" #autoDEV="matAutocomplete" [displayWith]="mapValue">
+        <mat-option *ngFor="let user of filteredUsersDev | async" [value]="user">
           {{user.username}}
-        </mat-option> -->
+        </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 

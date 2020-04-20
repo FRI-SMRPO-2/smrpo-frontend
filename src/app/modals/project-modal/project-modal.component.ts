@@ -24,7 +24,9 @@ export class ProjectModalComponent implements OnInit {
   search = new FormControl();
 
   selectedUsers: AbstractControl[] = [];
-  filteredUsers: Observable<User[]>;
+  filteredUsersPO: Observable<User[]>;
+  filteredUsersSM: Observable<User[]>;
+  filteredUsersDev: Observable<User[]>;
 
   errorMatcher = new FormErrorStateMatcher();
 
@@ -38,35 +40,51 @@ export class ProjectModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.projectService.getProjectRoles().subscribe((data) => {
-      this.roles = data;
-    });
-
     this.form = this.formBuilder.group(
       {
         name: ["", Validators.required],
-        members: this.formBuilder.array([]),
+        product_owner: ["", Validators.required],
+        scrum_master: ["", Validators.required],
+        developers: this.formBuilder.array([]),
       },
       {
         validators: this.userValidator,
       }
     );
 
-    this.filteredUsers = this.search.valueChanges.pipe(
+    this.filteredUsersPO = this.searchValueChanges(this.product_owner);
+    this.filteredUsersSM = this.searchValueChanges(this.scrum_master);
+    this.filteredUsersDev = this.search.valueChanges.pipe(
       filter((value) => typeof value === "string"),
       debounceTime(500),
       switchMap((value) =>
         value ? this.userService.searchUser(value) : of([])
       ),
-      map((users) =>
-        users.filter(
-          (user) => !this.members.value.some((u) => u.user_id === user.id)
-        )
+      map((users) => {
+        console.log(users);
+        return users.filter(
+          (user) => !this.developers.value.some((u) => u.user_id === user.id)
+        );
+      })
+    );
+  }
+
+  searchValueChanges(control: AbstractControl) {
+    return control.valueChanges.pipe(
+      filter((value) => typeof value === "string"),
+      debounceTime(500),
+      switchMap((value) =>
+        value ? this.userService.searchUser(value) : of([])
       )
     );
   }
 
+  mapValue(value) {
+    return value ? value.username : "";
+  }
+
   save() {
+    console.log(this.form.value);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.search.markAsTouched();
@@ -74,69 +92,52 @@ export class ProjectModalComponent implements OnInit {
     }
     delete this.errorMessage;
 
-    this.projectService
-      .createProject(this.generateAddProjectRequest(this.form.value))
-      .subscribe(
-        (res) => this.dialogRef.close(res),
-        (err) => {
-          if (err.error.message === "Projekt s tem imenom že obstaja")
-            this.name.setErrors({ duplicateName: err.error.message });
-          else this.errorMessage = err.error.message;
-        }
-      );
+    const request = {
+      name: this.name.value,
+      product_owner_id: this.product_owner.value.id,
+      scrum_master_id: this.scrum_master.value.id,
+      developer_ids: this.developers.value.map((d) => d.id),
+    };
+    console.log(request);
+
+    this.projectService.createProject(request).subscribe(
+      (res) => this.dialogRef.close(res),
+      (err) => {
+        if (err.error.message === "Projekt s tem imenom že obstaja")
+          this.name.setErrors({ duplicateName: err.error.message });
+        else this.errorMessage = err.error.message;
+      }
+    );
   }
 
   remove(i) {
-    this.members.removeAt(i);
-    this.selectedUsers = [...this.members.controls];
+    this.developers.removeAt(i);
+    this.selectedUsers = [...this.developers.controls];
   }
 
   userSelected(event: MatAutocompleteSelectedEvent) {
     const user: User = event.option.value;
     this.search.patchValue("");
 
-    if (this.members.value.some((u) => u.user_id === user.id)) {
-      return;
-    }
-
-    this.members.push(
-      this.formBuilder.group({
-        username: user.username,
-        user_id: user.id,
-        role_id: this.roles.filter((r) => r.title === "Developer")[0].id,
-      })
-    );
-    this.selectedUsers = [...this.members.controls];
+    this.developers.push(this.formBuilder.group(user));
+    this.selectedUsers = [...this.developers.controls];
     this.userInput.nativeElement.blur();
   }
 
-  generateAddProjectRequest(data) {
-    this.members.controls.forEach((fg: FormGroup) => {
-      fg.addControl(
-        "role",
-        this.formBuilder.control(
-          this.roles.filter((r) => r.id === fg.get("role_id").value)[0].title
-        )
-      );
-    });
-
-    return {
-      name: data.name,
-      user_roles: data.members.map((m) => ({
-        user_id: m.user_id,
-        role_id: m.role_id,
-      })),
-    };
-  }
-
   private userValidator(form: FormGroup) {
-    return form.get("members").value.length > 1 ? null : { noUsers: true };
+    return form.get("developers").value.length >= 1 ? null : { noUsers: true };
   }
 
   get name() {
     return this.form.get("name");
   }
-  get members() {
-    return this.form.get("members") as FormArray;
+  get product_owner() {
+    return this.form.get("product_owner");
+  }
+  get scrum_master() {
+    return this.form.get("scrum_master");
+  }
+  get developers() {
+    return this.form.get("developers") as FormArray;
   }
 }
