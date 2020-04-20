@@ -47,9 +47,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.activeSprint = data.project.activeSprint;
       this.rootStore.sprintStore.setActiveSprint(this.activeSprint);
 
-      if (this.activeSprint){
-        this.rootStore.storyStore.setActiveSprintStories(data.project.activeSprint.stories);
-      }
+      this.rootStore.storyStore.setActiveSprintStories(this.activeSprint ? data.project.activeSprint.stories : [])
 
       this.userRoles = data.project.user ? data.project.user.role : [];
       this.rootStore.userStore.setProjectRoles(this.userRoles);

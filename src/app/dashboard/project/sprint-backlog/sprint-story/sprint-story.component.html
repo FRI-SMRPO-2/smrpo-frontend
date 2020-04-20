@@ -13,12 +13,12 @@
           {{story.name}}
         </div>
         <div class="sprint-story-complexity">
-          Časovna zahtevnost:
+          Časovna zahtevnost: {{story.time_complexity || "/"}}
         </div>
       </div>
       <div class = "sprint-story-edit">
-        <button mat-icon-button color="white" aria-label="Edit Story" (click)="editStory($event)">
-          <mat-icon>edit</mat-icon>
+        <button mat-icon-button color="primary" aria-label="Edit Story" (click)="editStory($event)">
+          <mat-icon>playlist_add</mat-icon>
         </button>
       </div>
     </mat-panel-description>
@@ -31,23 +31,25 @@
       <div class="data-section">
         <span class="section-title"> Nedodeljene naloge </span>
         <div class="data-column">
-          <!-- <app-task-card *ngFor="let item of tasks" [task]="item" cdkDrag></app-task-card>
- -->        </div>
+          <app-story-task *ngFor="let task of tasks.unassigned" [task] = "task"></app-story-task>
+        </div>
       </div>
       <div class="data-section">
         <span class="section-title"> Dodeljene naloge </span>
         <div class="data-column">
+          <app-story-task *ngFor="let task of tasks.assigned" [task] = "task"></app-story-task>
         </div>
       </div>
       <div class="data-section">
         <span class="section-title"> Aktivne naloge </span>
         <div class="data-column">
-
+          <app-story-task *ngFor="let task of tasks.active" [task] = "task"></app-story-task>
         </div>
       </div>
       <div class="data-section">
         <span class="section-title"> Zaključene naloge </span>
         <div class="data-column">
+          <app-story-task *ngFor="let task of tasks.finished" [task] = "task"></app-story-task>
         </div>
       </div>
     </div>

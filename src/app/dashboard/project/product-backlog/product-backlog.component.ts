@@ -69,7 +69,7 @@ export class ProductBacklogComponent implements OnInit {
   editStory(title: string, description: string, tests: string[], businessValue: number, priorityId: number) {
     console.log("edit story");
 
-    /* this.dialo
+    /* this.dialog
       .open(StoryModalComponent, {
         data: {
           projectId: this.project.project.id,

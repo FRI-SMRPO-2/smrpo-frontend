@@ -9,6 +9,7 @@ import { SprintModalComponent } from '../../../modals/sprint-modal/sprint-modal.
 import { RootStore } from '../../../store/root.store';
 import { Story } from 'src/app/interfaces/story.interface';
 import { Sprint } from 'src/app/interfaces/sprint.interface';
+import { TaskModalComponent } from 'src/app/modals/task-modal/task-modal.component';
 
 @Component({
   selector: "app-sprint-backlog",
@@ -67,6 +68,17 @@ export class SprintBacklogComponent implements OnInit {
           userRoles: this.isAdmin ? ['Admin'] : this.userRoles
         },
       });
+  }
+
+  addTask(storyId: number){
+    console.log(this.project)
+    this.dialog
+      .open(TaskModalComponent, {
+        data: {
+          storyId,
+          users: this.project.developers
+        }
+      })
   }
 
   drop(event: CdkDragDrop<string[]>) {

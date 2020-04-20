@@ -11,13 +11,15 @@ export class SprintStoryComponent implements OnInit {
   @Input() tasks;
   @Output() editButtonClick: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  constructor(
+  ) {}
 
   editStory(event: any): void {
     event.stopPropagation();
     this.editButtonClick.emit();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
 }

@@ -1,0 +1,60 @@
+<div class="modal-container">
+
+  <form class="modal-form" [formGroup]="form">
+
+    <span class="title">Nova naloga</span>
+
+    <mat-tab-group>
+      <mat-tab label="Podatki o zgodbi">
+        <mat-form-field appearance="standard" class="form-input" >
+          <mat-label>Naslov</mat-label>
+          <input matInput type="text" formControlName="storyName" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard" class="form-input" >
+          <mat-label>Opis</mat-label>
+          <textarea matInput formControlName="storyDescription" cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="15" required></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard" class="form-input" >
+          <mat-label>Prioriteta</mat-label>
+          <mat-select formControlName="priority" required>
+            <mat-option *ngFor="let priority of priorities" [value]="priority.id">
+              {{priority.id}} - {{priority.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-input" appearance="standard" required>
+          <mat-label>Poslovna vrednost</mat-label>
+          <input matInput type="number" formControlName="businessValue" min="0" required>
+        </mat-form-field>
+
+      </mat-tab>
+
+      <mat-tab label="Sprejemni testi">
+        <div formArrayName="tests" *ngFor="let test of testControls; let i=index">
+          <div [formGroupName]=i>
+            <mat-form-field appearance="standard" class="form-input">
+              <mat-label>Opis testa</mat-label>
+              <input matInput type="text" class="form-control" placeholder="Dodaj test..." formControlName="testDescription" (input)="onChange(i)"/>
+              <button *ngIf="checkInput(i)" mat-icon-button matSuffix color="primary" class="options-btn" (click)="removeTest(i)">
+                <span class="material-icons">delete_forever</span>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{errorMessage}}
+    </div>
+
+    <button mat-raised-button color="accent" class="save-btn"
+    type="button" (click)="save()" [disabled]="!this.form.valid">Shrani</button>
+
+  </form>
+
+</div>

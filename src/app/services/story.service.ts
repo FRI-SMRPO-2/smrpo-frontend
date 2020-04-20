@@ -26,4 +26,14 @@ export class StoryService {
       })
       .pipe(catchError((e) => throwError(e)));
   }
+
+  updateStory(projectId: number, storyId: number, data){
+    return this.http
+      .put<any>(`api/project/${projectId}/story/${storyId}`, data,  {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+        }),
+      })
+      .pipe(catchError((e) => throwError(e)));
+  }
 }

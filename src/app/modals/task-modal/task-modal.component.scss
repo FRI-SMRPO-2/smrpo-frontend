@@ -1,0 +1,36 @@
+@import "../../../variables";
+
+.modal-container {
+  width: 800px;
+  min-height: 500px;
+}
+
+.title {
+  color: $pink;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input {
+  width: 60%;
+}
+
+.save-btn{
+  margin-top: 30px;
+}
+
+.error-message{
+  color: #f44336;
+}
+
+.add-test-button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}

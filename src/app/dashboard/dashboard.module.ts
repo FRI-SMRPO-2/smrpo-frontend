@@ -20,6 +20,7 @@ import { SprintPanelComponent } from './project/sprint-panel/sprint-panel.compon
 import { TaskCardComponent } from './project/task-card/task-card.component';
 import { SprintStoryComponent } from './project/sprint-backlog/sprint-story/sprint-story.component';
 import { MatIconModule } from '@angular/material/icon';
+import { StoryTaskComponent } from './project/sprint-backlog/sprint-story/story-task/story-task.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
     ProductBacklogComponent,
     SprintBacklogComponent,
     SprintStoryComponent,
+    StoryTaskComponent
   ],
   imports: [
     CommonModule,

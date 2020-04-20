@@ -7,7 +7,6 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class TaskCardComponent implements OnInit {
   @Input() task;
-  @Input() complexity;
   @Output() editButtonClick: EventEmitter<any> = new EventEmitter();
 
   constructor() {}

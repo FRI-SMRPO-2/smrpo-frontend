@@ -1,0 +1,48 @@
+@import "../../../../../../variables";
+
+.task-card {
+  background-color: white;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: $material-shadow;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.story-task-title {
+  font-weight: 500;
+}
+
+.story-time-complexity{
+  margin-top: 5px;
+  font-size: 12px;
+  color: rgba(0,0,0,.54)
+}
+
+.story-assignee{
+  font-size: 12px;
+  color: rgba(0,0,0,.54)
+}
+
+.story-assignee-accepted{
+  color: green;
+  position: relative;
+  top: 3px;
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  margin-bottom: 0px;
+}
+
+.story-assignee-awaiting{
+  color: red;
+  font-size: 16px;
+  position: relative;
+  top: 3px;
+  height: 16px;
+  width: 16px;
+}

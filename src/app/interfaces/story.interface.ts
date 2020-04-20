@@ -3,13 +3,14 @@ export interface Story {
   project_id: number;
   name: string;
   text: string;
-  business_value: number,
+  business_value: number;
   priority: Priority;
+  time_complexity: number;
   tests: any[];
   created_by: string;
   created: Date;
   updated: Date;
-  tasks; //TODO:
+  tasks: any[];
 }
 
 export interface ProductBacklog {

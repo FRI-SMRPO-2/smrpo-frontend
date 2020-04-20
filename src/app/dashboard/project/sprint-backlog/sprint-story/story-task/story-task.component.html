@@ -1,0 +1,24 @@
+<div class="task-card">
+    <div>
+      <div class="story-task-title">
+        {{task.title}}
+      </div>
+      <div class="story-time-complexity">
+        Zahtevnost: {{task.estimated_time || "/"}}
+      </div>
+      <div>
+        <div *ngIf="task.assignee || task.assignee_awaiting" class="story-assignee">
+          Dodeljena: {{task.assignee || task.assignee_awaiting}}
+            <mat-icon *ngIf="task.assignee && !task.assignee_awaiting; else notAccepted" class="story-assignee-accepted">done</mat-icon>
+            <ng-template #notAccepted>
+              <mat-icon class="story-assignee-awaiting">close</mat-icon>
+            </ng-template>
+        </div>
+      </div>
+    </div>
+    <div>
+    <button mat-icon-button color="primary" class="options-btn" (click)="editButtonClick.emit()">
+        <span class="material-icons">edit</span>
+      </button>
+    </div>
+</div>
