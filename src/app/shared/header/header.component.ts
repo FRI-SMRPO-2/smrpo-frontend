@@ -31,8 +31,10 @@ export class HeaderComponent implements OnInit {
     this.user$ = this.rootStore.userStore.user$;
     this.isAdmin$ = this.user$.pipe(map((user) => user.is_superuser));
 
-    console.log(this.router.url);
-    this.isHome = this.router.url === "/home";
+    const url = this.router.url;
+    this.isHome =
+      this.router.url === "/home" ||
+      url.substring(1, url.lastIndexOf("/")) === "admin";
   }
 
   toggleNav() {
