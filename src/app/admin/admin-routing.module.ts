@@ -14,14 +14,14 @@ const routes: Routes = [
     children: [
       { path: "users", component: UsersComponent },
       { path: "projects", component: ProjectsListComponent },
-      { path: "", redirectTo: "projects", pathMatch: "full" }
-    ]
-  }
+      { path: "", redirectTo: "users", pathMatch: "full" },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [AdminGuard]
+  providers: [AdminGuard],
 })
 export class AdminRoutingModule {}
