@@ -1,11 +1,16 @@
 @import "../../../../variables";
 
+.page-container {
+  min-width: 1000px;
+}
 
-
-.header{
+.header {
   justify-content: space-between;
   display: flex;
-  min-width: 800px;
+
+  .pink-btn {
+    margin-left: 20px;
+  }
 }
 
 .sorting-titles {
@@ -51,7 +56,30 @@
     }
 
     .data-column {
-      margin-top: 10px;
+      .data-cell {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 10px;
+
+        app-task-card {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+#sprint-speed-row {
+  margin-top: 20px;
+
+  #sprint-speed {
+    font-size: 16px;
+    margin-left: 5px;
+    font-weight: 500;
+
+    &.alert {
+      color: $red;
     }
   }
 }

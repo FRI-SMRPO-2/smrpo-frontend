@@ -24,3 +24,12 @@ body {
     color: $pink;
   }
 }
+
+.snackbar-error {
+  background-color: $red;
+  color: white;
+
+  button {
+    color: $darkgrey;
+  }
+}

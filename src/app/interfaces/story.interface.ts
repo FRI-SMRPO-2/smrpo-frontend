@@ -5,12 +5,15 @@ export interface Story {
   text: string;
   business_value: number;
   priority: Priority;
-  time_complexity: number;
   tests: any[];
   created_by: string;
   created: Date;
   updated: Date;
-  tasks: any[];
+  time_complexity: number;
+  realized: boolean;
+  rejection_comment: string;
+  all_tasks_finished: boolean;
+  tasks; //TODO:
 }
 
 export interface ProductBacklog {
