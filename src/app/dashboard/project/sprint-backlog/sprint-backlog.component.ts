@@ -70,15 +70,38 @@ export class SprintBacklogComponent implements OnInit {
       });
   }
 
+  viewMyTasks() {
+    console.log("asda")
+  }
+
   addTask(storyId: number){
-    console.log(this.project)
     this.dialog
       .open(TaskModalComponent, {
         data: {
+          projectId: this.project.id,
           storyId,
           users: this.project.developers
         }
       })
+      .afterClosed()
+      .subscribe((activeSprint) => {
+        if (activeSprint){
+          this.activeSprint = activeSprint;
+          this.rootStore.sprintStore.setActiveSprint(activeSprint);
+          this.stories = this.activeSprint.stories;
+          this.rootStore.storyStore.setActiveSprintStories(this.stories)
+        }
+      });
+  }
+  // TODO: move to story, task, with list of users (inefficient but welp)
+  findUserId(username: string): number{
+    try{
+      const user = this.project.developers.find(developer => developer.name === username);
+      return user.id;
+    }
+    catch(e) {
+      return null;
+    }
   }
 
   drop(event: CdkDragDrop<string[]>) {

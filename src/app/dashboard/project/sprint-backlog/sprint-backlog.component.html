@@ -1,15 +1,23 @@
 <div class="page-container">
-
   <div class="header">
     <span class="title">Sprint backlog</span>
-    <button
-      mat-raised-button
-      color="accent"
-      class="dialog-button"
-      class="view-sprints-btn"
-      (click)="viewSprints()">
-      Pregled sprintov
-    </button>
+    <div>
+      <button
+        mat-raised-button
+        color="accent"
+        class="dialog-button"
+        (click)="viewSprints()">
+        Pregled sprintov
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        class="dialog-button"
+        [ngStyle]="{marginLeft: '5px'}"
+        (click)="viewMyTasks()">
+        Moje naloge
+      </button>
+    </div>
   </div>
 
 

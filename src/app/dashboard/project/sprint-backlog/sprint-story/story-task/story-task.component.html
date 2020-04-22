@@ -3,9 +3,6 @@
       <div class="story-task-title">
         {{task.title}}
       </div>
-      <div class="story-time-complexity">
-        Zahtevnost: {{task.estimated_time || "/"}}
-      </div>
       <div>
         <div *ngIf="task.assignee || task.assignee_awaiting" class="story-assignee">
           Dodeljena: {{task.assignee || task.assignee_awaiting}}
@@ -17,8 +14,8 @@
       </div>
     </div>
     <div>
-    <button mat-icon-button color="primary" class="options-btn" (click)="editButtonClick.emit()">
-        <span class="material-icons">edit</span>
+    <button mat-icon-button color="primary" aria-label="More info" class="options-btn" (click)="editTask()">
+        <span class="material-icons">more_vert</span>
       </button>
     </div>
 </div>

@@ -26,7 +26,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from '../shared/shared.module';
-import { SprintDatePipe } from '../shared/sprintDate.pipe';
 import { TaskModalComponent } from './task-modal/task-modal.component';
 
 @NgModule({

@@ -6,7 +6,6 @@ import { catchError } from 'rxjs/operators';
 import { ProductBacklog } from '../interfaces/story.interface';
 import { RootStore } from '../store/root.store';
 
-// TODO
 @Injectable({
   providedIn: "root",
 })
