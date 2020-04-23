@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, NgControlStatus} from '@angular/forms';
 import { Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskService } from 'src/app/services/task.service';
@@ -14,6 +14,7 @@ export class TaskModalComponent implements OnInit {
   form: FormGroup;
   errorMessage: string;
   addingTask: boolean;
+  availableComplexity: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,11 +26,17 @@ export class TaskModalComponent implements OnInit {
 
   ngOnInit() {
     this.addingTask= false;
+    this.availableComplexity = this.data.availableComplexity;
 
     this.form = this.formBuilder.group({
       title: [{value: this.data.title ?? '', disabled: this.data.editing}],
       description: [{value:this.data.description ?? '', disabled: this.data.editing}],
-      complexity: [{value: this.data.complexity ?? '', disabled: this.data.editing}, Validators.min(0)],
+      complexity: [
+        {value: this.data.complexity ?? '', disabled: this.data.editing},
+        Validators.compose(
+          [Validators.min(0), Validators.max(this.availableComplexity)]
+        )
+      ],
       assignee: [{value:this.data.assignee ?? '', disabled: this.data.editing}]
     });
 

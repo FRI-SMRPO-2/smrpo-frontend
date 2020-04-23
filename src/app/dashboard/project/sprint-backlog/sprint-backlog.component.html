@@ -34,7 +34,7 @@
     *ngFor="let story of stories"
     [story] = "story"
     [tasks] = "story.tasks"
-    (editButtonClick)="addTask(story.id)"
+    (editButtonClick)="addTask(story)"
   ></app-sprint-story>
   </div>
 

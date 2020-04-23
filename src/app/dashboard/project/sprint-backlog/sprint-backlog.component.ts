@@ -74,13 +74,37 @@ export class SprintBacklogComponent implements OnInit {
     console.log("asda")
   }
 
-  addTask(storyId: number){
+  maxTaskTime(story: Story){
+    let storyComplexity = story.time_complexity;
+    let usedComplexity = 0;
+
+    for (let task of story.tasks.unassigned){
+      usedComplexity = usedComplexity + task.estimated_time;
+    }
+
+    for (let task of story.tasks.assigned){
+      usedComplexity = usedComplexity + task.estimated_time;
+    }
+
+    for (let task of story.tasks.active){
+      usedComplexity = usedComplexity + task.estimated_time;
+    }
+
+    for (let task of story.tasks.finished){
+      usedComplexity = usedComplexity + task.estimated_time;
+    }
+
+    return Math.max(0, storyComplexity - usedComplexity);
+  }
+
+  addTask(story: Story){
     this.dialog
       .open(TaskModalComponent, {
         data: {
           projectId: this.project.id,
-          storyId,
-          users: this.project.developers
+          storyId: story.id,
+          users: this.project.developers,
+          availableComplexity: this.maxTaskTime(story)
         }
       })
       .afterClosed()
