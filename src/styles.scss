@@ -33,3 +33,7 @@ body {
     color: $darkgrey;
   }
 }
+
+.list-container .small-card.project-card:hover {
+  cursor: pointer;
+}

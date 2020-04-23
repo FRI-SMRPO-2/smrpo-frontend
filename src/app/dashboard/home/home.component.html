@@ -3,7 +3,7 @@
     <p class="title pink">Moji projekti</p>
 
     <div class="list-container">
-        <mat-card *ngFor="let project of projects" class="small-card" (click)="openProject(project.id)">{{project.name}}</mat-card>
+        <mat-card *ngFor="let project of projects" class="small-card project-card" (click)="openProject(project.id)">{{project.name}}</mat-card>
     </div>
 
 </div>
