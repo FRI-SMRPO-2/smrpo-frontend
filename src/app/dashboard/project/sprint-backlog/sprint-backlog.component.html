@@ -34,6 +34,7 @@
     *ngFor="let story of stories"
     [story] = "story"
     [tasks] = "story.tasks"
+    [userRoles] = "this.isAdmin ? ['Admin'] : this.userRoles"
     (editButtonClick)="addTask(story)"
   ></app-sprint-story>
   </div>

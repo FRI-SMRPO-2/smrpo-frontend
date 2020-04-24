@@ -21,6 +21,7 @@
           mat-raised-button
           color="primary"
           class="dialog-button"
+          *ngIf="userRoles.includes('Admin') || userRoles.includes('Developer') || userRoles.includes('Scrum Master')"
           (click)="editStory($event)"> Dodaj nalogo
         </button>
       </div>

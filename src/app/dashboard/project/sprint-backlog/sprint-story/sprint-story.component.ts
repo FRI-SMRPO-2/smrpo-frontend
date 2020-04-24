@@ -9,6 +9,7 @@ export class SprintStoryComponent implements OnInit {
   @Input() story;
   @Input() complexity;
   @Input() tasks;
+  @Input() userRoles;
   @Output() editButtonClick: EventEmitter<any> = new EventEmitter();
 
   constructor(
