@@ -146,7 +146,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
   }
 
   // TODO: isto funkcijo lahko v prihodnjem sprintu uporabimo za implementacijo urejanja uporabniških zgodb
-  editStory(story: Story) {
+  editStory(story: Story, unassigned: boolean) {
     this.dialog
       .open(StoryModalComponent, {
         data: {
@@ -159,7 +159,8 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
           userRoles: this.isAdmin ? ['Admin'] : this.userRoles,
           projectId: this.project.id,
           storyId: story.id,
-          editing: true
+          editing: true,
+          unassigned
         },
       })
       .afterClosed()

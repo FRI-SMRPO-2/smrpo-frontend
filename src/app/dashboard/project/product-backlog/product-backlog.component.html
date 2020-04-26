@@ -63,7 +63,7 @@
             [ngStyle]="{'width': storiesToSprintActive ? 'calc(100% - 40px)' : '100%'}"
             [story]="story"
             [disabled]="storiesToSprintActive && !story.time_complexity"
-            (editButtonClick)="editStory(story)">
+            (editButtonClick)="editStory(story, true)">
           </app-task-card>
         </div>
       </div>
@@ -74,7 +74,7 @@
         <app-task-card
           [story]="story"
           *ngFor="let story of productBacklog.assigned"
-          (editButtonClick)="editStory(story)"
+          (editButtonClick)="editStory(story, false)"
         >
         </app-task-card>
       </div></div>
@@ -84,7 +84,7 @@
         <app-task-card
           [story]="story"
           *ngFor="let story of productBacklog.realized"
-          (editButtonClick)="editStory(story)"
+          (editButtonClick)="editStory(story, false)"
         >
         </app-task-card>
       </div></div>

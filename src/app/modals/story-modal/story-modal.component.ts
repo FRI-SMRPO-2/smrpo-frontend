@@ -57,7 +57,7 @@ export class StoryModalComponent implements OnInit {
       businessValue: [{value: this.data.business_value ?? '', disabled: this.data.editing}, Validators.min(0)],
       priority: [{value: this.data.priorityId ?? '', disabled: this.data.editing}],
       tests: this.formBuilder.array(this.data.tests.length === 0 ? [this.createTest()] : this.createTests(this.data.tests)),
-      complexity : [this.data.complexity ?? '']
+      complexity : [{value: this.data.complexity ?? '', disabled: !this.data.unassigned}]
     });
   }
 
