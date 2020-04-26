@@ -16,7 +16,6 @@ export class TaskCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.story);
   }
 }
 

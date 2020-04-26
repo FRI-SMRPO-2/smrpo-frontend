@@ -61,7 +61,6 @@ export class ProjectModalComponent implements OnInit {
         value ? this.userService.searchUser(value) : of([])
       ),
       map((users) => {
-        console.log(users);
         return users.filter(
           (user) => !this.developers.value.some((u) => u.user_id === user.id)
         );
@@ -84,7 +83,6 @@ export class ProjectModalComponent implements OnInit {
   }
 
   save() {
-    console.log(this.form.value);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.search.markAsTouched();
@@ -98,7 +96,6 @@ export class ProjectModalComponent implements OnInit {
       scrum_master_id: this.scrum_master.value.id,
       developer_ids: this.developers.value.map((d) => d.id),
     };
-    console.log(request);
 
     this.projectService.createProject(request).subscribe(
       (res) => this.dialogRef.close(res),

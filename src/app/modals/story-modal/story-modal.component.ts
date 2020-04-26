@@ -51,19 +51,19 @@ export class StoryModalComponent implements OnInit {
 
     this.addingStory= false;
 
-
     this.form = this.formBuilder.group({
-      storyName: [this.data.title ?? ''],
-      storyDescription: [this.data.description ?? ''],
-      businessValue: [this.data.businessValue ?? '', Validators.min(0)],
-      priority: [this.data.priorityId ?? ''],
-      tests: this.formBuilder.array(this.data.tests.length === 0 ? [this.createTest()] : this.createTests(this.data.tests))
+      storyName: [{value: this.data.name ?? '', disabled: this.data.editing}],
+      storyDescription: [{value: this.data.text ?? '', disabled: this.data.editing}],
+      businessValue: [{value: this.data.business_value ?? '', disabled: this.data.editing}, Validators.min(0)],
+      priority: [{value: this.data.priorityId ?? '', disabled: this.data.editing}],
+      tests: this.formBuilder.array(this.data.tests.length === 0 ? [this.createTest()] : this.createTests(this.data.tests)),
+      complexity : [this.data.complexity ?? '']
     });
   }
 
   createTest(testDescription = ''){
     return this.formBuilder.group({
-      testDescription
+      testDescription,
     })
   }
 
@@ -100,15 +100,42 @@ export class StoryModalComponent implements OnInit {
     return this.form.get('tests')['controls'];
   }
 
-  save() {
+  // TODO: ko bomo delali urejanje zgodb moramo to funkcijo popravit
+  editStory(){
+    this.addingStory = true;
+
+    let data = {name: null, text: null, priority: null, business_value: null, time_complexity: null}
+    /* data.name = this.form.value.storyName ;
+    data.text = this.form.value.storyDescription ;
+    data.priority = this.form.value.priority ;
+    data.business_value = this.form.value.businessValue ;
+    data.tests = this.form.value.tests.map(test=>test.testDescription)
+    data.tests.pop();
+   */
+    data.time_complexity = this.form.value.complexity;
+
+    this.storyService.updateStory(this.data.projectId, this.data.storyId, data).subscribe(
+      () => {
+        this.storyService.getAllStories(this.data.projectId).subscribe((stories) => {
+          this.storyModalDialogRef.close(stories);
+        })
+      },
+      (err) => {
+        this.addingStory = false;
+        this.errorMessage = err.error.__all__ === undefined ? 'Something went wrong, try again later' : err.error.__all__[0];
+      }
+    )
+  }
+
+  addStory() {
 
     this.addingStory = true;
 
-    let data = {name: "", text: "", priority: "", business_value: "", tests: []}
-    data.name = this.form.value.storyName;
-    data.text = this.form.value.storyDescription
-    data.priority = this.form.value.priority
-    data.business_value = this.form.value.businessValue
+    let data = {name: '', text: '', priority: '', business_value: '', tests: []}
+    data.name = this.form.value.storyName ;
+    data.text = this.form.value.storyDescription ;
+    data.priority = this.form.value.priority ;
+    data.business_value = this.form.value.businessValue ;
     data.tests = this.form.value.tests.map(test=>test.testDescription)
     data.tests.pop();
 

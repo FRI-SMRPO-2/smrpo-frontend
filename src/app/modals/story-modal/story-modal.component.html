@@ -2,7 +2,7 @@
 
   <form class="modal-form" [formGroup]="form">
 
-    <span class="title">Nova zgodba</span>
+    <span class="title">{{data.editing ? "Preglej zgodbo" : "Nova zgodba"}}</span>
 
     <mat-tab-group>
       <mat-tab label="Podatki o zgodbi">
@@ -27,7 +27,7 @@
 
         <mat-form-field class="form-input" appearance="standard" required>
           <mat-label>Poslovna vrednost</mat-label>
-          <input matInput type="number" formControlName="businessValue" min="0" required>
+          <input matInput type="number" formControlName="businessValue" min="0.1" required>
         </mat-form-field>
 
       </mat-tab>
@@ -46,6 +46,13 @@
         </div>
       </mat-tab>
 
+      <mat-tab label="Časovna zahtevnost" *ngIf="data.editing && (data.userRoles.includes('Admin') || data.userRoles.includes('Scrum Master'))">
+        <mat-form-field appearance="standard" class="form-input" >
+          <mat-label>Ocena časovne zahtevnosti:</mat-label>
+          <input matInput type="number" formControlName="complexity" min="0">
+        </mat-form-field>
+      </mat-tab>
+
     </mat-tab-group>
 
     <div *ngIf="errorMessage" class="error-message">
@@ -53,7 +60,7 @@
     </div>
 
     <button mat-raised-button color="accent" class="save-btn"
-    type="button" (click)="save()" [disabled]="!this.form.valid">Shrani</button>
+    type="button" (click)="data.editing ? editStory() : addStory()" [disabled]="!this.form.valid">Shrani</button>
 
   </form>
 

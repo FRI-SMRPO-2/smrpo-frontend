@@ -117,16 +117,6 @@ export class SprintBacklogComponent implements OnInit {
         }
       });
   }
-  // TODO: move to story, task, with list of users (inefficient but welp)
-  findUserId(username: string): number{
-    try{
-      const user = this.project.developers.find(developer => developer.name === username);
-      return user.id;
-    }
-    catch(e) {
-      return null;
-    }
-  }
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {

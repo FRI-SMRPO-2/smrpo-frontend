@@ -91,6 +91,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
         data: {
           projectId: this.project.id,
           tests: [],
+          editing: false
         },
       })
       .afterClosed()
@@ -122,7 +123,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
   }
 
   addStoriesToActiveSprint() {
-    if (this.activeStories.length)
+    if (this.activeStories.length) {
       this.sprintService
         .addStoriesToActiveSprint(this.activeSprint.id, {
           story_ids: this.activeStories,
@@ -141,37 +142,32 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
             });
           }
         );
+    }
   }
 
-  // TODO: potrebno implementirati določanje časovne zahtevnosti
   // TODO: isto funkcijo lahko v prihodnjem sprintu uporabimo za implementacijo urejanja uporabniških zgodb
-  editStory(
-    title: string,
-    description: string,
-    tests: string[],
-    businessValue: number,
-    priorityId: number
-  ) {
-    console.log("edit story");
-
-    /* this.dialog
+  editStory(story: Story) {
+    this.dialog
       .open(StoryModalComponent, {
         data: {
-          projectId: this.project.project.id,
-          title,
-          description,
-          tests,
-          businessValue,
-          priorityId
+          name: story.name,
+          text: story.text,
+          business_value: story.business_value,
+          priorityId: story.priority.id,
+          tests: story.tests,
+          complexity: story.time_complexity,
+          userRoles: this.isAdmin ? ['Admin'] : this.userRoles,
+          projectId: this.project.id,
+          storyId: story.id,
+          editing: true
         },
       })
       .afterClosed()
       .subscribe((newStories) => {
         if (newStories) {
-          this.stories = newStories;
           this.productBacklog = newStories;
         }
-      }); */
+      });
   }
 
   drop(event: CdkDragDrop<string[]>) {
