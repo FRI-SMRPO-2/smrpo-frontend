@@ -54,7 +54,7 @@ export class StoryModalComponent implements OnInit {
           ? [this.createTest()]
           : this.createTests(this.data.tests)
       ),
-      complexity: [
+      time_complexity: [
         { value: this.data.complexity ?? "", disabled: this.type === "add" },
         [Validators.min(0), Validators.max(200)],
       ],
@@ -182,8 +182,8 @@ export class StoryModalComponent implements OnInit {
     );
   }
 
-  get complexity() {
-    return this.form.get("complexity");
+  get time_complexity() {
+    return this.form.get("time_complexity");
   }
   get business_value() {
     return this.form.get("business_value");
