@@ -1,26 +1,32 @@
-import { Component, OnInit, Input,  } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators, FormArray } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { Inject } from '@angular/core';
-import { Project } from 'src/app/interfaces/project.interface';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { RootStore } from 'src/app/store/root.store';
+import { Project } from 'src/app/interfaces/project.interface';
 import { StoryService } from 'src/app/services/story.service';
+import { RootStore } from 'src/app/store/root.store';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalidCtrl = !!(control && control.invalid);
-    const invalidParent = !!(control && control.parent && control.parent.invalid);
+    const invalidParent = !!(
+      control &&
+      control.parent &&
+      control.parent.invalid
+    );
 
-    return (invalidCtrl || invalidParent);
+    return invalidCtrl || invalidParent;
   }
 }
 
 @Component({
   selector: "app-story-modal",
   templateUrl: "./story-modal.component.html",
-  styleUrls: ["./story-modal.component.scss"]
+  styleUrls: ["./story-modal.component.scss"],
 })
 export class StoryModalComponent implements OnInit {
   form: FormGroup;
@@ -41,70 +47,89 @@ export class StoryModalComponent implements OnInit {
   ngOnInit() {
     this.activeProject$ = this.rootStore.projectStore.activeProject$;
 
-    this.priorities =
-    [
-      {id: 4, name: "Won't have this time"},
-      {id: 3, name: "Could have"},
-      {id: 2, name: "Should have"},
-      {id: 1, name: "Must have"},
-    ]
+    this.priorities = [
+      { id: 4, name: "Won't have this time" },
+      { id: 3, name: "Could have" },
+      { id: 2, name: "Should have" },
+      { id: 1, name: "Must have" },
+    ];
 
-    this.addingStory= false;
+    this.addingStory = false;
 
-    this.form = this.formBuilder.group({
+    /*     this.form = this.formBuilder.group({
       storyName: [{value: this.data.name ?? '', disabled: this.data.editing}],
       storyDescription: [{value: this.data.text ?? '', disabled: this.data.editing}],
       businessValue: [{value: this.data.business_value ?? '', disabled: this.data.editing}, Validators.min(0)],
       priority: [{value: this.data.priorityId ?? '', disabled: this.data.editing}],
       tests: this.formBuilder.array(this.data.tests.length === 0 ? [this.createTest()] : this.createTests(this.data.tests)),
       complexity : [{value: this.data.complexity ?? '', disabled: !this.data.unassigned}, Validators.min(0)]
+    }); */
+
+    this.form = this.formBuilder.group({
+      name: this.data.name,
+      text: this.data.text,
+      business_value: [
+        this.data.business_value,
+        [Validators.min(1), Validators.max(10)],
+      ],
+      priority: this.data.priorityId,
+      tests: this.formBuilder.array(
+        this.data.tests.length === 0
+          ? [this.createTest()]
+          : this.createTests(this.data.tests)
+      ),
+      complexity: [
+        { value: this.data.complexity ?? "", disabled: !this.data.unassigned },
+        [Validators.min(0), Validators.max(200)],
+      ],
+    });
+
+    console.log(this.data.priorityId);
+  }
+
+  createTest(testDescription = "") {
+    return this.formBuilder.group({
+      testDescription,
     });
   }
 
-  createTest(testDescription = ''){
-    return this.formBuilder.group({
-      testDescription,
-    })
-  }
-
-  createTests(testArray){
-    let tests = []
-    for (let testDescription of testArray){
-      tests.push(this.createTest(testDescription.text))
+  createTests(testArray) {
+    let tests = [];
+    for (let testDescription of testArray) {
+      tests.push(this.createTest(testDescription.text));
     }
-    tests.push(this.createTest())
+    tests.push(this.createTest());
 
-    return tests
+    return tests;
   }
 
   addTest() {
-    this.tests = this.form.get('tests') as FormArray;
-    this.tests.push(this.createTest())
+    this.tests = this.form.get("tests") as FormArray;
+    this.tests.push(this.createTest());
   }
 
-  removeTest(i){
+  removeTest(i) {
     this.tests.removeAt(i);
   }
 
-  onChange(i){
-   if (!this.form.get('tests').value[i+1]) {
-      this.addTest()
+  onChange(i) {
+    if (!this.form.get("tests").value[i + 1]) {
+      this.addTest();
     }
   }
 
-  checkInput(i){
-    return this.form.get('tests').value[i].testDescription != ""
+  checkInput(i) {
+    return this.form.get("tests").value[i].testDescription != "";
   }
 
   get testControls() {
-    return this.form.get('tests')['controls'];
+    return this.form.get("tests")["controls"];
   }
 
   // TODO: ko bomo delali urejanje zgodb moramo to funkcijo popravit
-  editStory(){
+  editStory() {
     this.addingStory = true;
 
-    let data = {name: null, text: null, priority: null, business_value: null, time_complexity: null}
     /* data.name = this.form.value.storyName ;
     data.text = this.form.value.storyDescription ;
     data.priority = this.form.value.priority ;
@@ -112,43 +137,68 @@ export class StoryModalComponent implements OnInit {
     data.tests = this.form.value.tests.map(test=>test.testDescription)
     data.tests.pop();
    */
-    data.time_complexity = this.form.value.complexity;
+    console.log(this.form.value);
 
-    this.storyService.updateStory(this.data.projectId, this.data.storyId, data).subscribe(
-      () => {
-        this.storyService.getAllStories(this.data.projectId).subscribe((stories) => {
-          this.storyModalDialogRef.close(stories);
-        })
-      },
-      (err) => {
-        this.addingStory = false;
-        this.errorMessage = err.error.__all__ === undefined ? 'Something went wrong, try again later' : err.error.__all__[0];
-      }
-    )
+    this.storyService
+      .updateStory(this.data.projectId, this.data.storyId, this.form.value)
+      .subscribe(
+        () => {
+          this.storyService
+            .getAllStories(this.data.projectId)
+            .subscribe((stories) => {
+              this.storyModalDialogRef.close(stories);
+            });
+        },
+        (err) => {
+          this.addingStory = false;
+          this.errorMessage =
+            err.error.__all__ === undefined
+              ? "Something went wrong, try again later"
+              : err.error.__all__[0];
+        }
+      );
   }
 
   addStory() {
-
     this.addingStory = true;
 
-    let data = {name: '', text: '', priority: '', business_value: '', tests: []}
-    data.name = this.form.value.storyName ;
-    data.text = this.form.value.storyDescription ;
-    data.priority = this.form.value.priority ;
-    data.business_value = this.form.value.businessValue ;
-    data.tests = this.form.value.tests.map(test=>test.testDescription)
+    let data = {
+      name: "",
+      text: "",
+      priority: "",
+      business_value: "",
+      tests: [],
+    };
+    data.name = this.form.value.name;
+    data.text = this.form.value.text;
+    data.priority = this.form.value.priority;
+    data.business_value = this.form.value.business_value;
+    data.tests = this.form.value.tests.map((test) => test.testDescription);
     data.tests.pop();
 
     this.storyService.addStory(this.data.projectId, data).subscribe(
       () => {
-        this.storyService.getAllStories(this.data.projectId).subscribe((stories) => {
-          this.storyModalDialogRef.close(stories);
-        })
+        this.storyService
+          .getAllStories(this.data.projectId)
+          .subscribe((stories) => {
+            this.storyModalDialogRef.close(stories);
+          });
       },
       (err) => {
+        console.log(err);
         this.addingStory = false;
-        this.errorMessage = err.error.__all__ === undefined ? 'Something went wrong, try again later' : err.error.__all__[0];
+        this.errorMessage =
+          err.error.__all__ === undefined
+            ? "Something went wrong, try again later"
+            : err.error.__all__[0];
       }
-    )
+    );
+  }
+
+  get complexity() {
+    return this.form.get("complexity");
+  }
+  get business_value() {
+    return this.form.get("business_value");
   }
 }

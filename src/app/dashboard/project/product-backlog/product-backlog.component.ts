@@ -27,6 +27,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
 
   project: Project;
 
+  hasActiveSprint: boolean;
   activeSprint: Sprint;
   storiesToSprintActive: boolean = false;
   activeStoriesSum = 0;
@@ -72,11 +73,13 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
     this.rootStore.sprintStore.activeSprint$
       .pipe(takeUntil(this.destroy$))
       .subscribe((activeSprint) => {
+        this.hasActiveSprint = !!activeSprint;
         this.activeSprint = activeSprint;
-        this.activeStoriesSum = activeSprint.stories.reduce(
-          (acc, s) => acc + s.time_complexity,
-          0
-        );
+        if (this.hasActiveSprint)
+          this.activeStoriesSum = activeSprint.stories.reduce(
+            (acc, s) => acc + s.time_complexity,
+            0
+          );
       });
   }
 
@@ -91,7 +94,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
         data: {
           projectId: this.project.id,
           tests: [],
-          editing: false
+          editing: false,
         },
       })
       .afterClosed()
@@ -156,11 +159,11 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
           priorityId: story.priority.id,
           tests: story.tests,
           complexity: story.time_complexity,
-          userRoles: this.isAdmin ? ['Admin'] : this.userRoles,
+          userRoles: this.isAdmin ? ["Admin"] : this.userRoles,
           projectId: this.project.id,
           storyId: story.id,
           editing: true,
-          unassigned
+          unassigned,
         },
       })
       .afterClosed()

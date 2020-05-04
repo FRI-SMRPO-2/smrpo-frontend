@@ -8,12 +8,12 @@
       <mat-tab label="Podatki o zgodbi">
         <mat-form-field appearance="standard" class="form-input" >
           <mat-label>Naslov</mat-label>
-          <input matInput type="text" formControlName="storyName" required>
+          <input matInput type="text" formControlName="name" required>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="form-input" >
           <mat-label>Opis</mat-label>
-          <textarea matInput formControlName="storyDescription" cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="15" required></textarea>
+          <textarea matInput formControlName="text" cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="15" required></textarea>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="form-input" >
@@ -27,14 +27,17 @@
 
         <mat-form-field class="form-input" appearance="standard" required>
           <mat-label>Poslovna vrednost</mat-label>
-          <input matInput type="number" formControlName="businessValue" min="0.1" required>
+          <input matInput type="number" formControlName="business_value" min="0" max="10" pattern="[0-9]|10" required>
+          <mat-error *ngIf="business_value.getError('max') || business_value.getError('min') || business_value.getError('pattern')">
+            Poslovna vrednost mora biti celo število med 1 in 10
+          </mat-error>
         </mat-form-field>
 
       </mat-tab>
 
       <mat-tab label="Sprejemni testi">
         <div formArrayName="tests" *ngFor="let test of testControls; let i=index">
-          <div [formGroupName]=i>
+          <div [formGroupName]="i">
             <mat-form-field appearance="standard" class="form-input">
               <mat-label>Opis testa</mat-label>
               <input matInput type="text" class="form-control" placeholder="Dodaj test..." formControlName="testDescription" (input)="onChange(i)"/>
@@ -49,7 +52,13 @@
       <mat-tab label="Časovna zahtevnost" *ngIf="data.editing && (data.userRoles.includes('Admin') || data.userRoles.includes('Scrum Master'))">
         <mat-form-field appearance="standard" class="form-input" >
           <mat-label>Ocena časovne zahtevnosti:</mat-label>
-          <input matInput type="number" formControlName="complexity" min="0">
+          <input matInput type="number" formControlName="complexity" min="0" max="200" step="1" pattern="^\d*(\.\d{0,1})?$">
+          <mat-error *ngIf="complexity.getError('pattern')">
+            Časovna zahtevnost mora biti zaokrožena na eno decimalko
+          </mat-error>
+          <mat-error *ngIf="complexity.getError('max') || complexity.getError('min')">
+            Časovna zahtevnost mora biti v območju med 0 in 200
+          </mat-error>
         </mat-form-field>
       </mat-tab>
 

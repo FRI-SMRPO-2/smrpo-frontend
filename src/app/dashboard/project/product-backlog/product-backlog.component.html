@@ -16,7 +16,7 @@
     <button
       mat-raised-button
       color="primary"
-      *ngIf="(userRoles.includes('Scrum Master') || userRoles.includes('Product Owner') || isAdmin) && !storiesToSprintActive"
+      *ngIf="(userRoles.includes('Scrum Master') || userRoles.includes('Product Owner') || isAdmin) && !storiesToSprintActive && hasActiveSprint"
       class="dialog-button"
       (click)="activateActiveSprint()"> Izbira zgodb za aktivni sprint
     </button>
@@ -25,15 +25,15 @@
       color="accent"
       *ngIf="(userRoles.includes('Scrum Master') || userRoles.includes('Product Owner') || isAdmin) && storiesToSprintActive"
       class="dialog-button"
-      [disabled]="!activeStories.length"
+      [disabled]="!activeStories.length || activeStoriesSum > activeSprint?.expected_speed"
       (click)="addStoriesToActiveSprint()"> Dodaj zgodbe v aktivni sprint
     </button>
   </div>
 
   <div id="sprint-speed-row" *ngIf="storiesToSprintActive">
     <span id="speed-text">Hitrost sprinta:</span>
-    <span id="sprint-speed" [class.alert]="activeStoriesSum > activeSprint.expected_speed"> {{activeStoriesSum}}</span>
-    <span id="sprint-speed">/ {{activeSprint.expected_speed}} </span>
+    <span id="sprint-speed" [class.alert]="activeStoriesSum > activeSprint?.expected_speed"> {{activeStoriesSum | number:'1.0-1'}}</span>
+    <span id="sprint-speed">/ {{activeSprint?.expected_speed}} </span>
     <button
       mat-stroked-button
       color="primary"
@@ -70,6 +70,10 @@
     </div>
     <div class="data-section">
       <span class="section-title"> Dodeljene zgodbe </span>
+      <span class="section-comment" *ngIf="!hasActiveSprint; else noActiveSprintComment"> Trenutno ni aktivnega sprinta </span>
+      <ng-template #noActiveSprintComment>
+        <span class="section-comment"> Aktivni sprint {{activeSprint.start_date | date:'dd.MM.yyyy'}} - {{activeSprint.end_date | date:'dd.MM.yyyy'}} </span>
+      </ng-template>
       <div class="data-column">
         <app-task-card
           [story]="story"
