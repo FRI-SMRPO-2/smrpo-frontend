@@ -9,14 +9,15 @@
         (click)="viewSprints()">
         Pregled sprintov
       </button>
-      <!-- <button
+      <button
         mat-raised-button
-        color="accent"
+        color="primary"
         class="dialog-button"
+        *ngIf="(this.isAdmin || this.userRoles.includes('Product Owner')) && activeSprint!=null"
         [ngStyle]="{marginLeft: '5px'}"
-        (click)="viewMyTasks()">
-        Moje naloge
-      </button> -->
+        (click)="resolveStories()">
+        Sprejmi / Zavrni zgodbe
+      </button>
     </div>
   </div>
 

@@ -1,0 +1,32 @@
+<mat-expansion-panel [expanded]="expanded" class="resolve-story-panel" hideToggle="true">
+  <mat-expansion-panel-header #panelH (click)="panelH._toggle()" class="resolve-story-panel-header">
+    <mat-panel-title class="resolve-story-panel-title">
+      {{name}}
+    </mat-panel-title>
+
+    <mat-checkbox class="resolve-story-checkbox" *ngIf="allTasksFinished" [checked]="accepted" name="accept" (change)="toggleCheckbox($event)">Sprejmi</mat-checkbox>
+    <mat-checkbox class="resolve-story-checkbox" [checked]="rejected" name="reject" (change)="toggleCheckbox($event)">Zavrni</mat-checkbox>
+  </mat-expansion-panel-header>
+
+  <mat-form-field class="resolve-story-comment">
+    <mat-label>Komentar (neobvezno)</mat-label>
+    <textarea
+      matInput
+      placeholder=""
+      [(ngModel)] = "comment"
+      (ngModelChange)="updateComment({id: id, comment: $event})"
+      maxlength="255"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="2"
+      cdkAutosizeMaxRows="5"
+    >
+    </textarea>
+    <mat-hint
+      *ngIf="expanded"
+      align="end"
+    >
+    {{comment.length}} / 255
+    </mat-hint>
+  </mat-form-field>
+
+</mat-expansion-panel>
