@@ -1,26 +1,25 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+import { Story } from '../../../../interfaces/story.interface';
 
 @Component({
-  selector: 'app-sprint-story',
-  templateUrl: './sprint-story.component.html',
-  styleUrls: ['./sprint-story.component.scss']
+  selector: "app-sprint-story",
+  templateUrl: "./sprint-story.component.html",
+  styleUrls: ["./sprint-story.component.scss"],
 })
 export class SprintStoryComponent implements OnInit {
-  @Input() story;
+  @Input() story: Story;
   @Input() complexity;
   @Input() tasks;
   @Input() userRoles;
   @Output() editButtonClick: EventEmitter<any> = new EventEmitter();
 
-  constructor(
-  ) {}
+  constructor() {}
 
   editStory(event: any): void {
     event.stopPropagation();
     this.editButtonClick.emit();
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

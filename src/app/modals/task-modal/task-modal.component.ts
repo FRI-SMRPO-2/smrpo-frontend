@@ -13,7 +13,6 @@ export class TaskModalComponent implements OnInit {
   form: FormGroup;
   errorMessage: string;
   addingTask: boolean;
-  availableComplexity: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,11 +63,11 @@ export class TaskModalComponent implements OnInit {
           });
       },
       (err) => {
+        console.log(err.error.text);
         this.addingTask = false;
         this.errorMessage =
-          err.error.__all__ === undefined
-            ? "Something went wrong, try again later"
-            : err.error.__all__[0];
+          (err.error && err.error.text) ||
+          "Something went wrong, try again later";
       }
     );
   }
