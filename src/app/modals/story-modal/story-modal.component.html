@@ -49,7 +49,7 @@
         </div>
       </mat-tab>
 
-      <mat-tab label="Časovna zahtevnost" *ngIf="data.editing && (data.userRoles.includes('Admin') || data.userRoles.includes('Scrum Master'))">
+      <mat-tab label="Časovna zahtevnost" *ngIf="data.editing && data.unassigned && (data.userRoles.includes('Admin') || data.userRoles.includes('Scrum Master'))">
         <div style="height:340.5px">
           <mat-form-field appearance="standard" class="form-input" >
             <mat-label>Ocena časovne zahtevnosti v točkah:</mat-label>
@@ -72,7 +72,7 @@
 
     <button mat-raised-button color="accent" class="save-btn"
     type="button" (click)="data.editing ? editStory() : addStory()" [disabled]="!this.form.valid">Shrani</button>
-    
+
   </form>
 
 </div>
