@@ -1,27 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { Project } from 'src/app/interfaces/project.interface';
 import { StoryService } from 'src/app/services/story.service';
 import { RootStore } from 'src/app/store/root.store';
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const invalidCtrl = !!(control && control.invalid);
-    const invalidParent = !!(
-      control &&
-      control.parent &&
-      control.parent.invalid
-    );
-
-    return invalidCtrl || invalidParent;
-  }
-}
 
 @Component({
   selector: "app-story-modal",
@@ -30,10 +13,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class StoryModalComponent implements OnInit {
   form: FormGroup;
+  type: "add" | "edit";
   priorities;
   errorMessage: string;
   tests: FormArray;
   activeProject$: Observable<Project>;
+
   addingStory: boolean;
 
   constructor(
@@ -54,16 +39,7 @@ export class StoryModalComponent implements OnInit {
       { id: 1, name: "Must have" },
     ];
 
-    this.addingStory = false;
-
-    /*     this.form = this.formBuilder.group({
-      storyName: [{value: this.data.name ?? '', disabled: this.data.editing}],
-      storyDescription: [{value: this.data.text ?? '', disabled: this.data.editing}],
-      businessValue: [{value: this.data.business_value ?? '', disabled: this.data.editing}, Validators.min(0)],
-      priority: [{value: this.data.priorityId ?? '', disabled: this.data.editing}],
-      tests: this.formBuilder.array(this.data.tests.length === 0 ? [this.createTest()] : this.createTests(this.data.tests)),
-      complexity : [{value: this.data.complexity ?? '', disabled: !this.data.unassigned}, Validators.min(0)]
-    }); */
+    console.log(this.data);
 
     this.form = this.formBuilder.group({
       name: this.data.name,
@@ -79,17 +55,21 @@ export class StoryModalComponent implements OnInit {
           : this.createTests(this.data.tests)
       ),
       complexity: [
-        { value: this.data.complexity ?? "", disabled: !this.data.unassigned },
+        { value: this.data.complexity ?? "", disabled: this.type === "add" },
         [Validators.min(0), Validators.max(200)],
       ],
     });
-
-    console.log(this.data.priorityId);
   }
 
   createTest(testDescription = "") {
+    console.log(this.data.type === "edit" && !this.data.unassigned);
     return this.formBuilder.group({
-      testDescription,
+      testDescription: [
+        {
+          value: testDescription,
+          disabled: this.data.type === "edit" && !this.data.unassigned,
+        },
+      ],
     });
   }
 
@@ -98,7 +78,7 @@ export class StoryModalComponent implements OnInit {
     for (let testDescription of testArray) {
       tests.push(this.createTest(testDescription.text));
     }
-    tests.push(this.createTest());
+    if (this.data.unassigned) tests.push(this.createTest());
 
     return tests;
   }
@@ -119,7 +99,9 @@ export class StoryModalComponent implements OnInit {
   }
 
   checkInput(i) {
-    return this.form.get("tests").value[i].testDescription != "";
+    return this.data.unassigned
+      ? this.form.get("tests").value[i].testDescription != ""
+      : false;
   }
 
   get testControls() {
@@ -137,10 +119,15 @@ export class StoryModalComponent implements OnInit {
     data.tests = this.form.value.tests.map(test=>test.testDescription)
     data.tests.pop();
    */
-    console.log(this.form.value);
+    const data = {
+      ...this.form.value,
+      tests: this.form.value.tests.map((test) => test.testDescription),
+    };
+    data.tests.pop();
+    console.log(data);
 
     this.storyService
-      .updateStory(this.data.projectId, this.data.storyId, this.form.value)
+      .updateStory(this.data.projectId, this.data.storyId, data)
       .subscribe(
         () => {
           this.storyService
@@ -200,5 +187,8 @@ export class StoryModalComponent implements OnInit {
   }
   get business_value() {
     return this.form.get("business_value");
+  }
+  get testDescription() {
+    return this.form.get("testDescription");
   }
 }

@@ -95,6 +95,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
           projectId: this.project.id,
           tests: [],
           editing: false,
+          type: "add",
         },
       })
       .afterClosed()
@@ -164,6 +165,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
           storyId: story.id,
           editing: true,
           unassigned,
+          type: "edit",
         },
       })
       .afterClosed()
