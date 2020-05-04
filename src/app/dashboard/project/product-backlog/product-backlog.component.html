@@ -16,14 +16,14 @@
     <button
       mat-raised-button
       color="primary"
-      *ngIf="(userRoles.includes('Scrum Master') || userRoles.includes('Product Owner') || isAdmin) && !storiesToSprintActive && hasActiveSprint"
+      *ngIf="(userRoles.includes('Scrum Master') || isAdmin) && !storiesToSprintActive && hasActiveSprint"
       class="dialog-button"
       (click)="activateActiveSprint()"> Izbira zgodb za aktivni sprint
     </button>
     <button
       mat-raised-button
       color="accent"
-      *ngIf="(userRoles.includes('Scrum Master') || userRoles.includes('Product Owner') || isAdmin) && storiesToSprintActive"
+      *ngIf="(userRoles.includes('Scrum Master') || isAdmin) && storiesToSprintActive"
       class="dialog-button"
       [disabled]="!activeStories.length || activeStoriesSum > activeSprint?.expected_speed"
       (click)="addStoriesToActiveSprint()"> Dodaj zgodbe v aktivni sprint

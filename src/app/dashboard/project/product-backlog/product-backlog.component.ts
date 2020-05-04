@@ -96,6 +96,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
           tests: [],
           editing: false,
           type: "add",
+          userRoles: this.isAdmin ? ["Admin"] : this.userRoles,
         },
       })
       .afterClosed()
@@ -136,7 +137,15 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
           () => {
             this.storyService
               .getAllStories(this.project.id)
-              .subscribe((data) => (this.productBacklog = data));
+              .subscribe((data) => {
+                this.productBacklog = data;
+                this.rootStore.storyStore.setAllStories(data);
+              });
+            this.sprintService
+              .getActiveSprint(this.project.id)
+              .subscribe((data) =>
+                this.rootStore.storyStore.setActiveSprintStories(data.stories)
+              );
             this.storiesToSprintActive = false;
           },
           (err) => {

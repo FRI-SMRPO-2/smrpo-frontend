@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { Project } from '../interfaces/project.interface';
 import { Sprint } from '../interfaces/sprint.interface';
@@ -11,7 +12,6 @@ import { SprintService } from '../services/sprint.service';
 import { StoryService } from '../services/story.service';
 import { UserService } from '../services/user.service';
 import { RootStore } from '../store/root.store';
-import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ProjectResolver
@@ -40,7 +40,17 @@ export class ProjectResolver
       user: this.rootStore.userStore.user.is_superuser
         ? of(null)
         : this.userService.getProjectRole(route.params.id),
-    });
+    }).pipe(
+      tap(({ project, sprints, activeSprint, stories, user }) => {
+        this.rootStore.projectStore.setActiveProject(project);
+        this.rootStore.storyStore.setAllStories(stories);
+        this.rootStore.sprintStore.setAllSprints(sprints);
+        this.rootStore.sprintStore.setActiveSprint(activeSprint);
+        this.rootStore.storyStore.setActiveSprintStories(
+          activeSprint ? activeSprint.stories : []
+        );
+      })
+    );
     /* this.rootStore.projectStore.setActiveProject() */
   }
 }

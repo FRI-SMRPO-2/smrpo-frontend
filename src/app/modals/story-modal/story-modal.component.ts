@@ -20,6 +20,7 @@ export class StoryModalComponent implements OnInit {
   activeProject$: Observable<Project>;
 
   addingStory: boolean;
+  canEditComplexity: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +41,7 @@ export class StoryModalComponent implements OnInit {
     ];
 
     console.log(this.data);
+    this.canEditComplexity = this.data.userRoles.includes("Scrum Master");
 
     this.form = this.formBuilder.group({
       name: this.data.name,
@@ -59,6 +61,8 @@ export class StoryModalComponent implements OnInit {
         [Validators.min(0), Validators.max(200)],
       ],
     });
+
+    if (!this.canEditComplexity && this.type === "edit") this.form.disable();
   }
 
   createTest(testDescription = "") {

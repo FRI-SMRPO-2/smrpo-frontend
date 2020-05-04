@@ -1,5 +1,6 @@
 export interface Story {
   id: number;
+  unique_by_project_count_id: number;
   project_id: number;
   name: string;
   text: string;
