@@ -7,7 +7,7 @@
         'grey': story.priority.id === 4}">
         {{story.priority.id | priority}}</div>
       <div class="task-title">{{story.name}}</div>
-      <div class="task-complexity">Časovna zahtevnost: {{story.time_complexity || "/"}}</div>
+      <div class="task-complexity">Časovna zahtevnost v točkah: {{story.time_complexity || "/"}}</div>
     </div>
     <div>
     <button mat-icon-button color="primary" class="options-btn" (click)="editButtonClick.emit()">
