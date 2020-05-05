@@ -42,14 +42,7 @@ export class MyTasksComponent implements OnInit {
         this.tasks.unrealized.push(task);
         this.tasks.awaiting.splice(index, 1);
       },
-      (err) => {
-        console.log(err);
-        if (err.error)
-          this.snackBar.open(err.error, "", {
-            duration: 5000,
-            panelClass: ["snackbar-error"],
-          });
-      }
+      (err) => this.showErrorSnackBar(err)
     );
   }
 
@@ -58,14 +51,26 @@ export class MyTasksComponent implements OnInit {
       () => {
         this.tasks.awaiting.splice(index, 1);
       },
-      (err) => {
-        console.log(err);
-        if (err.error)
-          this.snackBar.open(err.error, "", {
-            duration: 5000,
-            panelClass: ["snackbar-error"],
-          });
-      }
+      (err) => this.showErrorSnackBar(err)
     );
+  }
+
+  taskFinished(id: number, index: number) {
+    this.taskService.finishTask(id).subscribe(
+      () => {
+        const task = this.tasks.unrealized[index];
+        this.tasks.finished.push({ ...task, finished: true });
+        this.tasks.unrealized.splice(index, 1);
+      },
+      (err) => this.showErrorSnackBar(err)
+    );
+  }
+
+  showErrorSnackBar(err) {
+    if (err.error)
+      this.snackBar.open(err.error, "", {
+        duration: 5000,
+        panelClass: ["snackbar-error"],
+      });
   }
 }

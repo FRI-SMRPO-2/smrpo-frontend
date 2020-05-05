@@ -10,6 +10,7 @@ export class MyTaskCardComponent implements OnInit {
   @Input() acceptanceAwaiting: boolean;
   @Output() taskAccepted: EventEmitter<any> = new EventEmitter();
   @Output() taskRejected: EventEmitter<any> = new EventEmitter();
+  @Output() taskFinished: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 

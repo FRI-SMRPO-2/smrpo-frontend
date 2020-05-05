@@ -40,10 +40,15 @@
   font-size: 12px;
 }
 
-.accept-icon {
+.accept {
   color: $green;
 }
 
-.reject-icon {
+.reject {
   color: red;
+}
+
+.menu-btn {
+  height: 35px;
+  line-height: 35px;
 }

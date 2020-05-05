@@ -5,14 +5,25 @@
     <div class="task-complexity">Časovna zahtevnost v urah: {{task.estimated_time || "/"}}</div>
   </div>
   <div *ngIf="acceptanceAwaiting">
-    <button mat-icon-button (click)="taskAccepted.emit()">
-      <mat-icon class="accept-icon">done</mat-icon>
+    <button mat-icon-button (click)="taskAccepted.emit()" matTooltip="Sprejmi" [matTooltipShowDelay]="3000">
+      <mat-icon class="accept">done</mat-icon>
     </button>
-    <button mat-icon-button color="warn" (click)="taskRejected.emit()">
+    <button mat-icon-button color="warn" (click)="taskRejected.emit()" matTooltip="Zavrni" [matTooltipShowDelay]="3000">
       <mat-icon>clear</mat-icon>
     </button>
   </div>
-    <button mat-icon-button *ngIf="!acceptanceAwaiting && !task.finished" class="more-settings">
+  <div *ngIf="!acceptanceAwaiting && !task.finished" >
+    <button 
+     mat-icon-button 
+    class="more-settings"
+    [matMenuTriggerFor]="menu"
+    >
       <mat-icon class="more-icon">more_vert</mat-icon>
     </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button mat-menu-item class="menu-btn" (click)="taskFinished.emit()">Zaključi</button>
+      <button mat-menu-item class="menu-btn reject" *ngIf="task.active">Končaj z delom</button>
+      <button mat-menu-item class="menu-btn accept" *ngIf="!task.active">Prični z delom</button>
+    </mat-menu>
+  </div>
 </div>

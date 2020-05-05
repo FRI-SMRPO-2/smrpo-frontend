@@ -15,10 +15,11 @@
 
   <div class="data-container">
     <div class="data-column">
-        <div class="data-cell" *ngFor="let task of tasks.unrealized">
+        <div class="data-cell" *ngFor="let task of tasks.unrealized; let i = index">
           <app-my-task-card
             [task]="task"
-            [acceptanceAwaiting]="false">
+            [acceptanceAwaiting]="false"
+            (taskFinished)="taskFinished(task.id, i)">
           </app-my-task-card>
         </div>
     </div>
