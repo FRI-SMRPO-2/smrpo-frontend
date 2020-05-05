@@ -36,7 +36,7 @@
     </div>
 
     <button mat-raised-button color="accent" class="save-btn" *ngIf="!data.editing"
-    type="button" (click)="save()" [disabled]="!this.form.valid">Shrani</button>
+    type="button" (click)="save()" [disabled]="form.invalid">Shrani</button>
 
   </form>
 
