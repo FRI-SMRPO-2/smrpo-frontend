@@ -14,4 +14,16 @@ export class TaskService {
       .post<any>(`api/story/${storyId}/task/`, data)
       .pipe(catchError((e) => throwError(e)));
   }
+
+  acceptTask(taskId: number) {
+    return this.http.put<any>(`api/task/${taskId}/accept`, null);
+  }
+
+  rejectTask(taskId: number) {
+    return this.http.put<any>(`api/task/${taskId}/decline`, null);
+  }
+
+  finishTask(taskId: number) {
+    return this.http.put<any>(`api/task/${taskId}/finish`, null);
+  }
 }

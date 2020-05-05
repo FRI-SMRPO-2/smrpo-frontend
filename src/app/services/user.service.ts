@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
+import { UserTasks } from '../interfaces/task.interface';
 import { User } from '../interfaces/user.interface';
 import { RootStore } from '../store/root.store';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class UserService {
   constructor(private http: HttpClient, private rootStore: RootStore) {}
@@ -14,7 +15,11 @@ export class UserService {
   getMe() {
     return this.http
       .get<User>("api/user/me/")
-      .pipe(tap(user => this.rootStore.userStore.setUser(user)));
+      .pipe(tap((user) => this.rootStore.userStore.setUser(user)));
+  }
+
+  getMyTasks() {
+    return this.http.get<UserTasks>("api/user/me/tasks");
   }
 
   getProjectRole(projectId: number) {

@@ -114,6 +114,10 @@
       opacity: 0.6;
       outline: none;
 
+      &.task-item {
+        padding: 10px 0 0 0;
+      }
+
       &:hover {
         opacity: 1;
       }

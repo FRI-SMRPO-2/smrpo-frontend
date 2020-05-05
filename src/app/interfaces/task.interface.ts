@@ -10,3 +10,8 @@ export interface Task {
   finished_by?: string;
   finished: boolean;
 }
+
+export interface UserTasks {
+  assigned_tasks: Task[];
+  assignee_awaiting_tasks: Task[];
+}

@@ -1,0 +1,49 @@
+@import "../../../../../variables";
+
+.task-card {
+  position: relative;
+  background-color: white;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+  width: 85%;
+  box-shadow: $material-shadow;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  &.task-disabled {
+    background-color: $verylightgrey;
+  }
+
+  .more-settings {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.5;
+  }
+}
+
+.task-title {
+  font-weight: 500;
+}
+
+.task-subtitle {
+  color: $indigo;
+  font-size: 12px;
+}
+
+.task-complexity {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.accept-icon {
+  color: $green;
+}
+
+.reject-icon {
+  color: red;
+}

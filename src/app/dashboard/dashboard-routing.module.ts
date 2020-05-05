@@ -5,6 +5,7 @@ import { AdminComponent } from '../admin/admin.component';
 import { ProjectResolver } from '../resolvers/project.resolver';
 import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from './home/home.component';
+import { MyTasksComponent } from './project/my-tasks/my-tasks.component';
 import { ProductBacklogComponent } from './project/product-backlog/product-backlog.component';
 import { ProjectComponent } from './project/project.component';
 import { SprintBacklogComponent } from './project/sprint-backlog/sprint-backlog.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
         children: [
           { path: "product-backlog", component: ProductBacklogComponent },
           { path: "sprint-backlog", component: SprintBacklogComponent },
+          { path: "my-tasks", component: MyTasksComponent },
           { path: "", redirectTo: "product-backlog", pathMatch: "full" },
         ],
       },

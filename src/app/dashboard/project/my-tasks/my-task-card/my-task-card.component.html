@@ -1,0 +1,18 @@
+<div class="task-card">
+  <div>
+    <div class="task-title">{{task.title}}</div>
+    <div class="task-subtitle">Zgodba #1</div><!-- TODO: dodaj ime zgodbe -->
+    <div class="task-complexity">Časovna zahtevnost v urah: {{task.estimated_time || "/"}}</div>
+  </div>
+  <div *ngIf="acceptanceAwaiting">
+    <button mat-icon-button (click)="taskAccepted.emit()">
+      <mat-icon class="accept-icon">done</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="taskRejected.emit()">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+    <button mat-icon-button *ngIf="!acceptanceAwaiting && !task.finished" class="more-settings">
+      <mat-icon class="more-icon">more_vert</mat-icon>
+    </button>
+</div>
