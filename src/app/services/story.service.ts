@@ -1,16 +1,15 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { ProductBacklog } from '../interfaces/story.interface';
-import { RootStore } from '../store/root.store';
 
 @Injectable({
   providedIn: "root",
 })
 export class StoryService {
-  constructor(private http: HttpClient, private rootStore: RootStore) {}
+  constructor(private http: HttpClient) {}
 
   getAllStories(projectId: number) {
     return this.http.get<ProductBacklog>(`api/project/${projectId}/story/`);
@@ -18,21 +17,13 @@ export class StoryService {
 
   addStory(projectId: number, data) {
     return this.http
-      .post<any>(`api/project/${projectId}/story/`, data, {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json",
-        }),
-      })
+      .post<any>(`api/project/${projectId}/story/`, data)
       .pipe(catchError((e) => throwError(e)));
   }
 
-  updateStory(projectId: number, storyId: number, data){
+  updateStory(projectId: number, storyId: number, data) {
     return this.http
-      .put<any>(`api/project/${projectId}/story/${storyId}`, data,  {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json",
-        }),
-      })
+      .put<any>(`api/project/${projectId}/story/${storyId}`, data)
       .pipe(catchError((e) => throwError(e)));
   }
 }

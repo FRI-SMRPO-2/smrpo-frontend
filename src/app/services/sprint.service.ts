@@ -4,13 +4,12 @@ import { of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Sprint } from '../interfaces/sprint.interface';
-import { RootStore } from '../store/root.store';
 
 @Injectable({
   providedIn: "root",
 })
 export class SprintService {
-  constructor(private http: HttpClient, private rootStore: RootStore) {}
+  constructor(private http: HttpClient) {}
 
   getAllSprints(projectId: number) {
     return this.http.get<Sprint[]>(`api/project/${projectId}/sprint/`);

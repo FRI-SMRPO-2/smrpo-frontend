@@ -12,7 +12,7 @@ import { TaskService } from 'src/app/services/task.service';
 export class TaskModalComponent implements OnInit {
   form: FormGroup;
   errorMessage: string;
-  addingTask: boolean;
+  processingRequest: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,8 +23,6 @@ export class TaskModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.addingTask = false;
-
     this.form = this.formBuilder.group({
       title: [{ value: this.data.title ?? "", disabled: this.data.editing }],
       description: [
@@ -32,7 +30,7 @@ export class TaskModalComponent implements OnInit {
       ],
       complexity: [
         { value: this.data.complexity ?? "", disabled: this.data.editing },
-        Validators.compose([Validators.min(0)]),
+        [Validators.min(0), Validators.max(200)],
       ],
       assignee: [
         { value: this.data.assignee ?? "", disabled: this.data.editing },
@@ -41,18 +39,15 @@ export class TaskModalComponent implements OnInit {
   }
 
   save() {
-    this.addingTask = true;
+    if (this.processingRequest) return;
 
-    let data = {
-      title: "",
-      description: "",
-      estimated_time: "",
-      assignee_awaiting_id: "",
+    this.processingRequest = true;
+    const data = {
+      title: this.form.value.title,
+      description: this.form.value.description,
+      estimated_time: this.form.value.complexity,
+      assignee_awaiting_id: this.form.value.assignee,
     };
-    data.title = this.form.value.title;
-    data.description = this.form.value.description;
-    data.estimated_time = this.form.value.complexity;
-    data.assignee_awaiting_id = this.form.value.assignee;
 
     this.taskService.addTask(this.data.storyId, data).subscribe(
       () => {
@@ -63,12 +58,16 @@ export class TaskModalComponent implements OnInit {
           });
       },
       (err) => {
-        console.log(err.error.text);
-        this.addingTask = false;
+        this.processingRequest = false;
         this.errorMessage =
           (err.error && err.error.text) ||
+          err.error ||
           "Something went wrong, try again later";
       }
     );
+  }
+
+  get complexity() {
+    return this.form.get("complexity");
   }
 }
