@@ -10,6 +10,7 @@ import { RootStore } from '../../../store/root.store';
 import { Story } from 'src/app/interfaces/story.interface';
 import { Sprint } from 'src/app/interfaces/sprint.interface';
 import { TaskModalComponent } from 'src/app/modals/task-modal/task-modal.component';
+import { ResolveStoriesModalComponent } from 'src/app/modals/resolve-stories-modal/resolve-stories-modal.component';
 
 @Component({
   selector: "app-sprint-backlog",
@@ -70,8 +71,28 @@ export class SprintBacklogComponent implements OnInit {
       });
   }
 
-  viewMyTasks() {
-    console.log("asda")
+  resolveStories() {
+    this.dialog
+      .open(ResolveStoriesModalComponent, {
+        data: {
+          projectId: this.project.id,
+          stories: this.stories,
+        }
+      })
+      .afterClosed()
+      .subscribe((data) => {
+        if (data){
+          if (data.stories){
+            this.rootStore.storyStore.setAllStories(data.stories);
+          }
+          if (data.activeSprint){
+            this.activeSprint = data.activeSprint;
+            this.rootStore.sprintStore.setActiveSprint(data.activeSprint);
+            this.stories = this.activeSprint.stories;
+            this.rootStore.storyStore.setActiveSprintStories(this.stories)
+          }
+        }
+      })
   }
 
   maxTaskTime(story: Story){

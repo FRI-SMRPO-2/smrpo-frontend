@@ -26,4 +26,24 @@ export class StoryService {
       .put<any>(`api/project/${projectId}/story/${storyId}`, data)
       .pipe(catchError((e) => throwError(e)));
   }
+
+  acceptStories(projectId: number, data){
+    return this.http
+      .put<any>(`api/project/${projectId}/story/realize`, data, {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+        }),
+      })
+      .pipe(catchError((e) => throwError(e)));
+  };
+
+  rejectStories(projectId: number, data){
+    return this.http
+      .put<any>(`api/project/${projectId}/story/reject`, data, {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+        }),
+      })
+      .pipe(catchError((e) => throwError(e)));
+  };
 }
