@@ -39,7 +39,7 @@ export class ProjectResolver
       sprints: this.sprintService.getAllSprints(route.params.id),
       activeSprint: this.sprintService.getActiveSprint(route.params.id),
       stories: this.storyService.getAllStories(route.params.id),
-      userTasks: this.userService.getMyTasks(),
+      userTasks: this.userService.getMyTasks(+route.params.id),
       user: this.rootStore.userStore.user.is_superuser
         ? of(null)
         : this.userService.getProjectRole(route.params.id),

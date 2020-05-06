@@ -26,6 +26,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   projectId: number;
 
+  awaitingTasksNo: number;
+
   constructor(private route: ActivatedRoute, private rootStore: RootStore) {}
 
   ngOnInit() {
@@ -36,12 +38,19 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.activeSprint = data.project.activeSprint;
       this.userRoles = data.project.user ? data.project.user.role : [];
       this.userTasks = data.project.userTasks;
+      this.awaitingTasksNo = this.userTasks.assignee_awaiting_tasks.length;
       this.rootStore.userStore.setProjectRoles(this.userRoles);
     });
 
     this.rootStore.userStore.user$.subscribe(
       (user) => (this.isAdmin = user.is_superuser)
     );
+
+    this.rootStore.userStore.userTasks$.subscribe((tasks) => {
+      console.log(tasks);
+      this.userTasks = tasks;
+      this.awaitingTasksNo = tasks.assignee_awaiting_tasks.length;
+    });
   }
 
   ngOnDestroy() {

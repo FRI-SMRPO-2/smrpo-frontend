@@ -9,6 +9,10 @@ export class ProjectStore {
     return this._activeProject.asObservable();
   }
 
+  get activeProject() {
+    return this._activeProject.value;
+  }
+
   setActiveProject(project: Project) {
     this._activeProject.next(project);
   }

@@ -7,13 +7,7 @@
       <div class="sidenav-item" routerLink="product-backlog" routerLinkActive="active-item">Product backlog</div>
       <div class="sidenav-item" routerLink="sprint-backlog" routerLinkActive="active-item">Sprint backlog</div>
       <div 
-       [matBadgeHidden]="!userTasks.assignee_awaiting_tasks.length"
-       [matBadge]="userTasks.assignee_awaiting_tasks.length" 
-        matBadgePosition="below after" 
-        matBadgeOverlap=false
-        matBadgeSize="small"
-        matBadgeColor="accent"
-        class="sidenav-item task-item"
+        class="sidenav-item task-item badge-item"
         routerLink="my-tasks"
         routerLinkActive="active-item"
       >

@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { TaskService } from '../../../services/task.service';
 import { UserService } from '../../../services/user.service';
+import { RootStore } from '../../../store/root.store';
 
 @Component({
   selector: "app-my-tasks",
@@ -20,19 +21,23 @@ export class MyTasksComponent implements OnInit {
   constructor(
     private userService: UserService,
     private taskService: TaskService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private rootStore: RootStore
   ) {}
 
   ngOnInit(): void {
     //TODO: Posortiraj glede na projekt id
-    this.userService.getMyTasks().subscribe((tasks) => {
-      this.tasks.awaiting = tasks.assignee_awaiting_tasks;
-      this.tasks.unrealized = tasks.assigned_tasks.filter(
-        (t) => !t.active && !t.finished
-      );
-      this.tasks.finished = tasks.assigned_tasks.filter((t) => t.finished);
-      this.tasks.active = tasks.assigned_tasks.filter((t) => t.active);
-    });
+    this.userService
+      .getMyTasks(this.rootStore.projectStore.activeProject.id)
+      .subscribe((tasks) => {
+        this.tasks.awaiting = tasks.assignee_awaiting_tasks;
+        this.tasks.unrealized = tasks.assigned_tasks.filter(
+          (t) => !t.active && !t.finished
+        );
+        this.tasks.finished = tasks.assigned_tasks.filter((t) => t.finished);
+        this.tasks.active = tasks.assigned_tasks.filter((t) => t.active);
+        console.log(tasks);
+      });
   }
 
   taskAccepted(id: number, index: number) {

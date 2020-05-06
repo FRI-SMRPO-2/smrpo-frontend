@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { UserTasks } from '../interfaces/task.interface';
 import { User } from '../interfaces/user.interface';
@@ -18,8 +18,20 @@ export class UserService {
       .pipe(tap((user) => this.rootStore.userStore.setUser(user)));
   }
 
-  getMyTasks() {
-    return this.http.get<UserTasks>("api/user/me/tasks");
+  getMyTasks(projectId?: number) {
+    return this.http.get<UserTasks>("api/user/me/tasks").pipe(
+      map((tasks: UserTasks) => {
+        if (projectId) {
+          tasks.assigned_tasks = tasks.assigned_tasks.filter(
+            (task) => task.project_id === projectId
+          );
+          tasks.assignee_awaiting_tasks = tasks.assignee_awaiting_tasks.filter(
+            (task) => task.project_id === projectId
+          );
+        }
+        return tasks;
+      })
+    );
   }
 
   getProjectRole(projectId: number) {
