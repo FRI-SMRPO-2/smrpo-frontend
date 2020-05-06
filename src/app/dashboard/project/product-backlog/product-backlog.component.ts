@@ -175,6 +175,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
           editing: true,
           unassigned,
           type: "edit",
+          rejectionComment: story.rejection_comment
         },
       })
       .afterClosed()

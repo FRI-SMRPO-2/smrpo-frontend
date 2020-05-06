@@ -64,6 +64,19 @@
         </div>
       </mat-tab>
 
+      <mat-tab label="Komentarji" *ngIf="data.unassigned && data.rejectionComment!=null">
+        <div style="height:340.5px">
+          <textarea
+            [ngStyle]="{padding: '30px', maxWidth:'720px'}"
+            matInput
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="5"
+            cdkAutosizeMaxRows="14"
+            [disabled]="true">{{data.rejectionComment}}
+          </textarea>
+        </div>
+      </mat-tab>
+
     </mat-tab-group>
 
     <div *ngIf="errorMessage" class="error-message">
