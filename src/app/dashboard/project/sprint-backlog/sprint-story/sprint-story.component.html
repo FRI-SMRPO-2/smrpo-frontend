@@ -1,62 +1,98 @@
-<mat-expansion-panel class="sprint-story">
-  <mat-expansion-panel-header>
-    <mat-panel-title class="sprint-story-priority" [ngClass]="{
-      'orange': story.priority.id === 1,
-      'blue': story.priority.id === 2,
-      'green': story.priority.id === 3,
-      'grey': story.priority.id === 4}">
-      {{story.priority.id | priority}}
-    </mat-panel-title>
-    <mat-panel-description class = "sprint-story-header">
-      <div class="sprint-story-description">
-        <div class="sprint-story-name">
-          {{story.name}}
-        </div>
-        <div class="sprint-story-complexity">
-          Časovna zahtevnost v točkah: {{story.time_complexity || "/"}}
-        </div>
-      </div>
-      <div class = "sprint-story-edit">
-        <button
-          mat-raised-button
-          color="primary"
-          class="dialog-button"
-          *ngIf="(userRoles.includes('Admin') || userRoles.includes('Developer') || userRoles.includes('Scrum Master') )&& !story.realized"
-          (click)="editStory($event)"> Dodaj nalogo
-        </button>
-      </div>
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-
-  <mat-divider></mat-divider>
-
-  <div class = "tasks-container">
-    <div class="data-container">
-      <div class="data-section">
-        <span class="section-title"> Nedodeljene naloge </span>
-        <div class="data-column">
-          <app-story-task *ngFor="let task of tasks.unassigned" [task] = "task"></app-story-task>
-        </div>
-      </div>
-      <div class="data-section">
-        <span class="section-title"> Dodeljene naloge </span>
-        <div class="data-column">
-          <app-story-task *ngFor="let task of tasks.assigned" [task] = "task"></app-story-task>
-        </div>
-      </div>
-      <div class="data-section">
-        <span class="section-title"> Aktivne naloge </span>
-        <div class="data-column">
-          <app-story-task *ngFor="let task of tasks.active" [task] = "task"></app-story-task>
-        </div>
-      </div>
-      <div class="data-section">
-        <span class="section-title"> Zaključene naloge </span>
-        <div class="data-column">
-          <app-story-task *ngFor="let task of tasks.finished" [task] = "task"></app-story-task>
-        </div>
-      </div>
-    </div>
+<div fxLayout="row" [ngStyle]="{paddingBottom: '15px'}">
+  <div class="resolve-stories-checkbox" *ngIf="this.resolvingStories ">
+    <mat-checkbox [disabled]="!this.story.all_tasks_finished || this.story.realized" [checked]="accepted" name="accept" (change)="toggleCheckbox($event)"></mat-checkbox>
+  </div>
+  <div class="resolve-stories-checkbox" *ngIf="this.resolvingStories ">
+    <mat-checkbox [disabled]="this.story.realized" [checked]="rejected" name="reject" (change)="toggleCheckbox($event)"></mat-checkbox>
+  </div>
+  <div class="resolve-stories-comment" *ngIf="this.resolvingStories && this.rejected">
+    <mat-form-field>
+      <mat-label>Komentar (neobvezno)</mat-label>
+      <textarea
+        matInput
+        placeholder=""
+        [(ngModel)] = "comment"
+        (ngModelChange)="updateComment({id: this.story.id, comment: $event})"
+        maxlength="255"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="2"
+        cdkAutosizeMaxRows="5"
+      >
+      </textarea>
+      <mat-hint
+        *ngIf="this.rejected"
+        align="end"
+      >
+      {{comment.length}} / 255
+      </mat-hint>
+    </mat-form-field>
   </div>
 
-</mat-expansion-panel>
+  <div fxFlex [ngStyle]="{alignSelf: 'center'}">
+    <mat-expansion-panel class="sprint-story">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="sprint-story-priority" [ngClass]="{
+          'orange': story.priority.id === 1,
+          'blue': story.priority.id === 2,
+          'green': story.priority.id === 3,
+          'grey': story.priority.id === 4}">
+          {{story.priority.id | priority}}
+        </mat-panel-title>
+        <mat-panel-description class = "sprint-story-header">
+          <div class="sprint-story-description">
+
+            <div class="sprint-story-name">
+              #{{story.project_id}} {{story.name}}
+            </div>
+            <div class="sprint-story-complexity">
+              Časovna zahtevnost v točkah: {{story.time_complexity || "/"}}
+            </div>
+          </div>
+          <div class = "sprint-story-edit">
+            <div class="sprint-story-realized" *ngIf="story.realized">
+              REALIZIRANA
+            </div>
+            <button
+              mat-raised-button
+              color="primary"
+              class="dialog-button"
+              *ngIf="(userRoles.includes('Admin') || userRoles.includes('Developer') || userRoles.includes('Scrum Master') )&& !story.realized"
+              (click)="editStory($event)"> Dodaj nalogo
+            </button>
+          </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-divider></mat-divider>
+
+      <div class = "tasks-container">
+        <div class="data-container">
+          <div class="data-section">
+            <span class="section-title"> Nedodeljene naloge </span>
+            <div class="data-column">
+              <app-story-task *ngFor="let task of tasks.unassigned" [task] = "task"></app-story-task>
+            </div>
+          </div>
+          <div class="data-section">
+            <span class="section-title"> Dodeljene naloge </span>
+            <div class="data-column">
+              <app-story-task *ngFor="let task of tasks.assigned" [task] = "task"></app-story-task>
+            </div>
+          </div>
+          <div class="data-section">
+            <span class="section-title"> Aktivne naloge </span>
+            <div class="data-column">
+              <app-story-task *ngFor="let task of tasks.active" [task] = "task"></app-story-task>
+            </div>
+          </div>
+          <div class="data-section">
+            <span class="section-title"> Zaključene naloge </span>
+            <div class="data-column">
+              <app-story-task *ngFor="let task of tasks.finished" [task] = "task"></app-story-task>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div>

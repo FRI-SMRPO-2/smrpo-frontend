@@ -10,7 +10,10 @@ import { RootStore } from '../../../store/root.store';
 import { Story } from 'src/app/interfaces/story.interface';
 import { Sprint } from 'src/app/interfaces/sprint.interface';
 import { TaskModalComponent } from 'src/app/modals/task-modal/task-modal.component';
-import { ResolveStoriesModalComponent } from 'src/app/modals/resolve-stories-modal/resolve-stories-modal.component';
+import { forkJoin } from 'rxjs/internal/observable/forkJoin';
+import { StoryService } from 'src/app/services/story.service';
+import { SprintService } from 'src/app/services/sprint.service';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: "app-sprint-backlog",
@@ -27,10 +30,19 @@ export class SprintBacklogComponent implements OnInit {
   sprints: Sprint[];
   activeSprint: Sprint;
 
+  resolvingStories: boolean;
+  resolvingStoriesSendingData: boolean;
+  acceptedStories = [];
+  rejectedStories = [];
+
+  errorMessage: String;
+
   constructor(
     private route: ActivatedRoute,
     private rootStore: RootStore,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private storyService: StoryService,
+    private sprintService: SprintService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +69,9 @@ export class SprintBacklogComponent implements OnInit {
     this.rootStore.userStore.userRoles$.subscribe((userRoles)=>{
       this.userRoles = userRoles ?? [];
     })
+
+    this.resolvingStories = false;
+    this.resolvingStoriesSendingData = false;
   }
 
   viewSprints() {
@@ -71,7 +86,92 @@ export class SprintBacklogComponent implements OnInit {
       });
   }
 
+  acceptStory(id: number){
+    const index1 = this.acceptedStories.indexOf(id);
+    if (index1 === -1){
+      this.acceptedStories.push(id)
+    }
+    else{
+      this.acceptedStories.splice(index1, 1)
+    }
+
+    const index2 = this.rejectedStories.findIndex(x => x.id === id);
+    if (index2 >= 0) {
+      this.rejectedStories.splice(index2, 1);
+    }
+  }
+
+  rejectStory(id: number){
+
+    const index1 = this.acceptedStories.indexOf(id);
+    if (index1>=0){
+      this.acceptedStories.splice(index1, 1);
+    }
+
+    const index2 = this.rejectedStories.findIndex(x => x.id === id);
+    if (index2>=0) {
+      this.rejectedStories.splice(index2,1)
+    }
+    else{
+      this.rejectedStories.push(
+        {
+          id: id,
+          comment: ""
+        }
+      )
+    }
+  }
+
+  rejectionComment(data: {id: number, comment: string}){
+    let object = this.rejectedStories.find(x => x.id === data.id);
+    object.comment = data.comment;
+  }
+
   resolveStories() {
+    this.resolvingStoriesSendingData = true;
+    this.errorMessage = '';
+
+    forkJoin([
+      this.acceptedStories.length > 0 ? this.storyService.acceptStories(this.project.id, {"stories": this.acceptedStories}) : of({}),
+      this.rejectedStories.length > 0 ? this.storyService.rejectStories(this.project.id, {"stories": this.rejectedStories}) : of({})
+    ]).subscribe(
+      ()=> {
+        forkJoin([
+          this.storyService.getAllStories(this.project.id),
+          this.sprintService.getActiveSprint(this.project.id)
+        ])
+        .subscribe(
+          ([stories, activeSprint]) =>{
+            this.resolvingStories = false;
+            this.resolvingStoriesSendingData = false;
+
+            if (stories){
+              this.rootStore.storyStore.setAllStories(stories);
+            }
+
+            if (activeSprint){
+              this.activeSprint = activeSprint;
+              this.rootStore.sprintStore.setActiveSprint(activeSprint);
+              this.stories = this.activeSprint.stories;
+              this.rootStore.storyStore.setActiveSprintStories(this.stories)
+            }
+          }
+        )
+      },
+      (err) =>{
+        console.log(err),
+        this.resolvingStoriesSendingData = false;
+        // TODO: probably not handling correctly
+        if (err.status<500){
+          this.errorMessage = err.error === undefined ? 'Something went wrong, try again later' : err.error;
+        }
+        else{
+          this.errorMessage = 'Something went wrong, try again later';
+        }
+      }
+    )
+
+    /*
     this.dialog
       .open(ResolveStoriesModalComponent, {
         data: {
@@ -93,6 +193,7 @@ export class SprintBacklogComponent implements OnInit {
           }
         }
       })
+      */
   }
 
   maxTaskTime(story: Story){

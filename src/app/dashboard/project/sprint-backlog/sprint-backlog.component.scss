@@ -8,28 +8,33 @@
   min-width: 1000px;
 }
 
-.data-container {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 20px;
-  height: 80%;
-
-  .data-section {
-    .section-title {
-      font-weight: 500;
-      font-size: 16px;
-    }
-
-    .data-column {
-      margin-top: 10px;
-    }
-  }
+.resolve-stories-header{
+  width:120px;
+  height: 20px;
 }
+
+.resolve-stories-header-title{
+  width: 60px;
+  text-align: center;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.stories-container{
+  min-width: 1240px;
+}
+
 
 #info-section {
   margin-top: 20px;
   margin-bottom: 20px;
   font-size: 16px;
   font-weight: 500;
+}
+
+.resolving-stories-error{
+  display: inline;
+  margin-right: 10px;
+  color: red;
+  font-size: 16;
 }

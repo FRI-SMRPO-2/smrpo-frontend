@@ -27,8 +27,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from '../shared/shared.module';
 import { TaskModalComponent } from './task-modal/task-modal.component';
-import { ResolveStoriesModalComponent } from './resolve-stories-modal/resolve-stories-modal.component';
-import { ResolveStoryCardComponent } from './resolve-stories-modal/resolve-story-card/resolve-story-card.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
@@ -39,9 +37,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     StoryModalComponent,
     UserModalComponent,
     TaskModalComponent,
-    SprintCardComponent,
-    ResolveStoriesModalComponent,
-    ResolveStoryCardComponent
+    SprintCardComponent
   ],
   imports: [
     CommonModule,

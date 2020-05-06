@@ -2,7 +2,11 @@
   <div class="header">
     <span class="title">Sprint backlog</span>
     <div>
+      <div class="resolving-stories-error">
+        {{this.errorMessage}}
+      </div>
       <button
+        *ngIf="!this.resolvingStories"
         mat-raised-button
         color="accent"
         class="dialog-button"
@@ -13,10 +17,31 @@
         mat-raised-button
         color="primary"
         class="dialog-button"
-        *ngIf="(this.isAdmin || this.userRoles.includes('Product Owner')) && activeSprint!=null"
+        *ngIf="(this.isAdmin || this.userRoles.includes('Product Owner')) && activeSprint!=null && !this.resolvingStories"
         [ngStyle]="{marginLeft: '5px'}"
-        (click)="resolveStories()">
+        (click)="this.resolvingStories = true">
         Sprejmi / Zavrni zgodbe
+      </button>
+      <button
+        *ngIf="this.resolvingStories"
+        mat-raised-button
+        color="accent"
+        class="dialog-button"
+        [disabled]="this.resolvingStoriesSendingData"
+        (click)="resolveStories()"
+        >
+        Potrdi
+      </button>
+      <button
+        *ngIf="this.resolvingStories"
+        mat-raised-button
+        color="secondary"
+        class="dialog-button"
+        [disabled]="this.resolvingStoriesSendingData"
+        [ngStyle]="{marginLeft: '5px'}"
+        (click)="this.resolvingStories = false; this.errorMessage='' "
+        >
+        Prekliči
       </button>
     </div>
   </div>
@@ -31,13 +56,30 @@
     <div *ngIf="activeSprint!=null && stories.length === 0">
       V aktivnem sprintu trenutno ni zgodb.
     </div>
-    <app-sprint-story
-    *ngFor="let story of stories"
-    [story] = "story"
-    [tasks] = "story.tasks"
-    [userRoles] = "this.isAdmin ? ['Admin'] : this.userRoles"
-    (editButtonClick)="addTask(story)"
-  ></app-sprint-story>
+
+    <div class="stories-container">
+      <div class = "resolve-stories-header">
+        <div class="resolve-stories-header-title" *ngIf="this.resolvingStories">
+          Sprejmi
+        </div>
+        <div class="resolve-stories-header-title" *ngIf="this.resolvingStories">
+          Zavrni
+        </div>
+      </div>
+      <div *ngFor="let story of stories">
+        <app-sprint-story
+          [resolvingStories]="this.resolvingStories"
+          [story] = "story"
+          [tasks] = "story.tasks"
+          [userRoles] = "this.isAdmin ? ['Admin'] : this.userRoles"
+          (editButtonClick)="addTask(story)"
+          (acceptStory) = "acceptStory($event)"
+          (rejectStory) = "rejectStory($event)"
+          (rejectionComment) = "rejectionComment($event)"
+        ></app-sprint-story>
+      </div>
+    </div>
+
   </div>
 
 </div>
