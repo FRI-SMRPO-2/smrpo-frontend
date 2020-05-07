@@ -1,29 +1,27 @@
 @import "../../../../variables";
 
-
-
-.header{
+.header {
   justify-content: space-between;
   display: flex;
+  align-items: center;
   min-width: 1000px;
 }
 
-.resolve-stories-header{
-  width:120px;
+.resolve-stories-header {
+  width: 120px;
   height: 20px;
 }
 
-.resolve-stories-header-title{
+.resolve-stories-header-title {
   width: 60px;
   text-align: center;
   font-weight: 500;
   display: inline-block;
 }
 
-.stories-container{
+.stories-container {
   min-width: 1240px;
 }
-
 
 #info-section {
   margin-top: 20px;
@@ -32,7 +30,7 @@
   font-weight: 500;
 }
 
-.resolving-stories-error{
+.resolving-stories-error {
   display: inline;
   margin-right: 10px;
   color: red;

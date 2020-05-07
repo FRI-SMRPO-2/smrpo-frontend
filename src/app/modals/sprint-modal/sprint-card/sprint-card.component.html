@@ -3,8 +3,8 @@
     <mat-card-title class="sprint-card-title">
       {{startDate |sprintDate}} - {{endDate | sprintDate}}
     </mat-card-title>
-    <div class="activeSprintTitle" *ngIf="active">
-      AKTIVNI SPRINT
+    <div class="active-sprint-title" *ngIf="active">
+      Aktivni sprint
     </div>
     <button mat-icon-button color="primary" class="options-btn" (click)="editSprint()">
       <mat-icon>edit</mat-icon>

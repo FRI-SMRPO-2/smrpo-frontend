@@ -5,24 +5,22 @@
   padding: 10px;
 }
 
-.activeSprintTitle{
-  color: green;
+.active-sprint-title {
+  color: $green;
+  font-weight: 500;
 }
 
-.sprint-card-header{
+.sprint-card-header {
   justify-content: space-between;
   align-items: center;
 
-  .mat-card-title{
+  .mat-card-title {
     margin-bottom: 0px;
   }
 }
 
-.sprint-card-title{
+.sprint-card-title {
   margin-bottom: 0px;
   font-weight: 500;
   font-size: 16px;
 }
-
-
-
