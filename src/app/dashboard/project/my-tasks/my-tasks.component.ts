@@ -26,7 +26,7 @@ export class MyTasksComponent implements OnInit {
   constructor(
     private userService: UserService,
     private taskService: TaskService,
-    private sprintServiec: SprintService,
+    private sprintService: SprintService,
     private snackBar: MatSnackBar,
     private rootStore: RootStore,
     private dialog: MatDialog
@@ -52,7 +52,7 @@ export class MyTasksComponent implements OnInit {
         const task = this.tasks.awaiting[index];
         this.tasks.unrealized.push(task);
         this.tasks.awaiting.splice(index, 1);
-        this.sprintServiec
+        this.sprintService
           .getActiveSprint(this.projectId)
           .subscribe((activeSprint) => {
             this.rootStore.sprintStore.setActiveSprint(activeSprint);
@@ -69,6 +69,14 @@ export class MyTasksComponent implements OnInit {
     this.taskService.rejectTask(id).subscribe(
       () => {
         this.tasks.awaiting.splice(index, 1);
+        this.sprintService
+          .getActiveSprint(this.projectId)
+          .subscribe((activeSprint) => {
+            this.rootStore.sprintStore.setActiveSprint(activeSprint);
+            this.rootStore.storyStore.setActiveSprintStories(
+              activeSprint.stories
+            );
+          });
       },
       (err) => this.showErrorSnackBar(err)
     );

@@ -1,21 +1,48 @@
 <div class="task-card">
-    <div>
-      <div class="story-task-title">
-        {{task.title}}
-      </div>
-      <div>
-        <div *ngIf="task.assignee || task.assignee_awaiting" class="story-assignee">
-          Dodeljena: {{task.assignee || task.assignee_awaiting}}
-            <mat-icon *ngIf="task.assignee && !task.assignee_awaiting; else notAccepted" class="story-assignee-accepted">done</mat-icon>
-            <ng-template #notAccepted>
-              <mat-icon class="story-assignee-awaiting">close</mat-icon>
-            </ng-template>
-        </div>
-      </div>
+  <div>
+    <div class="story-task-title">
+      {{task.title}}
     </div>
-    <div>
-    <button mat-icon-button color="primary" aria-label="More info" class="options-btn" (click)="editTask()">
-        <span class="material-icons">more_vert</span>
+    <div *ngIf="task.assignee || task.assignee_awaiting" class="story-assignee">
+      Dodeljena: {{task.assignee || task.assignee_awaiting}}
+        <mat-icon *ngIf="task.assignee && !task.assignee_awaiting; else notAccepted" class="story-assignee-accepted">done</mat-icon>
+        <ng-template #notAccepted>
+          <mat-icon class="story-assignee-awaiting">close</mat-icon>
+        </ng-template>
+    </div>
+  </div>
+  <div>
+  <!-- <button mat-icon-button color="primary" aria-label="More info" class="options-btn" (click)="editTask()">
+      <span class="material-icons">more_vert</span>
+    </button> -->
+    <button
+    mat-icon-button
+    class="more-settings"
+    [matMenuTriggerFor]="menu"
+    >
+      <mat-icon class="more-icon">more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button mat-menu-item class="menu-btn" (click)="editTask()">Uredi</button>
+      <button 
+        mat-menu-item 
+        *ngIf="(!task.assignee && !task.assignee_awaiting) || task.assignee_awaiting == currentUser.username"
+        class="menu-btn"
+        (click)="taskAccepted.emit()"
+      >
+        Sprejmi
       </button>
-    </div>
+      <button 
+        mat-menu-item
+        *ngIf="task.assignee_awaiting == currentUser.username"
+        class="menu-btn"
+        (click)="taskRejected.emit()"
+      >
+        Zavrni
+      </button>
+      <button *ngIf="currentUser.username === task.assignee" mat-menu-item class="menu-btn">Zaključi</button>
+    <!-- <button mat-menu-item class="menu-btn reject" *ngIf="task.active">Končaj z delom</button>
+      <button mat-menu-item class="menu-btn accept" *ngIf="!task.active">Prični z delom</button> -->
+    </mat-menu>
+  </div>
 </div>

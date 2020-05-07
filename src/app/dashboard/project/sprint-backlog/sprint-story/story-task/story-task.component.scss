@@ -11,24 +11,32 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+
+  .more-settings {
+    position: absolute;
+    opacity: 0.5;
+    top: 0;
+    right: 0;
+  }
 }
 
 .story-task-title {
   font-weight: 500;
 }
 
-.story-time-complexity{
+.story-time-complexity {
   margin-top: 5px;
   font-size: 12px;
-  color: rgba(0,0,0,.54)
+  color: rgba(0, 0, 0, 0.54);
 }
 
-.story-assignee{
+.story-assignee {
   font-size: 12px;
-  color: rgba(0,0,0,.54)
+  color: rgba(0, 0, 0, 0.54);
 }
 
-.story-assignee-accepted{
+.story-assignee-accepted {
   color: green;
   position: relative;
   top: 3px;
@@ -38,7 +46,7 @@
   margin-bottom: 0px;
 }
 
-.story-assignee-awaiting{
+.story-assignee-awaiting {
   color: red;
   font-size: 16px;
   position: relative;
