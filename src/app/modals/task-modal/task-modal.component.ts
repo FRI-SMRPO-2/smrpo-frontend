@@ -59,11 +59,13 @@ export class TaskModalComponent implements OnInit {
           });
       },
       (err) => {
+        console.log(err);
         this.processingRequest = false;
         this.errorMessage =
           (err.error && err.error.text) ||
+          (err.error.__all__ && err.error.__all__.join(" ")) ||
           err.error ||
-          "Something went wrong, try again later";
+          "Prišlo je do napake.";
       }
     );
   }
