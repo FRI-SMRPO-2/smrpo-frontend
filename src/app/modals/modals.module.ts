@@ -28,6 +28,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from '../shared/shared.module';
 import { TaskModalComponent } from './task-modal/task-modal.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     StoryModalComponent,
     UserModalComponent,
     TaskModalComponent,
-    SprintCardComponent
+    SprintCardComponent,
+    ConfirmationComponent
   ],
   imports: [
     CommonModule,

@@ -2,18 +2,18 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs/internal/observable/forkJoin';
+import { of } from 'rxjs/internal/observable/of';
+import { Sprint } from 'src/app/interfaces/sprint.interface';
+import { Story } from 'src/app/interfaces/story.interface';
+import { TaskModalComponent } from 'src/app/modals/task-modal/task-modal.component';
+import { SprintService } from 'src/app/services/sprint.service';
+import { StoryService } from 'src/app/services/story.service';
 
 import { Project } from '../../../interfaces/project.interface';
 import { User } from '../../../interfaces/user.interface';
 import { SprintModalComponent } from '../../../modals/sprint-modal/sprint-modal.component';
 import { RootStore } from '../../../store/root.store';
-import { Story } from 'src/app/interfaces/story.interface';
-import { Sprint } from 'src/app/interfaces/sprint.interface';
-import { TaskModalComponent } from 'src/app/modals/task-modal/task-modal.component';
-import { forkJoin } from 'rxjs/internal/observable/forkJoin';
-import { StoryService } from 'src/app/services/story.service';
-import { SprintService } from 'src/app/services/sprint.service';
-import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: "app-sprint-backlog",
@@ -56,120 +56,121 @@ export class SprintBacklogComponent implements OnInit {
 
     this.rootStore.storyStore.activeSprintStories$.subscribe((stories) => {
       this.stories = stories;
+      console.log(stories);
     });
 
     this.rootStore.sprintStore.allSprints$.subscribe((sprints) => {
       this.sprints = sprints;
-    })
+    });
 
     this.rootStore.sprintStore.activeSprint$.subscribe((activeSprint) => {
       this.activeSprint = activeSprint;
-    })
+    });
 
-    this.rootStore.userStore.userRoles$.subscribe((userRoles)=>{
+    this.rootStore.userStore.userRoles$.subscribe((userRoles) => {
       this.userRoles = userRoles ?? [];
-    })
+    });
 
     this.resolvingStories = false;
     this.resolvingStoriesSendingData = false;
   }
 
   viewSprints() {
-    this.dialog
-      .open(SprintModalComponent, {
-        data: {
-          projectId: this.project.id,
-          sprints: this.sprints,
-          activeSprintId: this.activeSprint==null ? 0 : this.activeSprint.id,
-          userRoles: this.isAdmin ? ['Admin'] : this.userRoles
-        },
-      });
+    this.dialog.open(SprintModalComponent, {
+      data: {
+        projectId: this.project.id,
+        sprints: this.sprints,
+        activeSprintId: this.activeSprint == null ? 0 : this.activeSprint.id,
+        userRoles: this.isAdmin ? ["Admin"] : this.userRoles,
+      },
+    });
   }
 
-  acceptStory(id: number){
+  acceptStory(id: number) {
     const index1 = this.acceptedStories.indexOf(id);
-    if (index1 === -1){
-      this.acceptedStories.push(id)
-    }
-    else{
-      this.acceptedStories.splice(index1, 1)
+    if (index1 === -1) {
+      this.acceptedStories.push(id);
+    } else {
+      this.acceptedStories.splice(index1, 1);
     }
 
-    const index2 = this.rejectedStories.findIndex(x => x.id === id);
+    const index2 = this.rejectedStories.findIndex((x) => x.id === id);
     if (index2 >= 0) {
       this.rejectedStories.splice(index2, 1);
     }
   }
 
-  rejectStory(id: number){
-
+  rejectStory(id: number) {
     const index1 = this.acceptedStories.indexOf(id);
-    if (index1>=0){
+    if (index1 >= 0) {
       this.acceptedStories.splice(index1, 1);
     }
 
-    const index2 = this.rejectedStories.findIndex(x => x.id === id);
-    if (index2>=0) {
-      this.rejectedStories.splice(index2,1)
-    }
-    else{
-      this.rejectedStories.push(
-        {
-          id: id,
-          comment: ""
-        }
-      )
+    const index2 = this.rejectedStories.findIndex((x) => x.id === id);
+    if (index2 >= 0) {
+      this.rejectedStories.splice(index2, 1);
+    } else {
+      this.rejectedStories.push({
+        id: id,
+        comment: "",
+      });
     }
   }
 
-  rejectionComment(data: {id: number, comment: string}){
-    let object = this.rejectedStories.find(x => x.id === data.id);
+  rejectionComment(data: { id: number; comment: string }) {
+    let object = this.rejectedStories.find((x) => x.id === data.id);
     object.comment = data.comment;
   }
 
   resolveStories() {
     this.resolvingStoriesSendingData = true;
-    this.errorMessage = '';
+    this.errorMessage = "";
 
     forkJoin([
-      this.acceptedStories.length > 0 ? this.storyService.acceptStories(this.project.id, {"stories": this.acceptedStories}) : of({}),
-      this.rejectedStories.length > 0 ? this.storyService.rejectStories(this.project.id, {"stories": this.rejectedStories}) : of({})
+      this.acceptedStories.length > 0
+        ? this.storyService.acceptStories(this.project.id, {
+            stories: this.acceptedStories,
+          })
+        : of({}),
+      this.rejectedStories.length > 0
+        ? this.storyService.rejectStories(this.project.id, {
+            stories: this.rejectedStories,
+          })
+        : of({}),
     ]).subscribe(
-      ()=> {
+      () => {
         forkJoin([
           this.storyService.getAllStories(this.project.id),
-          this.sprintService.getActiveSprint(this.project.id)
-        ])
-        .subscribe(
-          ([stories, activeSprint]) =>{
-            this.resolvingStories = false;
-            this.resolvingStoriesSendingData = false;
+          this.sprintService.getActiveSprint(this.project.id),
+        ]).subscribe(([stories, activeSprint]) => {
+          this.resolvingStories = false;
+          this.resolvingStoriesSendingData = false;
 
-            if (stories){
-              this.rootStore.storyStore.setAllStories(stories);
-            }
-
-            if (activeSprint){
-              this.activeSprint = activeSprint;
-              this.rootStore.sprintStore.setActiveSprint(activeSprint);
-              this.stories = this.activeSprint.stories;
-              this.rootStore.storyStore.setActiveSprintStories(this.stories)
-            }
+          if (stories) {
+            this.rootStore.storyStore.setAllStories(stories);
           }
-        )
+
+          if (activeSprint) {
+            this.activeSprint = activeSprint;
+            this.rootStore.sprintStore.setActiveSprint(activeSprint);
+            this.stories = this.activeSprint.stories;
+            this.rootStore.storyStore.setActiveSprintStories(this.stories);
+          }
+        });
       },
-      (err) =>{
-        console.log(err),
-        this.resolvingStoriesSendingData = false;
+      (err) => {
+        console.log(err), (this.resolvingStoriesSendingData = false);
         // TODO: probably not handling correctly
-        if (err.status<500){
-          this.errorMessage = err.error === undefined ? 'Something went wrong, try again later' : err.error;
-        }
-        else{
-          this.errorMessage = 'Something went wrong, try again later';
+        if (err.status < 500) {
+          this.errorMessage =
+            err.error === undefined
+              ? "Something went wrong, try again later"
+              : err.error;
+        } else {
+          this.errorMessage = "Something went wrong, try again later";
         }
       }
-    )
+    );
 
     /*
     this.dialog
@@ -196,46 +197,46 @@ export class SprintBacklogComponent implements OnInit {
       */
   }
 
-  maxTaskTime(story: Story){
+  maxTaskTime(story: Story) {
     let storyComplexity = story.time_complexity;
     let usedComplexity = 0;
 
-    for (let task of story.tasks.unassigned){
+    for (let task of story.tasks.unassigned) {
       usedComplexity = usedComplexity + task.estimated_time;
     }
 
-    for (let task of story.tasks.assigned){
+    for (let task of story.tasks.assigned) {
       usedComplexity = usedComplexity + task.estimated_time;
     }
 
-    for (let task of story.tasks.active){
+    for (let task of story.tasks.active) {
       usedComplexity = usedComplexity + task.estimated_time;
     }
 
-    for (let task of story.tasks.finished){
+    for (let task of story.tasks.finished) {
       usedComplexity = usedComplexity + task.estimated_time;
     }
 
     return Math.max(0, storyComplexity - usedComplexity);
   }
 
-  addTask(story: Story){
+  addTask(story: Story) {
     this.dialog
       .open(TaskModalComponent, {
         data: {
           projectId: this.project.id,
           storyId: story.id,
           users: this.project.developers,
-          availableComplexity: this.maxTaskTime(story)
-        }
+          availableComplexity: this.maxTaskTime(story),
+        },
       })
       .afterClosed()
       .subscribe((activeSprint) => {
-        if (activeSprint){
+        if (activeSprint) {
           this.activeSprint = activeSprint;
           this.rootStore.sprintStore.setActiveSprint(activeSprint);
           this.stories = this.activeSprint.stories;
-          this.rootStore.storyStore.setActiveSprintStories(this.stories)
+          this.rootStore.storyStore.setActiveSprintStories(this.stories);
         }
       });
   }

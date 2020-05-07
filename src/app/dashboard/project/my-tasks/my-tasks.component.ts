@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { ConfirmationComponent } from '../../../modals/confirmation/confirmation.component';
+import { SprintService } from '../../../services/sprint.service';
 import { TaskService } from '../../../services/task.service';
 import { UserService } from '../../../services/user.service';
 import { RootStore } from '../../../store/root.store';
@@ -11,6 +14,8 @@ import { RootStore } from '../../../store/root.store';
   styleUrls: ["./my-tasks.component.scss"],
 })
 export class MyTasksComponent implements OnInit {
+  projectId: number;
+
   tasks = {
     finished: [],
     active: [],
@@ -21,23 +26,24 @@ export class MyTasksComponent implements OnInit {
   constructor(
     private userService: UserService,
     private taskService: TaskService,
+    private sprintServiec: SprintService,
     private snackBar: MatSnackBar,
-    private rootStore: RootStore
+    private rootStore: RootStore,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    //TODO: Posortiraj glede na projekt id
-    this.userService
-      .getMyTasks(this.rootStore.projectStore.activeProject.id)
-      .subscribe((tasks) => {
-        this.tasks.awaiting = tasks.assignee_awaiting_tasks;
-        this.tasks.unrealized = tasks.assigned_tasks.filter(
-          (t) => !t.active && !t.finished
-        );
-        this.tasks.finished = tasks.assigned_tasks.filter((t) => t.finished);
-        this.tasks.active = tasks.assigned_tasks.filter((t) => t.active);
-        console.log(tasks);
-      });
+    this.projectId = this.rootStore.projectStore.activeProject.id;
+
+    this.userService.getMyTasks(this.projectId).subscribe((tasks) => {
+      this.tasks.awaiting = tasks.assignee_awaiting_tasks;
+      this.tasks.unrealized = tasks.assigned_tasks.filter(
+        (t) => !t.active && !t.finished
+      );
+      this.tasks.finished = tasks.assigned_tasks.filter((t) => t.finished);
+      this.tasks.active = tasks.assigned_tasks.filter((t) => t.active);
+      console.log(tasks);
+    });
   }
 
   taskAccepted(id: number, index: number) {
@@ -46,6 +52,14 @@ export class MyTasksComponent implements OnInit {
         const task = this.tasks.awaiting[index];
         this.tasks.unrealized.push(task);
         this.tasks.awaiting.splice(index, 1);
+        this.sprintServiec
+          .getActiveSprint(this.projectId)
+          .subscribe((activeSprint) => {
+            this.rootStore.sprintStore.setActiveSprint(activeSprint);
+            this.rootStore.storyStore.setActiveSprintStories(
+              activeSprint.stories
+            );
+          });
       },
       (err) => this.showErrorSnackBar(err)
     );
@@ -61,14 +75,27 @@ export class MyTasksComponent implements OnInit {
   }
 
   taskFinished(id: number, index: number) {
-    this.taskService.finishTask(id).subscribe(
-      () => {
-        const task = this.tasks.unrealized[index];
-        this.tasks.finished.push({ ...task, finished: true });
-        this.tasks.unrealized.splice(index, 1);
-      },
-      (err) => this.showErrorSnackBar(err)
-    );
+    const task = this.tasks.unrealized[index];
+    this.dialog
+      .open(ConfirmationComponent, {
+        data: {
+          title: "Zaključena naloga",
+          message: `Ali ste prepričani, da želite nalogo z naslovom
+          ${task.title} označiti kot zaključeno?`,
+        },
+      })
+      .afterClosed()
+      .subscribe((isAccepted) => {
+        if (isAccepted) {
+          this.taskService.finishTask(id).subscribe(
+            () => {
+              this.tasks.finished.push({ ...task, finished: true });
+              this.tasks.unrealized.splice(index, 1);
+            },
+            (err) => this.showErrorSnackBar(err)
+          );
+        }
+      });
   }
 
   showErrorSnackBar(err) {
