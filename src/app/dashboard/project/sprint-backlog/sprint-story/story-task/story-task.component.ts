@@ -16,6 +16,7 @@ export class StoryTaskComponent implements OnInit {
 
   @Output() taskAccepted: EventEmitter<number> = new EventEmitter<number>();
   @Output() taskRejected: EventEmitter<number> = new EventEmitter<number>();
+  @Output() taskFinished: EventEmitter<number> = new EventEmitter<number>();
 
   currentUser: User;
 
@@ -23,7 +24,6 @@ export class StoryTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.rootStore.userStore.user;
-    console.log(this.currentUser);
   }
 
   editTask() {

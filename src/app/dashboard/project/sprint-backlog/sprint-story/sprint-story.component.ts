@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Story } from '../../../../interfaces/story.interface';
 import { Task } from '../../../../interfaces/task.interface';
 import { User } from '../../../../interfaces/user.interface';
+import { ConfirmationComponent } from '../../../../modals/confirmation/confirmation.component';
 import { TaskService } from '../../../../services/task.service';
 import { RootStore } from '../../../../store/root.store';
 
@@ -32,7 +34,8 @@ export class SprintStoryComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private snackBar: MatSnackBar,
-    private rootStore: RootStore
+    private rootStore: RootStore,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -81,6 +84,29 @@ export class SprintStoryComponent implements OnInit {
       },
       (err) => this.showErrorSnackBar(err)
     );
+  }
+
+  finishTask(task: Task, index) {
+    this.dialog
+      .open(ConfirmationComponent, {
+        data: {
+          title: "Zaključena naloga",
+          message: `Ali ste prepričani, da želite nalogo z naslovom
+          ${task.title} označiti kot zaključeno?`,
+        },
+      })
+      .afterClosed()
+      .subscribe((isAccepted) => {
+        if (isAccepted) {
+          this.taskService.finishTask(task.id).subscribe(
+            () => {
+              this.tasks.finished.push({ ...task, finished: true });
+              this.tasks.assigned.splice(index, 1);
+            },
+            (err) => this.showErrorSnackBar(err)
+          );
+        }
+      });
   }
 
   showErrorSnackBar(err) {

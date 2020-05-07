@@ -40,7 +40,6 @@ export class StoryModalComponent implements OnInit {
       { id: 1, name: "Must have" },
     ];
 
-    console.log(this.data);
     this.canEditComplexity = this.data.userRoles.includes("Scrum Master");
 
     this.form = this.formBuilder.group({
@@ -66,7 +65,7 @@ export class StoryModalComponent implements OnInit {
   }
 
   createTest(testDescription = "") {
-    console.log(this.data.type === "edit" && !this.data.unassigned);
+    //console.log(this.data.type === "edit" && !this.data.unassigned);
     return this.formBuilder.group({
       testDescription: [
         {
@@ -128,7 +127,6 @@ export class StoryModalComponent implements OnInit {
       tests: this.form.value.tests.map((test) => test.testDescription),
     };
     data.tests.pop();
-    console.log(data);
 
     this.storyService
       .updateStory(this.data.projectId, this.data.storyId, data)
@@ -176,7 +174,6 @@ export class StoryModalComponent implements OnInit {
           });
       },
       (err) => {
-        console.log(err);
         this.addingStory = false;
         this.errorMessage =
           err.error.__all__ === undefined

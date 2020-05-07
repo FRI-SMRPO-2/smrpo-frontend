@@ -40,7 +40,14 @@
       >
         Zavrni
       </button>
-      <button *ngIf="currentUser.username === task.assignee" mat-menu-item class="menu-btn">Zaključi</button>
+      <button 
+        mat-menu-item
+        *ngIf="currentUser.username === task.assignee && !task.finished"
+        class="menu-btn"
+        (click)="taskFinished.emit()"
+      >
+        Zaključi
+      </button>
     <!-- <button mat-menu-item class="menu-btn reject" *ngIf="task.active">Končaj z delom</button>
       <button mat-menu-item class="menu-btn accept" *ngIf="!task.active">Prični z delom</button> -->
     </mat-menu>

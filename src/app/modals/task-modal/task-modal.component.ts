@@ -59,7 +59,6 @@ export class TaskModalComponent implements OnInit {
           });
       },
       (err) => {
-        console.log(err);
         this.processingRequest = false;
         this.errorMessage =
           (err.error && err.error.text) ||

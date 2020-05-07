@@ -42,7 +42,6 @@ export class MyTasksComponent implements OnInit {
       );
       this.tasks.finished = tasks.assigned_tasks.filter((t) => t.finished);
       this.tasks.active = tasks.assigned_tasks.filter((t) => t.active);
-      console.log(tasks);
     });
   }
 

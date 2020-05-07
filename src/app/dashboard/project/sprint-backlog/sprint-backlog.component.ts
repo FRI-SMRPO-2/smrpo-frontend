@@ -56,7 +56,6 @@ export class SprintBacklogComponent implements OnInit {
 
     this.rootStore.storyStore.activeSprintStories$.subscribe((stories) => {
       this.stories = stories;
-      console.log(stories);
     });
 
     this.rootStore.sprintStore.allSprints$.subscribe((sprints) => {
