@@ -1,7 +1,7 @@
 <div class="task-card">
   <div>
     <div class="task-title">{{task.title}}</div>
-    <div class="task-subtitle">Zgodba #1</div><!-- TODO: dodaj ime zgodbe -->
+    <div class="task-subtitle">Zgodba: {{task.story_name}}</div><!-- TODO: dodaj ime zgodbe -->
     <div class="task-complexity">Časovna zahtevnost v urah: {{task.estimated_time || "/"}}</div>
   </div>
   <div *ngIf="acceptanceAwaiting">
@@ -13,8 +13,8 @@
     </button>
   </div>
   <div *ngIf="!acceptanceAwaiting && !task.finished" >
-    <button 
-     mat-icon-button 
+    <button
+     mat-icon-button
     class="more-settings"
     [matMenuTriggerFor]="menu"
     >

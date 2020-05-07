@@ -22,6 +22,7 @@ export class TaskModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
+  //TODO : to mormo spremenit ko bomo delali kartico #15
   ngOnInit() {
     this.form = this.formBuilder.group({
       title: [{ value: this.data.title ?? "", disabled: this.data.editing }],
