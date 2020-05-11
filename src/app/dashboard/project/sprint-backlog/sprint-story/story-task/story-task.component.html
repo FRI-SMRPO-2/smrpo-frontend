@@ -48,6 +48,14 @@
       >
         Zaključi
       </button>
+      <button 
+        mat-menu-item
+        *ngIf="currentUser.username === task.assignee && !task.finished && !task.active"
+        class="menu-btn"
+        (click)="taskRejected.emit()"
+      >
+        Odreči se nalogi
+      </button>
     <!-- <button mat-menu-item class="menu-btn reject" *ngIf="task.active">Končaj z delom</button>
       <button mat-menu-item class="menu-btn accept" *ngIf="!task.active">Prični z delom</button> -->
     </mat-menu>

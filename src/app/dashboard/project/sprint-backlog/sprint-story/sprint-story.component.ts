@@ -77,10 +77,15 @@ export class SprintStoryComponent implements OnInit {
     );
   }
 
-  rejectTask(task: Task) {
+  rejectTask(task: Task, index: number, wasAccepted: boolean) {
     this.taskService.rejectTask(task.id).subscribe(
       () => {
         task.assignee_awaiting = null;
+        if (wasAccepted) {
+          task.assignee = null;
+          this.tasks.unassigned.push(task);
+          this.tasks.assigned.splice(index, 1);
+        }
       },
       (err) => this.showErrorSnackBar(err)
     );

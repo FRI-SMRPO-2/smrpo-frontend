@@ -226,7 +226,6 @@ export class SprintBacklogComponent implements OnInit {
           projectId: this.project.id,
           storyId: story.id,
           users: this.project.developers,
-          availableComplexity: this.maxTaskTime(story),
         },
       })
       .afterClosed()

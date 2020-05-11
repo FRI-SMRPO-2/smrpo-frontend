@@ -71,7 +71,7 @@
             <span class="section-title"> Nedodeljene naloge </span>
             <div class="data-column">
               <app-story-task *ngFor="let task of tasks.unassigned; let i = index" 
-                [task]="task" (taskAccepted)="acceptTask(task, i)" (taskRejected)="rejectTask(task)">
+                [task]="task" (taskAccepted)="acceptTask(task, i)" (taskRejected)="rejectTask(task, i, false)">
               </app-story-task>
             </div>
           </div>
@@ -79,7 +79,7 @@
             <span class="section-title"> Dodeljene naloge </span>
             <div class="data-column">
               <app-story-task *ngFor="let task of tasks.assigned; let i = index" 
-                [task]="task" (taskFinished)="finishTask(task, i)">
+                [task]="task" (taskFinished)="finishTask(task, i)" (taskRejected)="rejectTask(task, i, true)">
               </app-story-task>
             </div>
           </div>
