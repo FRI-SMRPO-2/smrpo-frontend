@@ -64,10 +64,14 @@ export class MyTasksComponent implements OnInit {
     );
   }
 
-  taskRejected(id: number, index: number) {
+  taskRejected(id: number, index: number, wasAccepted: boolean) {
     this.taskService.rejectTask(id).subscribe(
       () => {
-        this.tasks.awaiting.splice(index, 1);
+        if (wasAccepted) {
+          this.tasks.unrealized.splice(index, 1);
+        } else {
+          this.tasks.awaiting.splice(index, 1);
+        }
         this.sprintService
           .getActiveSprint(this.projectId)
           .subscribe((activeSprint) => {

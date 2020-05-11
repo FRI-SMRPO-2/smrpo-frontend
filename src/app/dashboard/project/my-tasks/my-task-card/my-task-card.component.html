@@ -22,6 +22,7 @@
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
       <button mat-menu-item class="menu-btn" (click)="taskFinished.emit()">Zaključi</button>
+      <button mat-menu-item class="menu-btn" (click)="taskRejected.emit()">Odreči se nalogi</button>
 <!--       <button mat-menu-item class="menu-btn reject" *ngIf="task.active">Končaj z delom</button>
       <button mat-menu-item class="menu-btn accept" *ngIf="!task.active">Prični z delom</button> -->
     </mat-menu>

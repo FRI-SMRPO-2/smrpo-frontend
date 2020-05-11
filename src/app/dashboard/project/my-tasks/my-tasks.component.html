@@ -19,7 +19,9 @@
           <app-my-task-card
             [task]="task"
             [acceptanceAwaiting]="false"
-            (taskFinished)="taskFinished(task.id, i)">
+            (taskFinished)="taskFinished(task.id, i)"
+            (taskRejected)="taskRejected(task.id, i, true)"
+            >
           </app-my-task-card>
         </div>
     </div>
@@ -30,7 +32,7 @@
           [task]="task"
           [acceptanceAwaiting]="true"
           (taskAccepted)="taskAccepted(task.id, i)"
-          (taskRejected)="taskRejected(task.id, i)"
+          (taskRejected)="taskRejected(task.id, i, false)"
           >
         </app-my-task-card>
       </div>
