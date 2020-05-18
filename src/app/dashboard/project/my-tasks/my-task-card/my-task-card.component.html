@@ -21,10 +21,10 @@
       <mat-icon class="more-icon">more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
+      <button *ngIf="!task.active" mat-menu-item class="menu-btn accept" (click)="taskSetActive.emit()">Prični z delom</button>
+      <button *ngIf="task.active" mat-menu-item class="menu-btn reject" (click)="taskUnsetActive.emit()">Končaj z delom</button>
       <button mat-menu-item class="menu-btn" (click)="taskFinished.emit()">Zaključi</button>
-      <button mat-menu-item class="menu-btn" (click)="taskRejected.emit()">Odreči se nalogi</button>
-<!--       <button mat-menu-item class="menu-btn reject" *ngIf="task.active">Končaj z delom</button>
-      <button mat-menu-item class="menu-btn accept" *ngIf="!task.active">Prični z delom</button> -->
+      <button *ngIf="!task.active" mat-menu-item class="menu-btn" (click)="taskRejected.emit()">Odreči se nalogi</button>
     </mat-menu>
   </div>
 </div>

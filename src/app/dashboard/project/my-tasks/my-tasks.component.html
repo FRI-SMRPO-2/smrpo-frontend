@@ -19,8 +19,9 @@
           <app-my-task-card
             [task]="task"
             [acceptanceAwaiting]="false"
-            (taskFinished)="taskFinished(task.id, i)"
+            (taskFinished)="taskFinished(task, i, false)"
             (taskRejected)="taskRejected(task.id, i, true)"
+            (taskSetActive)="taskSetActive(task, i)"
             >
           </app-my-task-card>
         </div>
@@ -39,10 +40,13 @@
     </div>
 
     <div class="data-column">
-      <div class="data-cell" *ngFor="let task of tasks.active">
+      <div class="data-cell" *ngFor="let task of tasks.active; let i = index">
         <app-my-task-card
           [task]="task"
-          [acceptanceAwaiting]="false">
+          [acceptanceAwaiting]="false"
+          (taskFinished)="taskFinished(task, i, true)"
+          (taskUnsetActive)="taskUnsetActive(task, i)"
+          >
         </app-my-task-card>
       </div>
     </div>

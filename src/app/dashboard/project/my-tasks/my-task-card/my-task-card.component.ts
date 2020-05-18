@@ -11,6 +11,8 @@ export class MyTaskCardComponent implements OnInit {
   @Output() taskAccepted: EventEmitter<any> = new EventEmitter();
   @Output() taskRejected: EventEmitter<any> = new EventEmitter();
   @Output() taskFinished: EventEmitter<any> = new EventEmitter();
+  @Output() taskSetActive: EventEmitter<any> = new EventEmitter();
+  @Output() taskUnsetActive: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 

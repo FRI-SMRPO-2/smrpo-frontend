@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Task } from '../../../interfaces/task.interface';
 import { ConfirmationComponent } from '../../../modals/confirmation/confirmation.component';
 import { SprintService } from '../../../services/sprint.service';
 import { TaskService } from '../../../services/task.service';
@@ -85,8 +86,7 @@ export class MyTasksComponent implements OnInit {
     );
   }
 
-  taskFinished(id: number, index: number) {
-    const task = this.tasks.unrealized[index];
+  taskFinished(task: Task, index: number, isActive: boolean) {
     this.dialog
       .open(ConfirmationComponent, {
         data: {
@@ -98,15 +98,29 @@ export class MyTasksComponent implements OnInit {
       .afterClosed()
       .subscribe((isAccepted) => {
         if (isAccepted) {
-          this.taskService.finishTask(id).subscribe(
+          this.taskService.finishTask(task.id).subscribe(
             () => {
               this.tasks.finished.push({ ...task, finished: true });
-              this.tasks.unrealized.splice(index, 1);
+
+              if (isActive) this.tasks.active.splice(index, 1);
+              else this.tasks.unrealized.splice(index, 1);
             },
             (err) => this.showErrorSnackBar(err)
           );
         }
       });
+  }
+
+  taskSetActive(task: Task, index: number) {
+    console.log("active");
+    this.tasks.active.push({ ...task, active: true });
+    this.tasks.unrealized.splice(index, 1);
+  }
+
+  taskUnsetActive(task: Task, index: number) {
+    console.log("unactive");
+    this.tasks.unrealized.push({ ...task, active: false });
+    this.tasks.active.splice(index, 1);
   }
 
   showErrorSnackBar(err) {
