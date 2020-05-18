@@ -78,15 +78,25 @@
           <div class="data-section">
             <span class="section-title"> Dodeljene naloge </span>
             <div class="data-column">
-              <app-story-task *ngFor="let task of tasks.assigned; let i = index" 
-                [task]="task" (taskFinished)="finishTask(task, i)" (taskRejected)="rejectTask(task, i, true)">
+              <app-story-task 
+                *ngFor="let task of tasks.assigned; let i = index" 
+                [task]="task"
+                (taskFinished)="finishTask(task, i, false)"
+                (taskRejected)="rejectTask(task, i, true)"
+                (taskSetActive)="taskSetActive(task, i)"  
+              >
               </app-story-task>
             </div>
           </div>
           <div class="data-section">
             <span class="section-title"> Aktivne naloge </span>
             <div class="data-column">
-              <app-story-task *ngFor="let task of tasks.active" [task]="task"></app-story-task>
+              <app-story-task 
+                *ngFor="let task of tasks.active; let i = index"
+                [task]="task"
+                (taskFinished)="finishTask(task, i, true)"
+                (taskUnsetActive)="taskUnsetActive(task, i)"
+              ></app-story-task>
             </div>
           </div>
           <div class="data-section">

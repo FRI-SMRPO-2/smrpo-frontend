@@ -91,7 +91,7 @@ export class SprintStoryComponent implements OnInit {
     );
   }
 
-  finishTask(task: Task, index) {
+  finishTask(task: Task, index: number, isActive: boolean) {
     this.dialog
       .open(ConfirmationComponent, {
         data: {
@@ -106,12 +106,25 @@ export class SprintStoryComponent implements OnInit {
           this.taskService.finishTask(task.id).subscribe(
             () => {
               this.tasks.finished.push({ ...task, finished: true });
-              this.tasks.assigned.splice(index, 1);
+              if (isActive) this.tasks.active.splice(index, 1);
+              else this.tasks.assigned.splice(index, 1);
             },
             (err) => this.showErrorSnackBar(err)
           );
         }
       });
+  }
+
+  taskSetActive(task: Task, index: number) {
+    console.log("active");
+    this.tasks.active.push({ ...task, active: true });
+    this.tasks.assigned.splice(index, 1);
+  }
+
+  taskUnsetActive(task: Task, index: number) {
+    console.log("unsactive");
+    this.tasks.assigned.push({ ...task, active: false });
+    this.tasks.active.splice(index, 1);
   }
 
   showErrorSnackBar(err) {

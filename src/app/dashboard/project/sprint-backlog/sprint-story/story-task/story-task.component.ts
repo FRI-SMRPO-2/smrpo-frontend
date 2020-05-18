@@ -17,6 +17,8 @@ export class StoryTaskComponent implements OnInit {
   @Output() taskAccepted: EventEmitter<number> = new EventEmitter<number>();
   @Output() taskRejected: EventEmitter<number> = new EventEmitter<number>();
   @Output() taskFinished: EventEmitter<number> = new EventEmitter<number>();
+  @Output() taskSetActive: EventEmitter<number> = new EventEmitter<number>();
+  @Output() taskUnsetActive: EventEmitter<number> = new EventEmitter<number>();
 
   currentUser: User;
 

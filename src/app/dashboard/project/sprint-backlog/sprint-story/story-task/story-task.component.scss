@@ -21,6 +21,16 @@
   }
 }
 
+.accept {
+  color: $green;
+  font-weight: 500;
+}
+
+.reject {
+  color: red;
+  font-weight: 500;
+}
+
 .story-task-title {
   font-weight: 500;
 }

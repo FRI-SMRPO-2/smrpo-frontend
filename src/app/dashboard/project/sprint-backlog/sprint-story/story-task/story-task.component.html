@@ -40,6 +40,24 @@
       >
         Zavrni
       </button>
+
+      <button 
+        *ngIf="task.active && !task.finished"
+        mat-menu-item 
+        class="menu-btn reject"
+        (click)="taskUnsetActive.emit()"
+      >
+        Končaj z delom
+      </button>
+      <button 
+        *ngIf="!task.active && !!task.assignee && !task.finished"
+        mat-menu-item
+        class="menu-btn accept"
+        (click)="taskSetActive.emit()"
+      >
+        Prični z delom
+      </button>
+
       <button 
         mat-menu-item
         *ngIf="currentUser.username === task.assignee && !task.finished"
@@ -56,8 +74,6 @@
       >
         Odreči se nalogi
       </button>
-    <!-- <button mat-menu-item class="menu-btn reject" *ngIf="task.active">Končaj z delom</button>
-      <button mat-menu-item class="menu-btn accept" *ngIf="!task.active">Prični z delom</button> -->
     </mat-menu>
   </div>
 </div>
