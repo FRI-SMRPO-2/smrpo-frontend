@@ -26,4 +26,12 @@ export class TaskService {
   finishTask(taskId: number) {
     return this.http.put<any>(`api/task/${taskId}/finish`, null);
   }
+
+  startWorkOnTask(taskId: number) {
+    return this.http.put<any>(`api/task/${taskId}/start_work`, null);
+  }
+
+  stopWorkOnTask(taskId: number) {
+    return this.http.put<any>(`api/task/${taskId}/stop_work`, null);
+  }
 }
