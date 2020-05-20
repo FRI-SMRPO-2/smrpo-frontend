@@ -18,10 +18,11 @@
     background-color: $verylightgrey;
   }
 
+  .calendar-icon {
+    opacity: 0.9;
+  }
+
   .more-settings {
-    position: absolute;
-    top: 0;
-    right: 0;
     opacity: 0.5;
   }
 }
@@ -48,4 +49,10 @@
 .reject {
   color: red;
   font-weight: 500;
+}
+
+.absolute-icons {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

@@ -1,0 +1,41 @@
+<div class="modal-content"> 
+  <div class="title pink">Pregled dela</div>
+
+  <div class="content">
+    <button mat-mini-fab color="primary" class="arrow-btn arrow-left">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 100px"></th>
+          <th class="day-cell" *ngFor="let day of days">{{day}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Opravljen čas v urah</th>
+          <td class="day-value"*ngFor="let day of days">
+            <div style="margin: 5px 0;">
+              <input value="5" class="table-input">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Predviden čas do konca v urah</th>
+          <td class="day-value"*ngFor="let day of days"><input value="2" class="table-input"></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <button mat-mini-fab color="primary" class="arrow-btn arrow-right">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+
+  <div class="button-row">
+    <button mat-raised-button>Prekliči</button>
+    <button mat-raised-button color="accent">Shrani</button>
+  </div>
+</div>

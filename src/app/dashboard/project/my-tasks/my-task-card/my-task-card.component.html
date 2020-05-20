@@ -1,7 +1,7 @@
 <div class="task-card">
   <div>
     <div class="task-title">{{task.title}}</div>
-    <div class="task-subtitle">Zgodba: {{task.story_name}}</div><!-- TODO: dodaj ime zgodbe -->
+    <div class="task-subtitle">{{task.story_name}}</div>
     <div class="task-complexity">Časovna zahtevnost v urah: {{task.estimated_time || "/"}}</div>
   </div>
   <div *ngIf="acceptanceAwaiting">
@@ -12,15 +12,22 @@
       <mat-icon>clear</mat-icon>
     </button>
   </div>
-  <div *ngIf="!acceptanceAwaiting && !task.finished" >
+  <div *ngIf="!acceptanceAwaiting" class="absolute-icons">
+    <button 
+      mat-icon-button
+      class="more-settings"
+      (click)="openWorkSessionCalendar.emit()">
+      <mat-icon>calendar_today</mat-icon>
+    </button>
     <button
-     mat-icon-button
-    class="more-settings"
-    [matMenuTriggerFor]="menu"
+      *ngIf="!task.finished"
+      mat-icon-button
+      class="more-settings"
+      [matMenuTriggerFor]="menu"
     >
       <mat-icon class="more-icon">more_vert</mat-icon>
     </button>
-    <mat-menu #menu="matMenu" xPosition="before">
+    <mat-menu #menu="matMenu" xPosition="after">
       <button *ngIf="!task.active" mat-menu-item class="menu-btn accept" (click)="taskSetActive.emit()">Prični z delom</button>
       <button *ngIf="task.active" mat-menu-item class="menu-btn reject" (click)="taskUnsetActive.emit()">Končaj z delom</button>
       <button mat-menu-item class="menu-btn" (click)="taskFinished.emit()">Zaključi</button>

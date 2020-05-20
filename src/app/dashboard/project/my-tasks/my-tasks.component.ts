@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Task } from '../../../interfaces/task.interface';
 import { ConfirmationComponent } from '../../../modals/confirmation/confirmation.component';
+import { TaskCalendarComponent } from '../../../modals/task-calendar/task-calendar.component';
 import { SprintService } from '../../../services/sprint.service';
 import { TaskService } from '../../../services/task.service';
 import { UserService } from '../../../services/user.service';
@@ -113,14 +114,39 @@ export class MyTasksComponent implements OnInit {
 
   taskSetActive(task: Task, index: number) {
     console.log("active");
-    this.tasks.active.push({ ...task, active: true });
-    this.tasks.unrealized.splice(index, 1);
+    this.taskService.startWorkOnTask(task.id).subscribe(
+      (data) => {
+        console.log(data);
+        this.tasks.active.push({ ...task, active: true });
+        this.tasks.unrealized.splice(index, 1);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   taskUnsetActive(task: Task, index: number) {
     console.log("unactive");
-    this.tasks.unrealized.push({ ...task, active: false });
-    this.tasks.active.splice(index, 1);
+    this.taskService.stopWorkOnTask(task.id).subscribe(
+      (data) => {
+        console.log(data);
+        this.tasks.unrealized.push({ ...task, active: false });
+        this.tasks.active.splice(index, 1);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  openWorkSessionCalendar(task: Task) {
+    this.dialog
+      .open(TaskCalendarComponent)
+      .afterClosed()
+      .subscribe((data) => {
+        console.log(data);
+      });
   }
 
   showErrorSnackBar(err) {

@@ -13,6 +13,7 @@ export class MyTaskCardComponent implements OnInit {
   @Output() taskFinished: EventEmitter<any> = new EventEmitter();
   @Output() taskSetActive: EventEmitter<any> = new EventEmitter();
   @Output() taskUnsetActive: EventEmitter<any> = new EventEmitter();
+  @Output() openWorkSessionCalendar: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 

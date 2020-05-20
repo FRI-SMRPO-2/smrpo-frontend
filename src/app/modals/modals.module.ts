@@ -29,6 +29,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TaskModalComponent } from './task-modal/task-modal.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
     UserModalComponent,
     TaskModalComponent,
     SprintCardComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    TaskCalendarComponent
   ],
   imports: [
     CommonModule,
