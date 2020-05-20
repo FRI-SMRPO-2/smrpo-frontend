@@ -122,6 +122,7 @@ export class MyTasksComponent implements OnInit {
       },
       (err) => {
         console.log(err);
+        this.showErrorSnackBar(err);
       }
     );
   }
@@ -136,6 +137,7 @@ export class MyTasksComponent implements OnInit {
       },
       (err) => {
         console.log(err);
+        this.showErrorSnackBar(err);
       }
     );
   }

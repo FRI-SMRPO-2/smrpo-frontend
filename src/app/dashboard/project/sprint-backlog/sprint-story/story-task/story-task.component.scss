@@ -14,10 +14,7 @@
   position: relative;
 
   .more-settings {
-    position: absolute;
     opacity: 0.5;
-    top: 0;
-    right: 0;
   }
 }
 
@@ -63,4 +60,10 @@
   top: 3px;
   height: 16px;
   width: 16px;
+}
+
+.absolute-icons {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

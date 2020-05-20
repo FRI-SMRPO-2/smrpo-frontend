@@ -11,10 +11,18 @@
         </ng-template>
     </div>
   </div>
-  <div>
+  <div class="absolute-icons">
   <!-- <button mat-icon-button color="primary" aria-label="More info" class="options-btn" (click)="editTask()">
       <span class="material-icons">more_vert</span>
     </button> -->
+    <button 
+      *ngIf="!!task.assignee && !task.active"
+      mat-icon-button
+      class="more-settings"
+      (click)="openWorkSessionCalendar.emit()"
+    >
+    <mat-icon>calendar_today</mat-icon>
+    </button>
     <button
     mat-icon-button
     class="more-settings"

@@ -6,6 +6,7 @@ import { Story } from '../../../../interfaces/story.interface';
 import { Task } from '../../../../interfaces/task.interface';
 import { User } from '../../../../interfaces/user.interface';
 import { ConfirmationComponent } from '../../../../modals/confirmation/confirmation.component';
+import { TaskCalendarComponent } from '../../../../modals/task-calendar/task-calendar.component';
 import { TaskService } from '../../../../services/task.service';
 import { RootStore } from '../../../../store/root.store';
 
@@ -116,15 +117,40 @@ export class SprintStoryComponent implements OnInit {
   }
 
   taskSetActive(task: Task, index: number) {
-    console.log("active");
-    this.tasks.active.push({ ...task, active: true });
-    this.tasks.assigned.splice(index, 1);
+    this.taskService.startWorkOnTask(task.id).subscribe(
+      (data) => {
+        console.log("active");
+        this.tasks.active.push({ ...task, active: true });
+        this.tasks.assigned.splice(index, 1);
+      },
+      (err) => {
+        console.log(err);
+        this.showErrorSnackBar(err);
+      }
+    );
   }
 
   taskUnsetActive(task: Task, index: number) {
-    console.log("unsactive");
-    this.tasks.assigned.push({ ...task, active: false });
-    this.tasks.active.splice(index, 1);
+    this.taskService.stopWorkOnTask(task.id).subscribe(
+      (data) => {
+        console.log("unsactive");
+        this.tasks.assigned.push({ ...task, active: false });
+        this.tasks.active.splice(index, 1);
+      },
+      (err) => {
+        console.log(err);
+        this.showErrorSnackBar(err);
+      }
+    );
+  }
+
+  openWorkSessionCalendar(task: Task) {
+    this.dialog
+      .open(TaskCalendarComponent)
+      .afterClosed()
+      .subscribe((data) => {
+        console.log(data);
+      });
   }
 
   showErrorSnackBar(err) {

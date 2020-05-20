@@ -83,7 +83,8 @@
                 [task]="task"
                 (taskFinished)="finishTask(task, i, false)"
                 (taskRejected)="rejectTask(task, i, true)"
-                (taskSetActive)="taskSetActive(task, i)"  
+                (taskSetActive)="taskSetActive(task, i)"
+                (openWorkSessionCalendar)="openWorkSessionCalendar(task)"
               >
               </app-story-task>
             </div>
@@ -102,7 +103,12 @@
           <div class="data-section">
             <span class="section-title"> Zaključene naloge </span>
             <div class="data-column">
-              <app-story-task *ngFor="let task of tasks.finished" [task]="task"></app-story-task>
+              <app-story-task 
+                *ngFor="let task of tasks.finished" 
+                [task]="task"
+                (openWorkSessionCalendar)="openWorkSessionCalendar(task)"
+              >
+              </app-story-task>
             </div>
           </div>
         </div>
