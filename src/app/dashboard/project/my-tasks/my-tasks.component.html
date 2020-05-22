@@ -5,8 +5,8 @@
   </div>
 
   <div class="sorting-titles">
-    <div class="grey">Nerealizirane naloge</div>
     <div class="orange">Čakajoče naloge na potrditev</div>
+    <div class="grey">Nerealizirane naloge</div>
     <div class="green">Aktivne naloge</div>
     <div class="grey">Zaključene naloge</div>
   </div>
@@ -14,6 +14,18 @@
   <div class="sorting-line"></div>
 
   <div class="data-container">
+    <div class="data-column">
+      <div class="data-cell" *ngFor="let task of tasks.awaiting; let i = index">
+        <app-my-task-card
+          [task]="task"
+          [acceptanceAwaiting]="true"
+          (taskAccepted)="taskAccepted(task.id, i)"
+          (taskRejected)="taskRejected(task.id, i, false)"
+          >
+        </app-my-task-card>
+      </div>
+    </div>
+
     <div class="data-column">
         <div class="data-cell" *ngFor="let task of tasks.unrealized; let i = index">
           <app-my-task-card
@@ -26,18 +38,6 @@
             >
           </app-my-task-card>
         </div>
-    </div>
-
-    <div class="data-column">
-      <div class="data-cell" *ngFor="let task of tasks.awaiting; let i = index">
-        <app-my-task-card
-          [task]="task"
-          [acceptanceAwaiting]="true"
-          (taskAccepted)="taskAccepted(task.id, i)"
-          (taskRejected)="taskRejected(task.id, i, false)"
-          >
-        </app-my-task-card>
-      </div>
     </div>
 
     <div class="data-column">
