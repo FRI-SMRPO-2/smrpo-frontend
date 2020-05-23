@@ -9,6 +9,7 @@ import { MyTasksComponent } from './project/my-tasks/my-tasks.component';
 import { ProductBacklogComponent } from './project/product-backlog/product-backlog.component';
 import { ProjectComponent } from './project/project.component';
 import { SprintBacklogComponent } from './project/sprint-backlog/sprint-backlog.component';
+import { ProjectWallComponent } from './project/project-wall/project-wall.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
         component: ProjectComponent,
         resolve: { project: ProjectResolver },
         children: [
+          { path: "project-wall", component: ProjectWallComponent },
           { path: "product-backlog", component: ProductBacklogComponent },
           { path: "sprint-backlog", component: SprintBacklogComponent },
           { path: "my-tasks", component: MyTasksComponent },

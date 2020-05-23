@@ -1,0 +1,25 @@
+<div class="page-container">
+  <div class="header">
+    <div>
+      <span class="title">Projektni zid</span>
+      <button
+        mat-raised-button
+        color="accent"
+        class="dialog-button"
+        class="pink-btn"
+        (click)="addPost()"> Dodaj novo objavo
+      </button>
+    </div>
+  </div>
+  <div id="info-section" *ngIf="this.project.posts.length == 0">
+    Trenutno na zidu še ni objav.
+  </div>
+  <div class="data-container">
+    <app-post-card
+      *ngFor="let post of project.posts.reverse()"
+      [post]="post"
+      [highlight]="post.created_by == user.username"
+    >
+    </app-post-card>
+  </div>
+</div>

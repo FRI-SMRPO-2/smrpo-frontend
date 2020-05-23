@@ -1,0 +1,20 @@
+<div class="modal-container">
+
+  <form class="modal-form" [formGroup]="form">
+
+    <span class="title">Dodaj objavo</span>
+
+    <mat-form-field appearance="standard" class="form-input" >
+      <textarea matInput formControlName="text" cdkTextareaAutosize cdkAutosizeMinRows="10" cdkAutosizeMaxRows="10" required></textarea>
+    </mat-form-field>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{errorMessage}}
+    </div>
+
+    <button mat-raised-button color="accent" class="save-btn" *ngIf="!data.editing"
+    type="button" (click)="save()" [disabled]="form.invalid || this.processingRequest">Shrani</button>
+
+  </form>
+
+</div>

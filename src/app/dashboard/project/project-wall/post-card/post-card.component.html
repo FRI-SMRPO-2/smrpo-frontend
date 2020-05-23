@@ -1,0 +1,5 @@
+<div class="post-container" [class.post-highlight]="this.highlight">
+  <div class="post-date" [class.post-highlight]="this.highlight">{{post.updated | date:'MMMM d, y,  HH:mm'}}</div>
+  <div class="post-creator"[class.post-highlight]="this.highlight">Ustvaril: {{post.created_by}}</div>
+  <div class="post-content"[class.post-highlight]="this.highlight">{{post.text}}</div>
+</div>

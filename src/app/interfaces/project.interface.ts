@@ -1,4 +1,5 @@
 import { User } from './user.interface';
+import { Post } from './post.interface';
 
 export interface Project {
   id: number;
@@ -11,6 +12,7 @@ export interface Project {
   created_by: string;
   created: Date;
   updated: Date;
+  posts: Post[];
 }
 
 export interface ProjectRole {

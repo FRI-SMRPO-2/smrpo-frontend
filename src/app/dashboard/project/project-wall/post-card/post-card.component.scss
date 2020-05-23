@@ -1,0 +1,43 @@
+@import "../../../../../variables";
+
+.post-container {
+  background-color: white;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+  width: 50%;
+  box-shadow: $material-shadow;
+
+  &.post-highlight {
+    background-color: $indigo;
+    margin-left: 45%;
+  }
+}
+
+.post-date{
+  padding-bottom: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  &.post-highlight {
+    color: white;
+  }
+}
+
+.post-creator{
+  padding-bottom: 10px;
+  font-size: 15px;
+  font-weight: 500;
+
+  &.post-highlight {
+    color: white;
+  }
+}
+
+.post-content{
+  font-size: 15px;
+  text-align: justify;
+  white-space: pre-wrap;
+  &.post-highlight {
+    color: white;
+  }
+}

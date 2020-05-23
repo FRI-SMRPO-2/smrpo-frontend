@@ -30,6 +30,7 @@ import { TaskModalComponent } from './task-modal/task-modal.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
+import { PostModalComponent } from './post-modal/post-modal.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
     StoryModalComponent,
     UserModalComponent,
     TaskModalComponent,
+    PostModalComponent,
     SprintCardComponent,
     ConfirmationComponent,
     TaskCalendarComponent

@@ -30,6 +30,8 @@ import { TaskCardComponent } from './project/task-card/task-card.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { ProjectWallComponent } from './project/project-wall/project-wall.component';
+import { PostCardComponent } from './project/project-wall/post-card/post-card.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { MatInputModule } from '@angular/material/input';
     HomeComponent,
     DashboardComponent,
     TaskCardComponent,
+    PostCardComponent,
+    ProjectWallComponent,
     ProductBacklogComponent,
     SprintBacklogComponent,
     SprintStoryComponent,
