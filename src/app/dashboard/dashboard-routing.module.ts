@@ -10,6 +10,7 @@ import { ProductBacklogComponent } from './project/product-backlog/product-backl
 import { ProjectComponent } from './project/project.component';
 import { SprintBacklogComponent } from './project/sprint-backlog/sprint-backlog.component';
 import { ProjectWallComponent } from './project/project-wall/project-wall.component';
+import { DocumentationComponent } from './project/documentation/documentation.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
           { path: "product-backlog", component: ProductBacklogComponent },
           { path: "sprint-backlog", component: SprintBacklogComponent },
           { path: "my-tasks", component: MyTasksComponent },
+          { path: "documentation", component: DocumentationComponent },
           { path: "", redirectTo: "product-backlog", pathMatch: "full" },
         ],
       },

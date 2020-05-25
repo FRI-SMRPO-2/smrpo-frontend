@@ -1,0 +1,39 @@
+<div class="modal-container">
+
+  <div class="modal-form">
+
+    <span class="title">Uvoz dokumentacije</span>
+
+    <label id="radio-group-label">Način uvoza:</label>
+    <mat-radio-group
+      aria-labelledby="radio-group-label"
+      class="radio-group"
+      [(ngModel)]="importType">
+      <mat-radio-button class="radio-button" [value]="0">
+        Dodaj na konec obstoječe dokumentacije.
+      </mat-radio-button>
+      <mat-radio-button class="radio-button" [value]="1">
+        Prepiši obstoječo dokumentacijo.
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <input
+      type="file"
+      accept='text/plain'
+      hidden
+      #uploadFile
+      (change)="onFileSelected($event)"
+    />
+    <div>
+      <div>
+        <button mat-raised-button class="upload-button" color="primary" type="button" (click)="uploadFile.click()">Izberi datoteko...</button>
+      </div>
+      <div class="upload-filename">{{this.fileName}}</div>
+    </div>
+
+    <button mat-raised-button color="accent" class="save-btn"
+    type="button" (click)="save()" [disabled]="!this.fileUploaded">Uvozi</button>
+
+  </div>
+
+</div>

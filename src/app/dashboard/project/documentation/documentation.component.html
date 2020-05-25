@@ -1,0 +1,47 @@
+<div class="page-container">
+
+  <div class="header">
+    <div>
+      <span class="title">Dokumentacija</span>
+    </div>
+    <div>
+      <button
+        mat-raised-button
+        color="accent"
+        class="dialog-button"
+        (click)="importDocumentation()">Uvozi...
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        class="dialog-button"
+        [ngStyle]="{marginLeft: '5px'}"
+        (click)="exportDocumentation()">Izvozi...
+      </button>
+    </div>
+  </div>
+
+  <div class="data-container">
+    <form [formGroup]="form">
+      <mat-form-field appearance="standard" class="form-input">
+        <textarea matInput formControlName="text" class="documentation-textarea" cdkTextareaAutosize cdkAutosizeMinRows="20" cdkAutosizeMaxRows="40"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="saveDocumentation()"
+      [ngStyle]="{float: 'left'}"
+      [disabled]="!this.documentationChanged || this.processingRequest">
+      Shrani spremembe
+    </button>
+    <div class="documentation-message" [class.documentation-error]="this.error">
+      {{this.message}}
+    <div>
+  </div>
+
+
+</div>

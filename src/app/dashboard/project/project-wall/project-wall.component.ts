@@ -1,18 +1,10 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Project } from 'src/app/interfaces/project.interface';
 
-import { Sprint } from '../../../interfaces/sprint.interface';
-import { ProductBacklog, Story } from '../../../interfaces/story.interface';
 import { User } from '../../../interfaces/user.interface';
-import { StoryModalComponent } from '../../../modals/story-modal/story-modal.component';
-import { SprintService } from '../../../services/sprint.service';
-import { StoryService } from '../../../services/story.service';
 import { RootStore } from '../../../store/root.store';
 import { PostModalComponent } from 'src/app/modals/post-modal/post-modal.component';
 
@@ -30,10 +22,7 @@ export class ProjectWallComponent implements OnInit, OnDestroy {
 
   constructor(
     private rootStore: RootStore,
-    private dialog: MatDialog,
-    private sprintService: SprintService,
-    private storyService: StoryService,
-    private _snackBar: MatSnackBar
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -70,24 +59,4 @@ export class ProjectWallComponent implements OnInit, OnDestroy {
         }
       })
   }
-
-  /* addStory() {
-    this.dialog
-      .open(StoryModalComponent, {
-        data: {
-          projectId: this.project.id,
-          tests: [],
-          editing: false,
-          type: "add",
-          userRoles: this.isAdmin ? ["Admin"] : this.userRoles,
-        },
-      })
-      .afterClosed()
-      .subscribe((newStories) => {
-        if (newStories) {
-          this.productBacklog = newStories;
-          this.rootStore.storyStore.setAllStories(newStories);
-        }
-      });
-  } */
 }

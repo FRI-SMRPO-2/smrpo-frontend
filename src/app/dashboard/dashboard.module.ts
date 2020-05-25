@@ -28,10 +28,11 @@ import { SprintStoryComponent } from './project/sprint-backlog/sprint-story/spri
 import { StoryTaskComponent } from './project/sprint-backlog/sprint-story/story-task/story-task.component';
 import { TaskCardComponent } from './project/task-card/task-card.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ProjectWallComponent } from './project/project-wall/project-wall.component';
 import { PostCardComponent } from './project/project-wall/post-card/post-card.component';
+import { DocumentationComponent } from './project/documentation/documentation.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { PostCardComponent } from './project/project-wall/post-card/post-card.co
     ProjectWallComponent,
     ProductBacklogComponent,
     SprintBacklogComponent,
+    DocumentationComponent,
     SprintStoryComponent,
     StoryTaskComponent,
     MyTasksComponent,
@@ -68,7 +70,9 @@ import { PostCardComponent } from './project/project-wall/post-card/post-card.co
     FlexLayoutModule,
     MatFormFieldModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
   ],
 })
 export class DashboardModule {}

@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatRadioModule } from '@angular/material/radio';
 
 import {
   ProjectModalUsersTableComponent,
@@ -31,6 +32,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
 import { PostModalComponent } from './post-modal/post-modal.component';
+import { ImportDocumentationModalComponent } from './import-documentation-modal/import-documentation-modalcomponent';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { PostModalComponent } from './post-modal/post-modal.component';
     UserModalComponent,
     TaskModalComponent,
     PostModalComponent,
+    ImportDocumentationModalComponent,
     SprintCardComponent,
     ConfirmationComponent,
     TaskCalendarComponent
@@ -65,7 +68,8 @@ import { PostModalComponent } from './post-modal/post-modal.component';
     MatIconModule,
     MatExpansionModule,
     SharedModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule
   ],
 })
 export class ModalsModule {}
