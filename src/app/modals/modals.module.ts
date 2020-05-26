@@ -33,6 +33,7 @@ import { StoryModalComponent } from './story-modal/story-modal.component';
 import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
 import { TaskModalComponent } from './task-modal/task-modal.component';
 import { UserModalComponent } from './user-modal/user-modal.component';
+import { EditSprintModalComponent } from './sprint-modal/edit-sprint-modal/edit-sprint-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { UserModalComponent } from './user-modal/user-modal.component';
     PostModalComponent,
     ImportDocumentationModalComponent,
     SprintCardComponent,
+    EditSprintModalComponent,
     ConfirmationComponent,
     TaskCalendarComponent,
   ],

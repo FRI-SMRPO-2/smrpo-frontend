@@ -1,0 +1,37 @@
+<div class="modal-container">
+
+  <form class="modal-form" [formGroup]="form">
+
+    <span class="title">Uredi sprint</span>
+
+    <mat-form-field  appearance="standard" class="form-input" color="accent">
+      <mat-label>Datum pričetka sprinta</mat-label>
+      <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" [min]="startDateMin" [max]="this.form.value.endDate" required>
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker [startAt]="startDateMin"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="form-input" color="accent">
+      <mat-label>Datum zaključka sprinta</mat-label>
+      <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" [min]="this.form.value.startDate" required>
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker [startAt]="this.form.value.startDate || startDateMin"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="form-input" appearance="standard" required>
+      <mat-label>Hitrost sprinta (št. točk)</mat-label>
+      <input matInput type="number" formControlName="expectedSpeed" min="0" required>
+    </mat-form-field>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{errorMessage}}
+    </div>
+
+    <button mat-raised-button color="accent" class="save-btn"
+    type="button" (click)="save()" [disabled]="!this.form.valid || editingSprint">
+      {{editingSprint ? "Shranjevanje..." : "Shrani"}}
+    </button>
+
+  </form>
+
+</div>

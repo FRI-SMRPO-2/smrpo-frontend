@@ -82,6 +82,7 @@ export class SprintBacklogComponent implements OnInit {
         activeSprintId: this.activeSprint == null ? 0 : this.activeSprint.id,
         userRoles: this.isAdmin ? ["Admin"] : this.userRoles,
       },
+      autoFocus: false
     });
   }
 

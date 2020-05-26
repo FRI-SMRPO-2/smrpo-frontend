@@ -1,0 +1,27 @@
+@import "../../../../variables";
+
+.modal-container {
+  width: 400px;
+}
+
+.title {
+  color: $pink;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-message{
+  color: #f44336;
+}
+
+.save-btn {
+  margin-top: 10px;
+}
+

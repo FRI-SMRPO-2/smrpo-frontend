@@ -1,15 +1,12 @@
-import { Component, OnInit, Input,  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder,  FormGroup,  Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { SprintService } from 'src/app/services/sprint.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { RootStore } from 'src/app/store/root.store';
-import { Observable } from 'rxjs';
 import { Inject } from '@angular/core';
-import { Project } from 'src/app/interfaces/project.interface';
 import { Sprint } from 'src/app/interfaces/sprint.interface';
-
-
+import { EditSprintModalComponent } from './edit-sprint-modal/edit-sprint-modal.component';
 
 @Component({
   selector: 'app-sprint-modal',
@@ -29,7 +26,7 @@ export class SprintModalComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private sprintService: SprintService,
-    private sprintModalDialogRef: MatDialogRef<SprintModalComponent>,
+    private dialog: MatDialog,
     private rootStore: RootStore,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
@@ -53,6 +50,60 @@ export class SprintModalComponent implements OnInit {
 
   ngAfterViewInit() : void{
     setTimeout(()=>this.disableAnimation=false);
+  }
+
+  canEdit(start_date: string): boolean {
+    if (this.userRoles.includes('Admin') || this.userRoles.includes('Scrum Master')){
+      return (new Date(start_date) > new Date());
+    }
+    return false;
+  }
+
+  deleteSprint(sprintId: number){
+    this.sprintService.deleteSprint(this.data.projectId, sprintId).subscribe(
+      () => {
+        this.sprintService.getAllSprints(this.data.projectId).subscribe((sprints) => {
+          this.rootStore.sprintStore.setAllSprints(sprints);
+          this.sprintList = sprints;
+        })
+      }
+    )
+  }
+
+  getDateFromString(stringDate: string): Date{
+    return new Date(stringDate);
+  }
+
+  editSprint(sprintId: number, startDate: string, endDate: string, expectedSpeed: number){
+    this.dialog.open(EditSprintModalComponent, {
+      data: {
+        projectId: this.data.projectId,
+        sprintId,
+        startDate: this.getDateFromString(startDate),
+        endDate: this.getDateFromString(endDate),
+        expectedSpeed
+      },
+    })
+    .afterClosed()
+    .subscribe(
+      () => {
+        this.sprintService.getAllSprints(this.data.projectId).subscribe((sprints) => {
+          this.rootStore.sprintStore.setAllSprints(sprints);
+          this.sprintList = sprints;
+
+          this.sprintService.getActiveSprint(this.data.projectId).subscribe((activeSprint) => {
+
+            if (activeSprint){
+              this.rootStore.sprintStore.setActiveSprint(activeSprint);
+              this.rootStore.storyStore.setActiveSprintStories(activeSprint.stories);
+              this.activeSprintId = activeSprint.id;
+            }
+          }),
+          (err) => {}
+        });
+      },
+      (err) => {}
+    );
   }
 
   save() {

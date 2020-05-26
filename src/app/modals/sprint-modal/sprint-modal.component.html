@@ -6,14 +6,19 @@
 
     <mat-card class="sprints-card">
       <div class="sprint-list">
-        <cdk-virtual-scroll-viewport itemSize = "50" class="sprint-list-viewport">
-          <app-sprint-card
-            *cdkVirtualFor="let sprint of sprintList"
+        <cdk-virtual-scroll-viewport itemSize = "68" class="sprint-list-viewport">
+          <mat-accordion>
+            <app-sprint-card
+            *cdkVirtualFor="let sprint of sprintList, templateCacheSize: 0"
             [startDate]="sprint.start_date"
             [endDate]="sprint.end_date"
             [active]="activeSprintId === sprint.id"
-          >
-          </app-sprint-card>
+            [canEdit]="this.canEdit(sprint.start_date)"
+            (onDelete)="this.deleteSprint(sprint.id)"
+            (onEdit)="this.editSprint(sprint.id, sprint.start_date, sprint.end_date, sprint.expected_speed)"
+            >
+            </app-sprint-card>
+          </mat-accordion>
         </cdk-virtual-scroll-viewport>
       </div>
     </mat-card>

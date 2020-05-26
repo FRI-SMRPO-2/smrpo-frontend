@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { SprintDatePipe } from 'src/app/shared/sprintDate.pipe';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -11,11 +10,18 @@ export class SprintCardComponent implements OnInit {
   @Input() startDate;
   @Input() endDate;
   @Input() active;
+  @Input() canEdit;
+  @Output() onEdit: EventEmitter<any> = new EventEmitter();
+  @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
   editSprint() {
-    console.log("Edit sprint")
+    this.onEdit.emit();
+  }
+
+  deleteSprint(){
+    this.onDelete.emit();
   }
 
   ngOnInit(): void {}

@@ -30,4 +30,16 @@ export class SprintService {
   addStoriesToActiveSprint(sprintId: number, data) {
     return this.http.put<any>(`api/sprint/${sprintId}/story/`, data);
   }
+
+  updateSprint(projectId: number, sprintId: number, data: FormData) {
+    return this.http
+      .put<any>(`api/project/${projectId}/sprint/${sprintId}`, data)
+      .pipe(catchError((e) => throwError(e)));
+  }
+
+  deleteSprint(projectId: number, sprintId: number){
+    return this.http
+      .delete<any>(`api/project/${projectId}/sprint/${sprintId}`)
+      .pipe(catchError((e) => throwError(e)));
+  }
 }
