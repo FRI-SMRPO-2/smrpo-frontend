@@ -24,6 +24,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   userRoles: string[] = [];
   userTasks: UserTasks;
   isAdmin: boolean;
+  isScrumMaster: boolean;
   projectId: number;
 
   awaitingTasksNo: number;
@@ -40,6 +41,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.userTasks = data.project.userTasks;
       this.awaitingTasksNo = this.userTasks.assignee_awaiting_tasks.length;
       this.rootStore.userStore.setProjectRoles(this.userRoles);
+      this.isScrumMaster = this.userRoles.includes("Scrum Master");
     });
 
     this.rootStore.userStore.user$.subscribe(

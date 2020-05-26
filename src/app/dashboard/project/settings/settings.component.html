@@ -1,0 +1,109 @@
+<div class="page-container">
+
+  <div class="header-row">
+    <span class="title">Nastavitve projekta</span>  
+    <button mat-raised-button color="accent" class="save-btn" [disabled]="form.invalid || !formChanged"
+    type="button" (click)="save()">Shrani</button>
+  </div>
+
+  <form class="modal-form" [formGroup]="form">
+    <div class="splited-form">
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Ime projekta</mat-label>
+        <input matInput formControlName="name" [errorStateMatcher]="errorMatcher"/>
+        <mat-error *ngIf="name.hasError('required')">
+          Ime projekta je <strong>obvezno</strong>
+        </mat-error>
+        <mat-error *ngIf="name.hasError('duplicateName')">
+          {{ name.errors.duplicateName }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Project owner</mat-label>
+        <input type="text"
+              matInput
+              [formControl]="product_owner"
+              [matAutocomplete]="autoPO"
+              [errorStateMatcher]="errorMatcher"
+              #userInput />
+        <mat-autocomplete autoActiveFirstOption
+        #autoPO="matAutocomplete" [displayWith]="mapValue">
+          <mat-option *ngFor="let user of filteredUsersPO | async" [value]="user">
+            {{user.username}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="product_owner.hasError('required')">
+          Polje Project owner je <strong>obvezno</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Scrum master</mat-label>
+        <input type="text"
+              matInput
+              [formControl]="scrum_master"
+              [matAutocomplete]="autoSM"
+              [errorStateMatcher]="errorMatcher"
+              #userInput />
+        <mat-autocomplete autoActiveFirstOption
+          #autoSM="matAutocomplete" [displayWith]="mapValue">
+          <mat-option *ngFor="let user of filteredUsersSM | async" [value]="user">
+            {{user.username}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="product_owner.hasError('required')">
+          Polje Scrum master je <strong>obvezno</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="splited-form">
+      <mat-form-field class="form-input" style="margin-bottom: 10px;">
+        <mat-label>Član razvojne skupine</mat-label>
+        <input type="text"
+              placeholder="Dodaj člana"
+              matInput
+              [formControl]="search"
+              [matAutocomplete]="autoDEV"
+              [errorStateMatcher]="errorMatcher"
+              #userInput />
+        <mat-autocomplete autoActiveFirstOption
+        (optionSelected)="userSelected($event)" #autoDEV="matAutocomplete" [displayWith]="mapValue">
+          <mat-option *ngFor="let user of filteredUsersDev | async" [value]="user">
+            {{user.username}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+
+    <!-- <app-project-modal-users-table [users]="selectedUsers" [roles]="roles" (onRemove)="remove($event)">
+    </app-project-modal-users-table> -->
+      <table mat-table [dataSource]="selectedUsers" class="user-table">
+
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef> Uporabniško ime </th>
+          <td mat-cell *matCellDef="let formGroup"> {{formGroup.value.username}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="options">
+          <th mat-header-cell *matHeaderCellDef class="options-td"></th>
+          <td mat-cell *matCellDef="let i=index">
+            <button mat-icon-button color="primary" class="options-btn" (click)="remove(i)">
+              <span class="material-icons">delete_forever</span>
+            </button>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="columns" class="table-header"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+      </table>
+
+
+      <div *ngIf="!selectedUsers.length" class="table-placeholder">Ni članov</div>
+
+      <mat-error class="error-text" [ngStyle]="{opacity: errorMessage ? 1 : 0}">{{errorMessage}}</mat-error>
+    </div>
+  </form>
+
+</div>

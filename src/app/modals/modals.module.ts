@@ -1,38 +1,38 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatRadioModule } from '@angular/material/radio';
 
+import { SharedModule } from '../shared/shared.module';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { ImportDocumentationModalComponent } from './import-documentation-modal/import-documentation-modalcomponent';
+import { PostModalComponent } from './post-modal/post-modal.component';
 import {
   ProjectModalUsersTableComponent,
 } from './project-modal/project-modal-users-table/project-modal-users-table.component';
 import { ProjectModalComponent } from './project-modal/project-modal.component';
+import { SprintCardComponent } from './sprint-modal/sprint-card/sprint-card.component';
 import { SprintModalComponent } from './sprint-modal/sprint-modal.component';
 import { StoryModalComponent } from './story-modal/story-modal.component';
-import { UserModalComponent } from './user-modal/user-modal.component';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { SprintCardComponent } from './sprint-modal/sprint-card/sprint-card.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { SharedModule } from '../shared/shared.module';
-import { TaskModalComponent } from './task-modal/task-modal.component';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
-import { PostModalComponent } from './post-modal/post-modal.component';
-import { ImportDocumentationModalComponent } from './import-documentation-modal/import-documentation-modalcomponent';
+import { TaskModalComponent } from './task-modal/task-modal.component';
+import { UserModalComponent } from './user-modal/user-modal.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { ImportDocumentationModalComponent } from './import-documentation-modal/
     ImportDocumentationModalComponent,
     SprintCardComponent,
     ConfirmationComponent,
-    TaskCalendarComponent
+    TaskCalendarComponent,
   ],
   imports: [
     CommonModule,
@@ -69,7 +69,7 @@ import { ImportDocumentationModalComponent } from './import-documentation-modal/
     MatExpansionModule,
     SharedModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
   ],
 })
 export class ModalsModule {}

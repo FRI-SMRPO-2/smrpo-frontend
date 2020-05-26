@@ -4,17 +4,20 @@
   <mat-drawer #drawer class="sidenav" mode="side" opened>
 
     <div class="sidenav-content">
-      <div class="sidenav-item" routerLink="project-wall" routerLinkActive="active-item">Projektni zid</div>
-      <div class="sidenav-item" routerLink="product-backlog" routerLinkActive="active-item">Product backlog</div>
-      <div class="sidenav-item" routerLink="sprint-backlog" routerLinkActive="active-item">Sprint backlog</div>
-      <div
+      <div class="top-content">
+        <div class="sidenav-item" routerLink="project-wall" routerLinkActive="active-item">Projektni zid</div>
+        <div class="sidenav-item" routerLink="product-backlog" routerLinkActive="active-item">Product backlog</div>
+        <div class="sidenav-item" routerLink="sprint-backlog" routerLinkActive="active-item">Sprint backlog</div>
+        <div
         class="sidenav-item task-item badge-item"
         routerLink="my-tasks"
         routerLinkActive="active-item"
-      >
-        Moje naloge
+        >
+          Moje naloge
       </div>
-      <div class="sidenav-item" routerLink="documentation" routerLinkActive="active-item">Dokumentacija</div>
+        <div class="sidenav-item" routerLink="documentation" routerLinkActive="active-item">Dokumentacija</div>
+      </div>
+      <div *ngIf="isAdmin || isScrumMaster" class="sidenav-item" routerLink="settings" routerLinkActive="active-item">Nastavitve</div>
     </div>
   </mat-drawer>
   <router-outlet></router-outlet>

@@ -95,11 +95,16 @@
   }
 
   .sidenav-content {
-    padding-top: 10px;
+    height: 100%;
     width: 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+
+    .top-content {
+      margin-top: 10px;
+    }
 
     .sidenav-title {
       color: $pink;

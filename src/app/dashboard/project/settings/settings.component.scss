@@ -1,0 +1,52 @@
+@import "../../../../variables";
+
+.header-row {
+  .title {
+    margin-right: 20px;
+  }
+}
+
+.splited-form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin-right: 50px;
+}
+
+.modal-form {
+  display: flex;
+  margin-top: 20px;
+}
+
+.form-input {
+  width: 300px;
+}
+
+.error-text {
+  height: 12px;
+  color: red;
+  font-size: 10px;
+  margin-bottom: 10px;
+  word-break: normal;
+}
+
+.user-table {
+  width: 100%;
+
+  th,
+  td {
+    padding-right: 10px;
+  }
+
+  .options-td {
+    width: 40px;
+  }
+}
+
+.table-placeholder {
+  width: 100%;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 12px;
+  color: $lightgrey;
+}

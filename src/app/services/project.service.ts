@@ -20,4 +20,8 @@ export class ProjectService {
   createProject(data) {
     return this.http.post("api/project/", data);
   }
+
+  updateProject(id: number, data) {
+    return this.http.put(`api/project/${id}`, data);
+  }
 }

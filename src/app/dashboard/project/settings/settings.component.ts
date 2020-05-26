@@ -1,27 +1,31 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Observable, of } from 'rxjs';
-import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, of, Subject } from 'rxjs';
+import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 
-import { FormErrorStateMatcher } from '../../../utils/form-error-state-matcher';
-import { User } from '../../interfaces/user.interface';
-import { ProjectService } from '../../services/project.service';
-import { UserService } from '../../services/user.service';
+import { FormErrorStateMatcher } from '../../../../utils/form-error-state-matcher';
+import { Project } from '../../../interfaces/project.interface';
+import { User } from '../../../interfaces/user.interface';
+import { ProjectService } from '../../../services/project.service';
+import { UserService } from '../../../services/user.service';
+import { RootStore } from '../../../store/root.store';
 
 @Component({
-  selector: "app-project-modal",
-  templateUrl: "./project-modal.component.html",
-  styleUrls: ["./project-modal.component.scss"],
+  selector: "app-settings",
+  templateUrl: "./settings.component.html",
+  styleUrls: ["./settings.component.scss"],
 })
-export class ProjectModalComponent implements OnInit {
+export class SettingsComponent implements OnInit {
   @ViewChild("userInput") userInput: ElementRef;
+  columns = ["username", "options"];
 
   roles;
   project;
 
   form: FormGroup;
+  formChanged: boolean;
   search = new FormControl();
 
   selectedUsers: AbstractControl[] = [];
@@ -30,20 +34,25 @@ export class ProjectModalComponent implements OnInit {
   filteredUsersDev: Observable<User[]>;
 
   errorMatcher = new FormErrorStateMatcher();
-
   errorMessage: string;
+
+  destroy$ = new Subject<boolean>();
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private dialogRef: MatDialogRef<ProjectModalComponent>,
     private projectService: ProjectService,
-    @Inject(MAT_DIALOG_DATA) private data: any
+    private rootStore: RootStore,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
-    console.log(this.data);
-    if (this.data) this.project = this.data.project;
+    /* if (this.data) this.project = this.data.project; */
+    this.rootStore.projectStore.activeProject$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((project) => {
+        this.project = project;
+      });
 
     this.form = this.formBuilder.group(
       {
@@ -72,9 +81,7 @@ export class ProjectModalComponent implements OnInit {
 
     console.log(this.form.value);
 
-    if (this.data) {
-      this.selectedUsers = [...this.developers.controls];
-    }
+    this.selectedUsers = [...this.developers.controls];
 
     this.filteredUsersPO = this.searchValueChanges(this.product_owner);
     this.filteredUsersSM = this.searchValueChanges(this.scrum_master);
@@ -91,6 +98,19 @@ export class ProjectModalComponent implements OnInit {
         );
       })
     );
+  }
+
+  ngAfterViewInit() {
+    this.form.valueChanges.subscribe(() => {
+      if (!this.formChanged) {
+        this.formChanged = true;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
   searchValueChanges(control: AbstractControl) {
@@ -113,6 +133,7 @@ export class ProjectModalComponent implements OnInit {
       this.search.markAsTouched();
       return;
     }
+    this.formChanged = false;
     delete this.errorMessage;
 
     console.log(this.form.value);
@@ -124,16 +145,19 @@ export class ProjectModalComponent implements OnInit {
       developer_ids: this.developers.value.map((d) => d.id),
     };
 
-    const apiCall = this.data
-      ? this.projectService.updateProject(this.project.id, request)
-      : this.projectService.createProject(request);
-
-    apiCall.subscribe(
-      (res) => this.dialogRef.close(res),
+    this.projectService.updateProject(this.project.id, request).subscribe(
+      (res: Project) => {
+        this.rootStore.projectStore.setActiveProject(res);
+        this.snackBar.open("Nastavitve projekta uspešno posodobljene", "", {
+          duration: 5000,
+          panelClass: ["snackbar-success"],
+        });
+      },
       (err) => {
         if (err.error.message === "Projekt s tem imenom že obstaja")
           this.name.setErrors({ duplicateName: err.error.message });
         else this.errorMessage = err.error.message;
+        this.formChanged = true;
       }
     );
   }

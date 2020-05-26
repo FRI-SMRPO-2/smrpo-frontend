@@ -34,6 +34,11 @@ body {
   }
 }
 
+.snackbar-success {
+  background-color: $green;
+  color: white;
+}
+
 .list-container .small-card.project-card:hover {
   cursor: pointer;
 }

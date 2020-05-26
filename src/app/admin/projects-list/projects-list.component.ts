@@ -47,7 +47,8 @@ export class ProjectsListComponent implements OnInit {
       });
   }
 
-  editProject(project) {
+  editProject(project, index: number) {
+    console.log(index);
     this.dialog
       .open(ProjectModalComponent, {
         data: {
@@ -56,7 +57,10 @@ export class ProjectsListComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((res) => {
-        console.log(res);
+        if (res) {
+          this.projects[index] = this.mapUsersByRoles(res);
+          this.projects = [...this.projects];
+        }
       });
   }
 
