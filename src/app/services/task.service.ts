@@ -34,4 +34,21 @@ export class TaskService {
   stopWorkOnTask(taskId: number) {
     return this.http.put<any>(`api/task/${taskId}/stop_work`, null);
   }
+
+  getWorkSession(taskId: number, startDate: Date, endDate: Date) {
+    /* Date in format YYYY-MM-dd */
+    const withLeadingZero = (d) => ("0" + d).slice(-2);
+    const start = `${startDate.getFullYear()}-${withLeadingZero(
+      startDate.getMonth() + 1
+    )}-${withLeadingZero(startDate.getDate())}`;
+    const end = `${endDate.getFullYear()}-${withLeadingZero(
+      endDate.getMonth() + 1
+    )}-${withLeadingZero(endDate.getDate())}`;
+
+    console.log(startDate.getMonth(), startDate.getDate());
+
+    return this.http.get<any>(
+      `api/task/${taskId}/work_sessions?start_date=${start}&end_date=${end}`
+    );
+  }
 }

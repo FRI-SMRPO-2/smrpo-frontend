@@ -47,6 +47,19 @@ export class ProjectsListComponent implements OnInit {
       });
   }
 
+  editProject(project) {
+    this.dialog
+      .open(ProjectModalComponent, {
+        data: {
+          project,
+        },
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        console.log(res);
+      });
+  }
+
   changePage(event) {
     //console.log(event);
   }
