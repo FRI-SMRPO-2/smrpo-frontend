@@ -144,6 +144,7 @@ export class TaskCalendarComponent implements OnInit {
   }
 
   dateToDay(date: Date) {
+    console.log(date);
     return ["Ned", "Pon", "Tor", "Sre", "Čet", "Pet", "Sob"][
       new Date(date).getDay()
     ];

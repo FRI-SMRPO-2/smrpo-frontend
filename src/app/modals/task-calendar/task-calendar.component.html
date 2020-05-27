@@ -13,7 +13,7 @@
             <th style="width: 100px"></th>
             <!-- [class.inactive]="!day.valid" -->
             <th class="day-cell" *ngFor="let day of datesArray.controls" [class.inactive]="!day.value.valid || !canEdit">
-              <span class="day-name">{{dateToDay(day.value.day)}}</span>
+              <span class="day-name" [class.more-opacity]="!day.value.valid || !canEdit">{{dateToDay(day.value.date)}}</span>
               <span>{{day.value.date | date:'dd.MM'}}</span>
             </th>
           </tr>
