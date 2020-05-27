@@ -34,7 +34,7 @@
             (taskFinished)="taskFinished(task, i, false)"
             (taskRejected)="taskRejected(task.id, i, true)"
             (taskSetActive)="taskSetActive(task, i)"
-            (openWorkSessionCalendar)="openWorkSessionCalendar(task)"
+            (openWorkSessionCalendar)="openWorkSessionCalendar(task, true)"
             >
           </app-my-task-card>
         </div>
@@ -47,7 +47,6 @@
           [acceptanceAwaiting]="false"
           (taskFinished)="taskFinished(task, i, true)"
           (taskUnsetActive)="taskUnsetActive(task, i)"
-          (openWorkSessionCalendar)="openWorkSessionCalendar(task)"
           >
         </app-my-task-card>
       </div>
@@ -58,7 +57,7 @@
         <app-my-task-card
           [task]="task"
           [acceptanceAwaiting]="false"
-          (openWorkSessionCalendar)="openWorkSessionCalendar(task)"
+          (openWorkSessionCalendar)="openWorkSessionCalendar(task, false)"
           >
         </app-my-task-card>
       </div>

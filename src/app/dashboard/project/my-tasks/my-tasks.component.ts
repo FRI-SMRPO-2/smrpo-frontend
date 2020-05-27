@@ -142,12 +142,12 @@ export class MyTasksComponent implements OnInit {
     );
   }
 
-  openWorkSessionCalendar(task: Task) {
+  openWorkSessionCalendar(task: Task, canEdit) {
     this.dialog
       .open(TaskCalendarComponent, {
         data: {
           task,
-          canEdit: true,
+          canEdit,
         },
       })
       .afterClosed()
