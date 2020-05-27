@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { WorkSession } from '../interfaces/task.interface';
+
 @Injectable({
   providedIn: "root",
 })
@@ -38,17 +40,21 @@ export class TaskService {
   getWorkSession(taskId: number, startDate: Date, endDate: Date) {
     /* Date in format YYYY-MM-dd */
     const withLeadingZero = (d) => ("0" + d).slice(-2);
+
     const start = `${startDate.getFullYear()}-${withLeadingZero(
       startDate.getMonth() + 1
     )}-${withLeadingZero(startDate.getDate())}`;
+
     const end = `${endDate.getFullYear()}-${withLeadingZero(
       endDate.getMonth() + 1
     )}-${withLeadingZero(endDate.getDate())}`;
 
-    console.log(startDate.getMonth(), startDate.getDate());
-
     return this.http.get<any>(
-      `api/task/${taskId}/work_sessions?start_date=${start}&end_date=${end}`
+      `api/task/${taskId}/work_sessions?end_date=${end}&start_date=${start}`
     );
+  }
+
+  editWorkSession(taskId: number, data: WorkSession) {
+    return this.http.put<any>(`api/task/${taskId}/work_sessions`, data);
   }
 }

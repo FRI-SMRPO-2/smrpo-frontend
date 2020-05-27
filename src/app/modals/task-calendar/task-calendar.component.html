@@ -1,41 +1,51 @@
 <div class="modal-content"> 
   <div class="title pink">Pregled dela</div>
+  <div class="subtitle">{{task.title}}</div>
 
   <div class="content">
-    <button mat-mini-fab color="primary" class="arrow-btn arrow-left">
+    <button mat-mini-fab color="primary" class="arrow-btn arrow-left" (click)="weekEarlier()" [disabled]="!showLeftBtn || datesArray.invalid">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
 
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 100px"></th>
-          <th class="day-cell" *ngFor="let day of days">{{day}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>Opravljen čas v urah</th>
-          <td class="day-value"*ngFor="let day of days">
-            <div style="margin: 5px 0;">
-              <input value="5" class="table-input">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <th>Predviden čas do konca v urah</th>
-          <td class="day-value"*ngFor="let day of days"><input value="2" class="table-input"></td>
-        </tr>
-      </tbody>
-    </table>
-    
-    <button mat-mini-fab color="primary" class="arrow-btn arrow-right">
-      <mat-icon>keyboard_arrow_right</mat-icon>
-    </button>
-  </div>
+      <table [formGroup]="datesArray">
+        <thead>
+          <tr>
+            <th style="width: 100px"></th>
+            <!-- [class.inactive]="!day.valid" -->
+            <th class="day-cell" *ngFor="let day of datesArray.controls" [class.inactive]="!day.value.valid">
+              <span class="day-name">{{dateToDay(day.value.day)}}</span>
+              <span>{{day.value.date | date:'dd.MM'}}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Opravljen čas v urah</th>
+            <td class="day-value"*ngFor="let day of datesArray.controls; let i = index" [formGroupName]="i">
+              <div *ngIf="day.value.valid" style="margin: 5px 0;">
+                <input matInput type="number" formControlName="hours" min="0" class="table-input" [class.error]="day.get('hours').invalid">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Predviden čas do konca v urah</th>
+            <td class="day-value"*ngFor="let day of datesArray.controls; let i = index" [formGroupName]="i">
+              <input matInput *ngIf="day.value.valid" type="number" min="0" formControlName="estimated_hours" class="table-input" 
+              [class.error]="day.get('estimated_hours').invalid">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <button mat-mini-fab color="primary" class="arrow-btn arrow-right" [disabled]="!showRightBtn || datesArray.invalid" (click)="weekOlder()">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
 
-  <div class="button-row">
-    <button mat-raised-button>Prekliči</button>
-    <button mat-raised-button color="accent">Shrani</button>
+    <span [style.visibility]="datesArray.valid ? 'collapse' : 'visible'" class="error-text">Vpisane ure ne smejo biti manjše od vrednosti 0</span>
+    
+    <div class="button-row">
+      <button mat-raised-button (click)="closeDialog()">Prekliči</button>
+      <button mat-raised-button color="accent" (click)="waitAndCloseDialog()" [disabled]="datesArray.invalid">Shrani</button>
+    </div>
   </div>
-</div>

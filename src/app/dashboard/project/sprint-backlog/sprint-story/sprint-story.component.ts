@@ -146,7 +146,11 @@ export class SprintStoryComponent implements OnInit {
 
   openWorkSessionCalendar(task: Task) {
     this.dialog
-      .open(TaskCalendarComponent)
+      .open(TaskCalendarComponent, {
+        data: {
+          task,
+        },
+      })
       .afterClosed()
       .subscribe((data) => {
         console.log(data);

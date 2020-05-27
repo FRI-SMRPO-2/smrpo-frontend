@@ -9,6 +9,7 @@ export interface Task {
   assignee?: string;
   assignee_awaiting?: string;
   created_by: string;
+  created: Date;
   finished_by?: string;
   finished: boolean;
 }
@@ -16,4 +17,10 @@ export interface Task {
 export interface UserTasks {
   assigned_tasks: Task[];
   assignee_awaiting_tasks: Task[];
+}
+
+export interface WorkSession {
+  date: Date | string;
+  hours: number;
+  estimated_hours: number;
 }

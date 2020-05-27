@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
-import { Sprint } from '../interfaces/sprint.interface';
 
+import { Sprint } from '../interfaces/sprint.interface';
 
 export class SprintStore {
   private _allSprints = new BehaviorSubject<Sprint[]>([]);
@@ -12,6 +12,10 @@ export class SprintStore {
 
   get activeSprint$() {
     return this._activeSprint.asObservable();
+  }
+
+  get activeSprint() {
+    return this._activeSprint.value;
   }
 
   setAllSprints(sprints: Sprint[]) {
