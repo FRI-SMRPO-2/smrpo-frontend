@@ -154,7 +154,12 @@ export class SettingsComponent implements OnInit {
         });
       },
       (err) => {
-        if (err.error.message === "Projekt s tem imenom že obstaja")
+        console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 5000,
+          panelClass: ["snackbar-error"],
+        });
+        if (err.error === "Projekt s tem imenom že obstaja!")
           this.name.setErrors({ duplicateName: err.error.message });
         else this.errorMessage = err.error.message;
         this.formChanged = true;
