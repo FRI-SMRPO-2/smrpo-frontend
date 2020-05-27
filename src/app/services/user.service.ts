@@ -18,6 +18,10 @@ export class UserService {
       .pipe(tap((user) => this.rootStore.userStore.setUser(user)));
   }
 
+  getUser(userId: number) {
+    return this.http.get<User>(`api/user/${userId}`);
+  }
+
   getMyTasks(projectId?: number) {
     return this.http.get<UserTasks>("api/user/me/tasks").pipe(
       map((tasks: UserTasks) => {
@@ -48,5 +52,13 @@ export class UserService {
 
   addUser(data: User) {
     return this.http.post<User>("api/user/", data);
+  }
+
+  updateUser(userId, data) {
+    return this.http.put<User>(`api/user/${userId}`, data);
+  }
+
+  deleteUser(userId) {
+    return this.http.delete<any>(`api/user/${userId}`);
   }
 }

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { FormErrorStateMatcher } from '../../../utils/form-error-state-matcher';
+import { User } from '../../interfaces/user.interface';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -15,13 +16,17 @@ export class UserModalComponent implements OnInit {
   form: FormGroup;
   emptyFieldsError: boolean;
 
+  user: User;
+  canEdit: boolean;
+
   errorMatcher = new FormErrorStateMatcher();
   passwordErrorMatcher = new CrossFieldErrorMatcher();
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private dialogRef: MatDialogRef<UserModalComponent>
+    private dialogRef: MatDialogRef<UserModalComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 
   ngOnInit() {
@@ -29,8 +34,8 @@ export class UserModalComponent implements OnInit {
       {
         username: ["", Validators.required],
         email: ["", [Validators.required, Validators.email]],
-        password1: ["", [Validators.required, Validators.minLength(8)]],
-        password2: ["", Validators.required],
+        password1: ["", Validators.minLength(8)],
+        password2: "",
         first_name: ["", Validators.required],
         last_name: ["", Validators.required],
         is_superuser: false,
@@ -39,6 +44,21 @@ export class UserModalComponent implements OnInit {
         validators: this.passwordValidators,
       }
     );
+
+    if (this.data) {
+      this.canEdit = true;
+      this.userService.getUser(this.data.user.id).subscribe((data) => {
+        this.user = data;
+        this.username.setValue(data.username);
+        this.first_name.setValue(data.first_name);
+        this.last_name.setValue(data.last_name);
+        this.email.setValue(data.email);
+        this.is_superuser.setValue(data.is_superuser);
+      });
+    } else {
+      this.password1.setValidators(Validators.required);
+      this.password2.setValidators(Validators.required);
+    }
   }
 
   passwordValidators(form: FormGroup) {
@@ -55,7 +75,11 @@ export class UserModalComponent implements OnInit {
       return;
     }
 
-    this.userService.addUser(this.form.value).subscribe(
+    const apiCall = this.canEdit
+      ? this.userService.updateUser(this.user.id, this.form.value)
+      : this.userService.addUser(this.form.value);
+
+    apiCall.subscribe(
       (data) => {
         this.dialogRef.close(data);
       },
@@ -81,6 +105,15 @@ export class UserModalComponent implements OnInit {
   }
   get password2() {
     return this.form.get("password2");
+  }
+  get first_name() {
+    return this.form.get("first_name");
+  }
+  get last_name() {
+    return this.form.get("last_name");
+  }
+  get is_superuser() {
+    return this.form.get("is_superuser");
   }
 }
 
