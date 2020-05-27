@@ -84,7 +84,7 @@
                 (taskFinished)="finishTask(task, i, false)"
                 (taskRejected)="rejectTask(task, i, true)"
                 (taskSetActive)="taskSetActive(task, i)"
-                (openWorkSessionCalendar)="openWorkSessionCalendar(task)"
+                (openWorkSessionCalendar)="openWorkSessionCalendar(task, true)"
               >
               </app-story-task>
             </div>
@@ -106,7 +106,7 @@
               <app-story-task 
                 *ngFor="let task of tasks.finished" 
                 [task]="task"
-                (openWorkSessionCalendar)="openWorkSessionCalendar(task)"
+                (openWorkSessionCalendar)="openWorkSessionCalendar(task, false)"
               >
               </app-story-task>
             </div>

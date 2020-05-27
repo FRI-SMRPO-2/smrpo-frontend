@@ -12,7 +12,7 @@
           <tr>
             <th style="width: 100px"></th>
             <!-- [class.inactive]="!day.valid" -->
-            <th class="day-cell" *ngFor="let day of datesArray.controls" [class.inactive]="!day.value.valid">
+            <th class="day-cell" *ngFor="let day of datesArray.controls" [class.inactive]="!day.value.valid || !canEdit">
               <span class="day-name">{{dateToDay(day.value.day)}}</span>
               <span>{{day.value.date | date:'dd.MM'}}</span>
             </th>
@@ -23,15 +23,31 @@
             <th>Opravljen čas v urah</th>
             <td class="day-value"*ngFor="let day of datesArray.controls; let i = index" [formGroupName]="i">
               <div *ngIf="day.value.valid" style="margin: 5px 0;">
-                <input matInput type="number" formControlName="hours" min="0" class="table-input" [class.error]="day.get('hours').invalid">
+                <input 
+                  matInput 
+                  type="number" 
+                  formControlName="hours" 
+                  min="0" 
+                  class="table-input"
+                  [class.disabled]="!canEdit"
+                  [class.error]="day.get('hours').invalid"
+                >
               </div>
             </td>
           </tr>
           <tr>
             <th>Predviden čas do konca v urah</th>
             <td class="day-value"*ngFor="let day of datesArray.controls; let i = index" [formGroupName]="i">
-              <input matInput *ngIf="day.value.valid" type="number" min="0" formControlName="estimated_hours" class="table-input" 
-              [class.error]="day.get('estimated_hours').invalid">
+              <input 
+                matInput
+                *ngIf="day.value.valid"
+                type="number"
+                min="0" 
+                formControlName="estimated_hours" 
+                class="table-input"
+                [class.disabled]="!canEdit"
+                [class.error]="day.get('estimated_hours').invalid"
+              >
             </td>
           </tr>
         </tbody>
@@ -44,8 +60,14 @@
 
     <span [style.visibility]="datesArray.valid ? 'collapse' : 'visible'" class="error-text">Vpisane ure ne smejo biti manjše od vrednosti 0</span>
     
-    <div class="button-row">
+    <div class="button-row" *ngIf="canEdit">
       <button mat-raised-button (click)="closeDialog()">Prekliči</button>
-      <button mat-raised-button color="accent" (click)="waitAndCloseDialog()" [disabled]="datesArray.invalid">Shrani</button>
+      <button 
+        mat-raised-button 
+        color="accent" 
+        (click)="waitAndCloseDialog()" 
+        [disabled]="datesArray.invalid">
+        Shrani
+      </button>
     </div>
   </div>

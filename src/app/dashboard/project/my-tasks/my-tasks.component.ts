@@ -147,6 +147,7 @@ export class MyTasksComponent implements OnInit {
       .open(TaskCalendarComponent, {
         data: {
           task,
+          canEdit: true,
         },
       })
       .afterClosed()

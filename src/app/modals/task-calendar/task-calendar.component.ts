@@ -21,6 +21,7 @@ export class TaskCalendarComponent implements OnInit {
   activeSprint: Sprint;
 
   datesArray: FormArray;
+  canEdit: boolean;
 
   task: Task;
   currentWeekShowed: boolean = true;
@@ -36,7 +37,7 @@ export class TaskCalendarComponent implements OnInit {
   matcher = new ErrorStateMatcher();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { task },
+    @Inject(MAT_DIALOG_DATA) public data: { task; canEdit },
     private taskService: TaskService,
     private rootStore: RootStore,
     private formBuilder: FormBuilder,
@@ -45,6 +46,8 @@ export class TaskCalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.datesArray = this.formBuilder.array([]);
+    this.canEdit = this.data.canEdit;
+    console.log(this.data.canEdit);
     this.activeSprint = this.rootStore.sprintStore.activeSprint;
 
     this.task = this.data.task;
@@ -117,22 +120,6 @@ export class TaskCalendarComponent implements OnInit {
             valid = false;
           }
         });
-
-        /*         this.calendarDays = Object.keys(data).map((d) => {
-          if (!(new Date(d) >= this.created)) {
-            valid = false;
-            console.log("no");
-          }
-          return {
-            day: d,
-            valid: new Date(d) >= this.created,
-          };
-        });
-
-        this.calendarValues = this.calendarDays.map(({ day }) => {
-          const object = data[day];
-          return { ...object, valid: new Date(day) >= this.created };
-        }); */
 
         if (type === "left" && !valid) {
           this.showLeftBtn = false;
