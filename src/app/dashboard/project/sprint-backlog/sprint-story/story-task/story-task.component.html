@@ -16,7 +16,7 @@
       <span class="material-icons">more_vert</span>
     </button> -->
     <button 
-      *ngIf="!!task.assignee && !task.active"
+      *ngIf="!!task.assignee && task.assignee === currentUser.username && !task.active"
       mat-icon-button
       class="more-settings"
       (click)="openWorkSessionCalendar.emit()"

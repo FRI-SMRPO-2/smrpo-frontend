@@ -31,6 +31,7 @@ export class SprintStoryComponent implements OnInit {
   comment: string;
 
   currentUser: User;
+  isAdmin: boolean;
 
   constructor(
     private taskService: TaskService,
@@ -41,6 +42,7 @@ export class SprintStoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.rootStore.userStore.user;
+    this.isAdmin = this.rootStore.userStore.user.is_superuser;
   }
 
   editStory(event: any): void {
@@ -146,6 +148,10 @@ export class SprintStoryComponent implements OnInit {
 
   openWorkSessionCalendar(task: Task, canEdit) {
     console.log(canEdit);
+    console.log(this.currentUser, task.assignee);
+    canEdit =
+      canEdit && (this.currentUser.username === task.assignee || this.isAdmin);
+    console.log(canEdit);
     this.dialog
       .open(TaskCalendarComponent, {
         data: {
@@ -154,9 +160,7 @@ export class SprintStoryComponent implements OnInit {
         },
       })
       .afterClosed()
-      .subscribe((data) => {
-        console.log(data);
-      });
+      .subscribe();
   }
 
   showErrorSnackBar(err) {

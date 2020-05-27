@@ -47,7 +47,7 @@ export class TaskCalendarComponent implements OnInit {
   ngOnInit(): void {
     this.datesArray = this.formBuilder.array([]);
     this.canEdit = this.data.canEdit;
-    console.log(this.data.canEdit);
+
     this.activeSprint = this.rootStore.sprintStore.activeSprint;
 
     this.task = this.data.task;
@@ -57,7 +57,7 @@ export class TaskCalendarComponent implements OnInit {
     this.getWorkSession(
       new Date(this.today.getTime() - 6 * this.dayMiliseconds),
       this.today,
-      "right"
+      "both"
     );
   }
 
@@ -83,7 +83,7 @@ export class TaskCalendarComponent implements OnInit {
     this.getWorkSession(start, end, "right");
   }
 
-  getWorkSession(start, end, type: "left" | "right") {
+  getWorkSession(start, end, type: "left" | "right" | "both") {
     this.showLeftBtn = true;
     this.showRightBtn = true;
 
@@ -112,25 +112,19 @@ export class TaskCalendarComponent implements OnInit {
             if (day.valid)
               this.taskService
                 .editWorkSession(this.task.id, formated)
-                .subscribe((data) =>
-                  console.log("Posodobljeno pred 0 sekundami")
-                );
+                .subscribe();
           });
           if (!(new Date(d) >= this.created)) {
             valid = false;
           }
         });
 
-        if (type === "left" && !valid) {
+        if ((type === "left" || type === "both") && !valid) {
           this.showLeftBtn = false;
-        } else if (type === "right") {
+        }
+        if (type === "right" || type === "both") {
           this.showRightBtn =
             new Date(end) < new Date(this.today.setHours(0, 0, 0, 0));
-          console.log(end, "end");
-          console.log(
-            new Date(end) < new Date(this.today.setHours(0, 0, 0, 0)),
-            new Date(this.today.setHours(0, 0, 0, 0))
-          );
         }
       });
   }
@@ -144,7 +138,6 @@ export class TaskCalendarComponent implements OnInit {
   }
 
   dateToDay(date: Date) {
-    console.log(date);
     return ["Ned", "Pon", "Tor", "Sre", "Čet", "Pet", "Sob"][
       new Date(date).getDay()
     ];
