@@ -1,5 +1,5 @@
 <div class="page-container">
-  <div class="header">
+  <div class="header" [class.resized]="!!activeSprint">
     <span class="title">Sprint backlog</span>
     <div>
       <div class="resolving-stories-error">
@@ -48,12 +48,14 @@
 
 
   <div id="info-section">
-    <div *ngIf="activeSprint!=null; else noActiveSprint">Aktivni sprint: {{activeSprint.start_date | sprintDate}} - {{activeSprint.end_date | sprintDate}}</div>
+    <div *ngIf="activeSprint!=null; else noActiveSprint">
+      Aktivni sprint: {{activeSprint.start_date | sprintDate}} - {{activeSprint.end_date | sprintDate}}
+    </div>
     <ng-template #noActiveSprint>Trenutno ni aktivnega sprinta.</ng-template>
   </div>
 
-  <div>
-    <div *ngIf="activeSprint!=null && stories.length === 0">
+  <div *ngIf="!!activeSprint">
+    <div *ngIf="stories.length === 0">
       V aktivnem sprintu trenutno ni zgodb.
     </div>
 

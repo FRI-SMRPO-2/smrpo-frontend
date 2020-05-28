@@ -21,11 +21,14 @@
   width: 45%;
 }
 
-.save-btn {
-  margin-top: 20px;
-}
-
 .input-row {
   display: flex;
   justify-content: space-between;
+}
+
+.btn-row {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }

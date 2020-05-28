@@ -49,7 +49,7 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  editUser(user) {
+  editUser(user, index: number) {
     this.dialog
       .open(UserModalComponent, {
         data: {
@@ -58,7 +58,11 @@ export class UsersComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((data) => {
-        console.log(data);
+        this.users[index] = {
+          ...data,
+          name: `${data.first_name} ${data.last_name}`,
+        };
+        this.users = [...this.users];
       });
   }
 

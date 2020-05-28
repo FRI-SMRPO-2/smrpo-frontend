@@ -1,5 +1,9 @@
 @import "../../../variables";
 
+.page-container {
+  min-width: 1100px;
+}
+
 .title-section {
   width: 95%;
   display: flex;

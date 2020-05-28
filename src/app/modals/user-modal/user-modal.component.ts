@@ -17,6 +17,8 @@ export class UserModalComponent implements OnInit {
   emptyFieldsError: boolean;
 
   user: User;
+  loaded: boolean;
+  valueChanged: boolean;
   canEdit: boolean;
 
   errorMatcher = new FormErrorStateMatcher();
@@ -54,11 +56,19 @@ export class UserModalComponent implements OnInit {
         this.last_name.setValue(data.last_name);
         this.email.setValue(data.email);
         this.is_superuser.setValue(data.is_superuser);
+        this.loaded = true;
       });
     } else {
+      this.loaded = true;
       this.password1.setValidators(Validators.required);
       this.password2.setValidators(Validators.required);
     }
+
+    this.form.valueChanges.subscribe(() => {
+      if (this.loaded && !this.valueChanged) {
+        this.valueChanged = true;
+      }
+    });
   }
 
   passwordValidators(form: FormGroup) {
@@ -92,6 +102,10 @@ export class UserModalComponent implements OnInit {
           this.email.setErrors({ wrongEmail: err.error.email[0] });
       }
     );
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
   get username() {

@@ -1,9 +1,5 @@
 @import "../../../../variables";
 
-.page-container {
-  min-width: 1000px;
-}
-
 .header {
   justify-content: space-between;
   display: flex;
@@ -13,24 +9,23 @@
   }
 }
 
-.form-input{
+.form-input {
   width: 100%;
 }
 
-.documentation-textarea{
+.documentation-textarea {
   background-color: white;
   padding: 20px;
   width: calc(100% - 40px);
 }
 
-.documentation-message
-{
+.documentation-message {
   float: left;
   margin-top: 8px;
   margin-left: 5px;
   color: #3f51b5;
 
-  &.documentation-error{
+  &.documentation-error {
     color: #f44336;
   }
 }
@@ -38,4 +33,3 @@
 .data-container {
   margin-top: 10px;
 }
-

@@ -1,5 +1,9 @@
 @import "../../../../variables";
 
+.page-container {
+  min-width: 1100px;
+}
+
 .sorting-titles {
   margin-top: 20px;
   display: grid;

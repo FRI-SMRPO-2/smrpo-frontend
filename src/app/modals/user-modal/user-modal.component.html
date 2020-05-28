@@ -1,9 +1,8 @@
 <div class="modal-container">
-  
-  <form class="modal-form" [formGroup]="form">
 
-    <span class="title">Nov uporabnik</span>
+  <div class="title">{{canEdit ? 'Urejanje uporabnika' : 'Dodajanje novega uporabnika'}}</div>
 
+  <form *ngIf="loaded; else loading" class="modal-form" [formGroup]="form">
     <mat-form-field class="form-input">
       <mat-label>Sistemske pravice</mat-label>
      <mat-select formControlName="is_superuser">
@@ -59,10 +58,18 @@
         </mat-error>
       </mat-form-field>
     </div>
-
-    <button mat-raised-button color="accent" class="save-btn" [disabled]="!form.valid"
-    type="button" (click)="save()">Shrani</button>
     
   </form>
+
+  <div class="btn-row">
+    <button mat-raised-button (click)="closeDialog()">Prekliči</button>
+    <button mat-raised-button color="accent" class="save-btn" [disabled]="!form.valid || !valueChanged"
+    type="button" (click)="save()">Shrani</button>
+  </div>
+
+  <ng-template #loading>
+    <app-progress-spinner></app-progress-spinner>
+  </ng-template>
+  
 
 </div>
