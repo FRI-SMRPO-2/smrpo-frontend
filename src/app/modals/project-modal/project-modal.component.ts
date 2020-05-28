@@ -74,6 +74,7 @@ export class ProjectModalComponent implements OnInit {
 
     if (this.data) {
       this.selectedUsers = [...this.developers.controls];
+      console.log(this.developers);
     }
 
     this.filteredUsersPO = this.searchValueChanges(this.product_owner);
@@ -85,9 +86,8 @@ export class ProjectModalComponent implements OnInit {
         value ? this.userService.searchUser(value) : of([])
       ),
       map((users) => {
-        console.log(users);
         return users.filter(
-          (user) => !this.developers.value.some((u) => u.user_id === user.id)
+          (user) => !this.developers.value.some((u) => u.id === user.id)
         );
       })
     );

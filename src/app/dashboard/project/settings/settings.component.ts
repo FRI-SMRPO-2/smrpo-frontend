@@ -94,7 +94,7 @@ export class SettingsComponent implements OnInit {
       map((users) => {
         console.log(users);
         return users.filter(
-          (user) => !this.developers.value.some((u) => u.user_id === user.id)
+          (user) => !this.developers.value.some((u) => u.id === user.id)
         );
       })
     );
