@@ -10,8 +10,11 @@
       <div class="task-complexity">Časovna zahtevnost v točkah: {{story.time_complexity || "/"}}</div>
     </div>
     <div>
-    <button mat-icon-button color="primary" class="options-btn" (click)="editButtonClick.emit()">
+      <button mat-icon-button color="primary" class="options-btn" (click)="editButtonClick.emit()">
         <span class="material-icons">edit</span>
+      </button>
+      <button mat-icon-button color="warn" class="options-btn" *ngIf="this.canDelete" (click)="deleteButtonClick.emit()">
+        <span class="material-icons">delete</span>
       </button>
     </div>
 </div>

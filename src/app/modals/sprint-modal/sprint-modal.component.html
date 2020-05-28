@@ -14,8 +14,9 @@
             [endDate]="sprint.end_date"
             [active]="activeSprintId === sprint.id"
             [canEdit]="this.canEdit(sprint.start_date)"
+            [canEditSpeed]="this.userRoles.includes('Admin') || this.userRoles.includes('Scrum Master')"
             (onDelete)="this.deleteSprint(sprint.id)"
-            (onEdit)="this.editSprint(sprint.id, sprint.start_date, sprint.end_date, sprint.expected_speed)"
+            (onEdit)="this.editSprint(sprint.id, sprint.start_date, sprint.end_date, sprint.expected_speed, activeSprintId === sprint.id)"
             >
             </app-sprint-card>
           </mat-accordion>

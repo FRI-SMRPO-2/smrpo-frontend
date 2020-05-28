@@ -11,6 +11,7 @@ export class SprintCardComponent implements OnInit {
   @Input() endDate;
   @Input() active;
   @Input() canEdit;
+  @Input() canEditSpeed;
   @Output() onEdit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
 

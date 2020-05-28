@@ -27,6 +27,12 @@ export class StoryService {
       .pipe(catchError((e) => throwError(e)));
   }
 
+  deleteStory(projectId: number, storyId: number){
+    return this.http
+    .delete<any>(`api/project/${projectId}/story/${storyId}`)
+    .pipe(catchError((e) => throwError(e)));
+  }
+
   acceptStories(projectId: number, data) {
     return this.http
       .put<any>(`api/project/${projectId}/story/realize`, data)

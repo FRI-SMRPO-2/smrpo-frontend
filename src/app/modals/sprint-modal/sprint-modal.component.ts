@@ -74,14 +74,15 @@ export class SprintModalComponent implements OnInit {
     return new Date(stringDate);
   }
 
-  editSprint(sprintId: number, startDate: string, endDate: string, expectedSpeed: number){
+  editSprint(sprintId: number, startDate: string, endDate: string, expectedSpeed: number, active: boolean){
     this.dialog.open(EditSprintModalComponent, {
       data: {
         projectId: this.data.projectId,
         sprintId,
         startDate: this.getDateFromString(startDate),
         endDate: this.getDateFromString(endDate),
-        expectedSpeed
+        expectedSpeed,
+        active
       },
     })
     .afterClosed()

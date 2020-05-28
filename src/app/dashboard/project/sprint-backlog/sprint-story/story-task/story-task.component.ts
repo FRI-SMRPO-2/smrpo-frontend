@@ -13,6 +13,9 @@ import { RootStore } from 'src/app/store/root.store';
 export class StoryTaskComponent implements OnInit {
   @Input() task: Task;
   @Input() users: User[];
+  @Input() unassigned: boolean;
+  @Input() canEdit;
+  @Input() canDelete;
 
   @Output() taskAccepted: EventEmitter<number> = new EventEmitter<number>();
   @Output() taskRejected: EventEmitter<number> = new EventEmitter<number>();
@@ -20,6 +23,9 @@ export class StoryTaskComponent implements OnInit {
   @Output() taskSetActive: EventEmitter<number> = new EventEmitter<number>();
   @Output() taskUnsetActive: EventEmitter<number> = new EventEmitter<number>();
   @Output() openWorkSessionCalendar: EventEmitter<any> = new EventEmitter();
+  @Output() editTaskFinalCallback: EventEmitter<any> = new EventEmitter();
+  @Output() onDelete: EventEmitter<any> = new EventEmitter();
+
 
   currentUser: User;
 
@@ -44,9 +50,16 @@ export class StoryTaskComponent implements OnInit {
           description: this.task.description,
           complexity: this.task.estimated_time,
           assignee: assignedUser === undefined ? null : assignedUser.id,
+          canEdit: this.canEdit,
+          unassigned: this.unassigned,
           users: activeProject.developers,
+          taskId: this.task.id
         },
-      });
+      })
+      .afterClosed()
+      .subscribe((newSprint) => {
+        this.editTaskFinalCallback.emit(newSprint);
+      })
     });
   }
 }

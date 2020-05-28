@@ -240,6 +240,24 @@ export class SprintBacklogComponent implements OnInit {
       });
   }
 
+  editTaskCallback(newActiveSprint){
+    if (newActiveSprint) {
+      this.activeSprint = newActiveSprint;
+      this.rootStore.sprintStore.setActiveSprint(newActiveSprint);
+      this.stories = this.activeSprint.stories;
+      this.rootStore.storyStore.setActiveSprintStories(this.stories);
+    }
+  }
+
+  deleteTaskCallback(newActiveSprint){
+    if (newActiveSprint) {
+      this.activeSprint = newActiveSprint;
+      this.rootStore.sprintStore.setActiveSprint(newActiveSprint);
+      this.stories = this.activeSprint.stories;
+      this.rootStore.storyStore.setActiveSprintStories(this.stories);
+    }
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(

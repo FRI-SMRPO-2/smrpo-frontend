@@ -158,7 +158,24 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
     }
   }
 
-  // TODO: isto funkcijo lahko v prihodnjem sprintu uporabimo za implementacijo urejanja uporabniških zgodb
+  deleteStory(storyId: number){
+    this.storyService
+    .deleteStory(this.project.id, storyId)
+    .subscribe(
+      () => {
+        this.storyService
+          .getAllStories(this.project.id)
+          .subscribe((stories) => {
+            if (stories) {
+              this.productBacklog = stories;
+              this.rootStore.storyStore.setAllStories(stories);
+            }
+          });
+      },
+      (err) => {}
+    );
+  }
+
   editStory(story: Story, unassigned: boolean) {
     this.dialog
       .open(StoryModalComponent, {
@@ -182,6 +199,7 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
       .subscribe((newStories) => {
         if (newStories) {
           this.productBacklog = newStories;
+          this.rootStore.storyStore.setAllStories(newStories);
         }
       });
   }

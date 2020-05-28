@@ -35,8 +35,8 @@
       {{errorMessage}}
     </div>
 
-    <button mat-raised-button color="accent" class="save-btn" *ngIf="!data.editing"
-    type="button" (click)="save()" [disabled]="form.invalid">Shrani</button>
+    <button mat-raised-button color="accent" class="save-btn" *ngIf="!data.editing || data.canEdit"
+    type="button" (click)="data.editing ? updateTask() : save()" [disabled]="form.invalid">Shrani</button>
 
   </form>
 

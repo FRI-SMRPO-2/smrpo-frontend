@@ -21,6 +21,7 @@ export class StoryModalComponent implements OnInit {
 
   addingStory: boolean;
   canEditComplexity: boolean;
+  canEditStoryParameters: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,37 +41,46 @@ export class StoryModalComponent implements OnInit {
       { id: 1, name: "Must have" },
     ];
 
-    this.canEditComplexity = this.data.userRoles.includes("Scrum Master");
+    this.canEditComplexity = this.data.userRoles.includes("Scrum Master") || this.data.userRoles.includes("Admin");
+    this.canEditStoryParameters = this.data.unassigned && (this.data.userRoles.includes("Scrum Master") || this.data.userRoles.includes("Admin") || this.data.userRoles.includes("Product Owner"));
 
     this.form = this.formBuilder.group({
-      name: this.data.name,
-      text: this.data.text,
-      business_value: [
-        this.data.business_value,
+      name: [{
+        value: this.data.name ?? '',
+        disabled: this.data.type === "edit" &&  !this.canEditStoryParameters
+      }],
+      text: [{
+        value: this.data.text ?? '',
+        disabled: this.data.type === "edit" && !this.canEditStoryParameters
+      }],
+      business_value: [{
+        value: this.data.business_value,
+        disabled: this.data.type === "edit" && !this.canEditStoryParameters
+        },
         [Validators.min(1), Validators.max(10)],
       ],
-      priority: this.data.priorityId,
+      priority: [{
+        value: this.data.priorityId,
+        disabled: this.data.type === "edit" && !this.canEditStoryParameters
+      }],
       tests: this.formBuilder.array(
         this.data.tests.length === 0
           ? [this.createTest()]
           : this.createTests(this.data.tests)
       ),
       time_complexity: [
-        { value: this.data.complexity ?? "", disabled: this.type === "add" },
+        { value: this.data.complexity ?? "", disabled: this.type === "add" && !this.canEditComplexity && !this.data.unassigned },
         [Validators.min(0), Validators.max(200)],
       ],
     });
-
-    if (!this.canEditComplexity && this.type === "edit") this.form.disable();
   }
 
   createTest(testDescription = "") {
-    //console.log(this.data.type === "edit" && !this.data.unassigned);
     return this.formBuilder.group({
       testDescription: [
         {
           value: testDescription,
-          disabled: this.data.type === "edit" && !this.data.unassigned,
+          disabled: this.data.type === "edit" && !this.canEditStoryParameters,
         },
       ],
     });
@@ -92,6 +102,7 @@ export class StoryModalComponent implements OnInit {
   }
 
   removeTest(i) {
+    this.tests = this.form.get("tests") as FormArray;
     this.tests.removeAt(i);
   }
 
@@ -126,6 +137,11 @@ export class StoryModalComponent implements OnInit {
       ...this.form.value,
       tests: this.form.value.tests.map((test) => test.testDescription),
     };
+
+    if (data.time_complexity===""){
+      delete data.time_complexity
+    }
+
     data.tests.pop();
 
     this.storyService

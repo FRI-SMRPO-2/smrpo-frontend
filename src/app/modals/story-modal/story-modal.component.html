@@ -83,7 +83,7 @@
       {{errorMessage}}
     </div>
 
-    <button mat-raised-button color="accent" class="save-btn"
+    <button mat-raised-button color="accent" class="save-btn" *ngIf="this.data.type=='add' || this.canEditStoryParameters"
     type="button" (click)="data.editing ? editStory() : addStory()" [disabled]="!this.form.valid">Shrani</button>
 
   </form>

@@ -16,7 +16,7 @@
   </div>
   <div class="data-container">
     <app-post-card
-      *ngFor="let post of project.posts.reverse()"
+      *ngFor="let post of this.posts"
       [post]="post"
       [highlight]="post.created_by == user.username"
     >

@@ -70,21 +70,31 @@
           <div class="data-section">
             <span class="section-title"> Nedodeljene naloge </span>
             <div class="data-column">
-              <app-story-task *ngFor="let task of tasks.unassigned; let i = index" 
-                [task]="task" (taskAccepted)="acceptTask(task, i)" (taskRejected)="rejectTask(task, i, false)">
+              <app-story-task *ngFor="let task of tasks.unassigned; let i = index"
+                [task]="task" (taskAccepted)="acceptTask(task, i)" (taskRejected)="rejectTask(task, i, false)"
+                [canEdit]="userRoles.includes('Admin') || userRoles.includes('Developer') || userRoles.includes('Scrum Master')"
+                [unassigned]="true"
+                [canDelete]="userRoles.includes('Admin') || userRoles.includes('Developer') || userRoles.includes('Scrum Master')"
+                (editTaskFinalCallback)="this.updateTask($event)"
+                (onDelete)="this.deleteTask(task.id)"
+                >
               </app-story-task>
             </div>
           </div>
           <div class="data-section">
             <span class="section-title"> Dodeljene naloge </span>
             <div class="data-column">
-              <app-story-task 
-                *ngFor="let task of tasks.assigned; let i = index" 
+              <app-story-task
+                *ngFor="let task of tasks.assigned; let i = index"
                 [task]="task"
                 (taskFinished)="finishTask(task, i, false)"
                 (taskRejected)="rejectTask(task, i, true)"
                 (taskSetActive)="taskSetActive(task, i)"
                 (openWorkSessionCalendar)="openWorkSessionCalendar(task, true)"
+                [canEdit]="userRoles.includes('Admin') || userRoles.includes('Developer') || userRoles.includes('Scrum Master')"
+                [canDelete]="false"
+                [unassigned]="false"
+                (editTaskFinalCallback)="this.updateTask($event)"
               >
               </app-story-task>
             </div>
@@ -92,21 +102,29 @@
           <div class="data-section">
             <span class="section-title"> Aktivne naloge </span>
             <div class="data-column">
-              <app-story-task 
+              <app-story-task
                 *ngFor="let task of tasks.active; let i = index"
                 [task]="task"
                 (taskFinished)="finishTask(task, i, true)"
                 (taskUnsetActive)="taskUnsetActive(task, i)"
+                [canEdit]="userRoles.includes('Admin') || userRoles.includes('Developer') || userRoles.includes('Scrum Master')"
+                [canDelete]="false"
+                [unassigned]="false"
+                (editTaskFinalCallback)="this.updateTask($event)"
               ></app-story-task>
             </div>
           </div>
           <div class="data-section">
             <span class="section-title"> Zaključene naloge </span>
             <div class="data-column">
-              <app-story-task 
-                *ngFor="let task of tasks.finished" 
+              <app-story-task
+                *ngFor="let task of tasks.finished"
                 [task]="task"
                 (openWorkSessionCalendar)="openWorkSessionCalendar(task, false)"
+                [canEdit]="userRoles.includes('Admin') || userRoles.includes('Developer') || userRoles.includes('Scrum Master')"
+                [canDelete]="false"
+                [unassigned]="false"
+                (editTaskFinalCallback)="this.updateTask($event)"
               >
               </app-story-task>
             </div>

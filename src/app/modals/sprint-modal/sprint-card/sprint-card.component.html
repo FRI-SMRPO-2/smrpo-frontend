@@ -8,7 +8,7 @@
       <div class="active-sprint-title" *ngIf="active">
         Aktivni sprint
       </div>
-      <button *ngIf="this.canEdit" mat-icon-button color="primary" class="options-btn" (click)="this.editSprint()">
+      <button *ngIf="this.canEdit || (this.canEditSpeed && this.active)" mat-icon-button color="primary" class="options-btn" (click)="this.editSprint()">
         <mat-icon>edit</mat-icon>
       </button>
       <button *ngIf="this.canEdit" mat-icon-button color="warn" class="options-btn" (click)="this.deleteSprint()">

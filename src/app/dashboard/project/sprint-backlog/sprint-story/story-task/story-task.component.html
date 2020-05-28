@@ -15,7 +15,7 @@
   <!-- <button mat-icon-button color="primary" aria-label="More info" class="options-btn" (click)="editTask()">
       <span class="material-icons">more_vert</span>
     </button> -->
-    <button 
+    <button
       *ngIf="!!task.assignee && task.assignee === currentUser.username && !task.active"
       mat-icon-button
       class="more-settings"
@@ -31,16 +31,18 @@
       <mat-icon class="more-icon">more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
-      <button mat-menu-item class="menu-btn" (click)="editTask()">Uredi</button>
-      <button 
-        mat-menu-item 
+      <button mat-menu-item class="menu-btn" (click)="editTask()">
+        {{this.canEdit ? "Uredi" :  "Preglej"}}
+      </button>
+      <button
+        mat-menu-item
         *ngIf="(!task.assignee && !task.assignee_awaiting) || task.assignee_awaiting == currentUser.username"
         class="menu-btn"
         (click)="taskAccepted.emit()"
       >
         Sprejmi
       </button>
-      <button 
+      <button
         mat-menu-item
         *ngIf="task.assignee_awaiting == currentUser.username"
         class="menu-btn"
@@ -49,15 +51,15 @@
         Zavrni
       </button>
 
-      <button 
+      <button
         *ngIf="task.active && !task.finished"
-        mat-menu-item 
+        mat-menu-item
         class="menu-btn reject"
         (click)="taskUnsetActive.emit()"
       >
         Končaj z delom
       </button>
-      <button 
+      <button
         *ngIf="!task.active && !!task.assignee && !task.finished"
         mat-menu-item
         class="menu-btn accept"
@@ -66,7 +68,7 @@
         Prični z delom
       </button>
 
-      <button 
+      <button
         mat-menu-item
         *ngIf="currentUser.username === task.assignee && !task.finished"
         class="menu-btn"
@@ -74,13 +76,21 @@
       >
         Zaključi
       </button>
-      <button 
+      <button
         mat-menu-item
         *ngIf="currentUser.username === task.assignee && !task.finished && !task.active"
         class="menu-btn"
         (click)="taskRejected.emit()"
       >
         Odreči se nalogi
+      </button>
+      <button
+        mat-menu-item
+        *ngIf="this.canDelete"
+        class="menu-btn reject"
+        (click)="onDelete.emit()"
+      >
+        Izbriši
       </button>
     </mat-menu>
   </div>

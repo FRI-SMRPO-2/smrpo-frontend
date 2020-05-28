@@ -63,6 +63,8 @@
             [ngStyle]="{'width': storiesToSprintActive ? 'calc(100% - 40px)' : '100%'}"
             [story]="story"
             [disabled]="storiesToSprintActive && !story.time_complexity"
+            [canDelete]="(story.rejection_comment == null) && (userRoles.includes('Scrum Master') || userRoles.includes('Product Owner') || isAdmin)"
+            (deleteButtonClick)="deleteStory(story.id)"
             (editButtonClick)="editStory(story, true)">
           </app-task-card>
         </div>

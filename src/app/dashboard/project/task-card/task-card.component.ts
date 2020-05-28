@@ -11,7 +11,9 @@ export class TaskCardComponent implements OnInit {
   @Input() story: Story;
   @Input() complexity;
   @Input() disabled: boolean;
+  @Input() canDelete: boolean;
   @Output() editButtonClick: EventEmitter<any> = new EventEmitter();
+  @Output() deleteButtonClick: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 

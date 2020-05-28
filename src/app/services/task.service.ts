@@ -17,6 +17,18 @@ export class TaskService {
       .pipe(catchError((e) => throwError(e)));
   }
 
+  updateTask(taskId: number, data){
+    return this.http
+      .put<any>(`api/task/${taskId}/`, data)
+      .pipe(catchError((e) => throwError(e)));
+  }
+
+  deleteTask(taskId: number){
+    return this.http
+      .delete<any>(`api/task/${taskId}/`)
+      .pipe(catchError((e) => throwError(e)));
+  }
+
   acceptTask(taskId: number) {
     return this.http.put<any>(`api/task/${taskId}/accept`, null);
   }

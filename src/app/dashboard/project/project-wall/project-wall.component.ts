@@ -16,6 +16,7 @@ import { PostModalComponent } from 'src/app/modals/post-modal/post-modal.compone
 export class ProjectWallComponent implements OnInit, OnDestroy {
 
   project: Project;
+  posts;
   user: User;
 
   destroy$ = new Subject<boolean>();
@@ -30,6 +31,7 @@ export class ProjectWallComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((project) => {
         this.project = project;
+        this.posts = project.posts.slice().reverse();
       });
 
     this.rootStore.userStore.user$
