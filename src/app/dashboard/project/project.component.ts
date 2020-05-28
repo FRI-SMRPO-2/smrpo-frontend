@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Sprint } from 'src/app/interfaces/sprint.interface';
 import { ProductBacklog, Story } from 'src/app/interfaces/story.interface';
 
@@ -27,34 +29,44 @@ export class ProjectComponent implements OnInit, OnDestroy {
   isScrumMaster: boolean;
   projectId: number;
 
-  awaitingTasksNo: number;
+  destroy$ = new Subject<boolean>();
 
   constructor(private route: ActivatedRoute, private rootStore: RootStore) {}
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
+    this.route.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.project = data.project.project;
       this.stories = data.project.stories;
       this.sprints = data.project.sprints;
       this.activeSprint = data.project.activeSprint;
       this.userRoles = data.project.user ? data.project.user.role : [];
       this.userTasks = data.project.userTasks;
-      this.awaitingTasksNo = this.userTasks.assignee_awaiting_tasks.length;
       this.rootStore.userStore.setProjectRoles(this.userRoles);
       this.isScrumMaster = this.userRoles.includes("Scrum Master");
     });
 
-    this.rootStore.userStore.user$.subscribe(
-      (user) => (this.isAdmin = user.is_superuser)
-    );
+    this.rootStore.userStore.user$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user) => {
+        this.isAdmin = user.is_superuser;
+      });
 
-    this.rootStore.userStore.userTasks$.subscribe((tasks) => {
-      this.userTasks = tasks;
-      this.awaitingTasksNo = tasks.assignee_awaiting_tasks.length;
-    });
+    this.rootStore.userStore.userRoles$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((roles) => {
+        this.isScrumMaster = roles.includes("Scrum Master");
+      });
+
+    this.rootStore.userStore.userTasks$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((tasks) => {
+        this.userTasks = tasks;
+      });
   }
 
   ngOnDestroy() {
     this.rootStore.projectStore.setActiveProject(null);
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 }

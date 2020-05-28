@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminComponent } from '../admin/admin.component';
+import { ProjectSettingsGuard } from '../guards/project-settings.guard';
 import { ProjectResolver } from '../resolvers/project.resolver';
 import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from './home/home.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
       {
         path: "project/:id",
         component: ProjectComponent,
+
         resolve: { project: ProjectResolver },
         children: [
           { path: "project-wall", component: ProjectWallComponent },
@@ -28,7 +30,11 @@ const routes: Routes = [
           { path: "sprint-backlog", component: SprintBacklogComponent },
           { path: "my-tasks", component: MyTasksComponent },
           { path: "documentation", component: DocumentationComponent },
-          { path: "settings", component: SettingsComponent },
+          {
+            path: "settings",
+            component: SettingsComponent,
+            canActivate: [ProjectSettingsGuard],
+          },
           { path: "", redirectTo: "product-backlog", pathMatch: "full" },
         ],
       },
@@ -42,6 +48,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [ProjectResolver],
+  providers: [ProjectResolver, ProjectSettingsGuard],
 })
 export class DashboardRoutingModule {}

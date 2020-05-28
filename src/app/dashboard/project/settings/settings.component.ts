@@ -148,6 +148,9 @@ export class SettingsComponent implements OnInit {
     this.projectService.updateProject(this.project.id, request).subscribe(
       (res: Project) => {
         this.rootStore.projectStore.setActiveProject(res);
+        this.userService.getProjectRole(res.id).subscribe((data) => {
+          this.rootStore.userStore.setProjectRoles(data.role);
+        });
         this.snackBar.open("Nastavitve projekta uspešno posodobljene", "", {
           duration: 5000,
           panelClass: ["snackbar-success"],
