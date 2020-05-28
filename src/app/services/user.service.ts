@@ -55,7 +55,7 @@ export class UserService {
   }
 
   updateUser(userId, data) {
-    return this.http.put<User>(`api/user/${userId}`, data);
+    return this.http.put<User>(`api/user/${userId}/`, data);
   }
 
   updateMe(data) {
