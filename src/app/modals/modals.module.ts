@@ -35,6 +35,7 @@ import { StoryModalComponent } from './story-modal/story-modal.component';
 import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
 import { TaskModalComponent } from './task-modal/task-modal.component';
 import { UserModalComponent } from './user-modal/user-modal.component';
+import { ProfileSettingsComponent } from './profile-settings/profile-settings.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { UserModalComponent } from './user-modal/user-modal.component';
     EditSprintModalComponent,
     ConfirmationComponent,
     TaskCalendarComponent,
+    ProfileSettingsComponent,
   ],
   imports: [
     CommonModule,

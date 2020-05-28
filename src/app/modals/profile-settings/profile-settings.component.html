@@ -1,0 +1,68 @@
+<div class="modal-container">
+  
+  <div class="title">Nastavitve uporabniškega računa</div>
+
+  <form *ngIf="loaded; else loading" class="modal-form" [formGroup]="form">
+
+
+    <div class="input-row">
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Uporabniško ime</mat-label>
+        <input matInput formControlName="username" [errorStateMatcher]="errorMatcher"/>
+        <mat-error *ngIf="username.hasError('duplicateName')">
+          {{ username.errors.duplicateName }} 
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" [errorStateMatcher]="errorMatcher"/>
+        <mat-error *ngIf="email.hasError('wrongEmail')">
+          {{ email.errors.wrongEmail }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-row">
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Ime</mat-label>
+        <input matInput formControlName="first_name" [errorStateMatcher]="errorMatcher"/>
+      </mat-form-field>
+  
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Priimek</mat-label>
+        <input matInput formControlName="last_name" [errorStateMatcher]="errorMatcher"/>
+      </mat-form-field>
+    </div>
+
+    <div class="input-row">
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Geslo</mat-label>
+        <input matInput formControlName="password1" [errorStateMatcher]="errorMatcher" type="password" />
+        <mat-error *ngIf="password1.hasError('minlength')">
+          Geslo mora imeti <strong>najmanj 8</strong> znakov
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="standard" class="form-input">
+        <mat-label>Ponovi geslo</mat-label>
+        <input matInput formControlName="password2" [errorStateMatcher]="passwordErrorMatcher" type="password" />
+        <mat-error *ngIf="form.hasError('passwordError')">
+          {{ form.getError('passwordError')}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="btn-row">
+      <button mat-raised-button (click)="closeDialog()">Prekliči</button>
+      <button mat-raised-button color="accent" class="save-btn" [disabled]="!form.valid || !valueChanged"
+      type="button" (click)="save()">Shrani</button>
+    </div>
+    
+  </form>
+  <ng-template #loading>
+    <app-progress-spinner></app-progress-spinner>
+  </ng-template>
+  
+
+</div>

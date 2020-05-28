@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from 'src/app/interfaces/user.interface';
 
 import { Project } from '../../interfaces/project.interface';
+import { ProfileSettingsComponent } from '../../modals/profile-settings/profile-settings.component';
 import { RootStore } from '../../store/root.store';
 
 @Component({
@@ -24,7 +27,12 @@ export class HeaderComponent implements OnInit {
   user$: Observable<User>;
   isAdmin$: Observable<boolean>;
 
-  constructor(private router: Router, private rootStore: RootStore) {}
+  constructor(
+    private router: Router,
+    private rootStore: RootStore,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.activeProject$ = this.rootStore.projectStore.activeProject$;
@@ -48,6 +56,24 @@ export class HeaderComponent implements OnInit {
 
   navToAdmin() {
     this.router.navigate(["/admin"]);
+  }
+
+  accountSettings() {
+    this.dialog
+      .open(ProfileSettingsComponent)
+      .afterClosed()
+      .subscribe((saved) => {
+        if (saved) {
+          this.snackBar.open(
+            "Nastavitve uporabniškega računa uspešno posodobljene",
+            "",
+            {
+              duration: 3000,
+              panelClass: ["snackbar-success"],
+            }
+          );
+        }
+      });
   }
 
   logout() {

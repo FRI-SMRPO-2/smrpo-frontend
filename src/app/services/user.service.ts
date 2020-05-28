@@ -58,6 +58,10 @@ export class UserService {
     return this.http.put<User>(`api/user/${userId}`, data);
   }
 
+  updateMe(data) {
+    return this.http.put<User>("api/user/me/", data);
+  }
+
   deleteUser(userId) {
     return this.http.delete<any>(`api/user/${userId}`);
   }
