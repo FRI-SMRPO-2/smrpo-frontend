@@ -2,7 +2,7 @@
 
   <form class="modal-form" [formGroup]="form">
 
-    <span class="title">{{data.editing ? "Preglej nalogo" : "Nova naloga"}}</span>
+    <span class="title">{{data.editing ? (data.canEdit ? "Uredi nalogo" : "Preglej nalogo") : "Nova naloga"}}</span>
 
     <mat-form-field appearance="standard" class="form-input" >
       <mat-label>Naslov</mat-label>
