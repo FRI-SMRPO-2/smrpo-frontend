@@ -9,9 +9,10 @@ import { HeaderComponent } from './header/header.component';
 import { PriorityPipe } from './priority.pipe';
 import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
 import { SprintDatePipe } from './sprintDate.pipe';
+import { SprintSpeedPipe } from './sprintSpeed.pipe';
 
 @NgModule({
-  declarations: [HeaderComponent, PriorityPipe, ProgressSpinnerComponent, SprintDatePipe],
+  declarations: [HeaderComponent, PriorityPipe, ProgressSpinnerComponent, SprintDatePipe, SprintSpeedPipe],
   imports: [
     CommonModule,
     MatMenuModule,
@@ -19,6 +20,6 @@ import { SprintDatePipe } from './sprintDate.pipe';
     MatProgressSpinnerModule,
     MatIconModule
   ],
-  exports: [HeaderComponent, PriorityPipe, ProgressSpinnerComponent, SprintDatePipe]
+  exports: [HeaderComponent, PriorityPipe, ProgressSpinnerComponent, SprintDatePipe, SprintSpeedPipe]
 })
 export class SharedModule {}

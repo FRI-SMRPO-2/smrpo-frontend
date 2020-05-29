@@ -12,6 +12,7 @@
             *cdkVirtualFor="let sprint of sprintList, templateCacheSize: 0"
             [startDate]="sprint.start_date"
             [endDate]="sprint.end_date"
+            [speed]="sprint.expected_speed"
             [active]="activeSprintId === sprint.id"
             [canEdit]="this.canEdit(sprint.start_date)"
             [canEditSpeed]="this.userRoles.includes('Admin') || this.userRoles.includes('Scrum Master')"

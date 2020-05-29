@@ -49,7 +49,7 @@
 
   <div id="info-section">
     <div *ngIf="activeSprint!=null; else noActiveSprint">
-      Aktivni sprint: {{activeSprint.start_date | sprintDate}} - {{activeSprint.end_date | sprintDate}}
+      Aktivni sprint: {{activeSprint.start_date | sprintDate}} - {{activeSprint.end_date | sprintDate}} ({{activeSprint.expected_speed | sprintSpeed}})
     </div>
     <ng-template #noActiveSprint>Trenutno ni aktivnega sprinta.</ng-template>
   </div>

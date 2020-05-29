@@ -9,6 +9,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 export class SprintCardComponent implements OnInit {
   @Input() startDate;
   @Input() endDate;
+  @Input() speed;
   @Input() active;
   @Input() canEdit;
   @Input() canEditSpeed;

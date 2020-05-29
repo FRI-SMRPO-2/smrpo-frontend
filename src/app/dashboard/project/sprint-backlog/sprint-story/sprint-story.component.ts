@@ -66,6 +66,11 @@ export class SprintStoryComponent implements OnInit {
 
     this.taskService.deleteTask(taskId).subscribe(
       () => {
+        this.snackBar.open("Naloga uspešno izbrisana", "", {
+          duration: 5000,
+          panelClass: ["snackbar-success"],
+        });
+
         this.rootStore.projectStore.activeProject$.subscribe((project) => {
           this.sprintService
           .getActiveSprint(project.id)
@@ -75,7 +80,12 @@ export class SprintStoryComponent implements OnInit {
           (err)=>{});
         })
       },
-      (err) => {}
+      (err) => {
+        this.snackBar.open("Napaka pri brisanju naloge", "", {
+          duration: 5000,
+          panelClass: ["snackbar-error"],
+        });
+      }
     );
   }
 

@@ -163,6 +163,11 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
     .deleteStory(this.project.id, storyId)
     .subscribe(
       () => {
+        this._snackBar.open("Zgodba uspešno izbrisana", "", {
+          duration: 5000,
+          panelClass: ["snackbar-success"],
+        });
+
         this.storyService
           .getAllStories(this.project.id)
           .subscribe((stories) => {
@@ -172,7 +177,12 @@ export class ProductBacklogComponent implements OnInit, OnDestroy {
             }
           });
       },
-      (err) => {}
+      (err) => {
+        this._snackBar.open("Napaka pri brisanju zgodbe.", "", {
+          duration: 5000,
+          panelClass: ["snackbar-error"],
+        });
+      }
     );
   }
 
