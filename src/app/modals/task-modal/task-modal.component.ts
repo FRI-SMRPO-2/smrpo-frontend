@@ -48,7 +48,7 @@ export class TaskModalComponent implements OnInit {
       title: this.form.value.title,
       description: this.form.value.description,
       estimated_time: this.form.value.complexity ?? this.data.complexity,
-      assignee_awaiting_id: this.form.value.assignee ?? this.data.assignee,
+      assignee_awaiting_id: this.form.value.assignee ?? "",
     };
 
     this.taskService.updateTask(this.data.taskId, data).subscribe(
@@ -80,7 +80,7 @@ export class TaskModalComponent implements OnInit {
       title: this.form.value.title,
       description: this.form.value.description,
       estimated_time: this.form.value.complexity,
-      assignee_awaiting_id: this.form.value.assignee,
+      assignee_awaiting_id: this.form.value.assignee ?? "",
     };
 
     this.taskService.addTask(this.data.storyId, data).subscribe(

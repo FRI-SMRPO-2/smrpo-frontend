@@ -25,6 +25,7 @@
     <mat-form-field appearance="standard" class="form-input" >
       <mat-label>Dodeli nalogo</mat-label>
       <mat-select formControlName="assignee">
+        <mat-option></mat-option>
         <mat-option *ngFor="let user of data.users" [value]="user.id">
           {{user.name}}
         </mat-option>
