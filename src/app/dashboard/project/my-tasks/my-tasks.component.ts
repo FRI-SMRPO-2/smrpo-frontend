@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Sprint } from '../../../interfaces/sprint.interface';
 import { Task } from '../../../interfaces/task.interface';
 import { ConfirmationComponent } from '../../../modals/confirmation/confirmation.component';
 import { TaskCalendarComponent } from '../../../modals/task-calendar/task-calendar.component';
@@ -17,6 +18,9 @@ import { RootStore } from '../../../store/root.store';
 })
 export class MyTasksComponent implements OnInit {
   projectId: number;
+
+  activeSprint: Sprint;
+  isSprintActive: boolean;
 
   tasks = {
     finished: [],
@@ -37,11 +41,23 @@ export class MyTasksComponent implements OnInit {
   ngOnInit(): void {
     this.projectId = this.rootStore.projectStore.activeProject.id;
 
+    this.activeSprint = this.rootStore.sprintStore.activeSprint;
+    this.isSprintActive = !!this.activeSprint;
+
+    console.log(this.activeSprint);
+
     this.userService.getMyTasks(this.projectId).subscribe((tasks) => {
       this.tasks.awaiting = tasks.assignee_awaiting_tasks;
-      this.tasks.unrealized = tasks.assigned_tasks.filter(
-        (t) => !t.active && !t.finished
-      );
+      this.tasks.unrealized = tasks.assigned_tasks
+        .filter((t) => !t.active && !t.finished)
+        .map((t) => ({
+          ...t,
+          inActiveSprint: !!this.activeSprint
+            ? this.activeSprint.stories.some((s) => s.id === t.story_id)
+            : false,
+        }));
+      console.log(this.tasks.unrealized);
+      console.log(this.tasks.unrealized);
       this.tasks.finished = tasks.assigned_tasks.filter((t) => t.finished);
       this.tasks.active = tasks.assigned_tasks.filter((t) => t.active);
     });
@@ -142,12 +158,15 @@ export class MyTasksComponent implements OnInit {
     );
   }
 
-  openWorkSessionCalendar(task: Task, canEdit) {
+  openWorkSessionCalendar(task, canEdit) {
     this.dialog
       .open(TaskCalendarComponent, {
         data: {
           task,
           canEdit,
+          calendarStart: task.inActiveSprint
+            ? this.activeSprint.start_date
+            : task.created,
         },
       })
       .afterClosed()

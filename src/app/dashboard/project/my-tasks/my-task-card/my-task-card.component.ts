@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class MyTaskCardComponent implements OnInit {
   @Input() task;
   @Input() acceptanceAwaiting: boolean;
+  @Input() showCalendar: boolean;
   @Output() taskAccepted: EventEmitter<any> = new EventEmitter();
   @Output() taskRejected: EventEmitter<any> = new EventEmitter();
   @Output() taskFinished: EventEmitter<any> = new EventEmitter();

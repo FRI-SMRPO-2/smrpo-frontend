@@ -2,6 +2,7 @@ export interface Task {
   id: number;
   project_id: number;
   story_name: string;
+  story_id: number;
   title: string;
   description: string;
   active: boolean;

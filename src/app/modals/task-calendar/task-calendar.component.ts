@@ -37,7 +37,8 @@ export class TaskCalendarComponent implements OnInit {
   matcher = new ErrorStateMatcher();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { task; canEdit },
+    @Inject(MAT_DIALOG_DATA)
+    public data: { task; canEdit; calendarStart },
     private taskService: TaskService,
     private rootStore: RootStore,
     private formBuilder: FormBuilder,
@@ -51,8 +52,9 @@ export class TaskCalendarComponent implements OnInit {
     this.activeSprint = this.rootStore.sprintStore.activeSprint;
 
     this.task = this.data.task;
-    this.created = new Date(this.task.created);
+    this.created = new Date(this.data.calendarStart);
     this.created.setHours(0, 0, 0, 0);
+    console.log(this.created);
 
     this.getWorkSession(
       new Date(this.today.getTime() - 6 * this.dayMiliseconds),
@@ -109,12 +111,14 @@ export class TaskCalendarComponent implements OnInit {
           day.valueChanges.pipe(debounceTime(500)).subscribe((data) => {
             const formated = { ...data };
             delete formated["valid"];
-            if (day.valid)
+            if (day.valid && this.canEdit)
               this.taskService
                 .editWorkSession(this.task.id, formated)
                 .subscribe();
           });
-          if (!(new Date(d) >= this.created)) {
+          const date = new Date(d);
+          date.setHours(0, 0, 0, 0);
+          if (!(date > this.created)) {
             valid = false;
           }
         });

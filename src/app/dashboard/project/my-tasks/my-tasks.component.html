@@ -31,6 +31,7 @@
           <app-my-task-card
             [task]="task"
             [acceptanceAwaiting]="false"
+            [showCalendar]="isSprintActive && task.inActiveSprint"
             (taskFinished)="taskFinished(task, i, false)"
             (taskRejected)="taskRejected(task.id, i, true)"
             (taskSetActive)="taskSetActive(task, i)"
@@ -57,6 +58,7 @@
         <app-my-task-card
           [task]="task"
           [acceptanceAwaiting]="false"
+          [showCalendar]="true"
           (openWorkSessionCalendar)="openWorkSessionCalendar(task, false)"
           >
         </app-my-task-card>

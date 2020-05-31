@@ -14,7 +14,7 @@
   </div>
   <div *ngIf="!acceptanceAwaiting" class="absolute-icons">
     <button
-      *ngIf="!task.active"
+      *ngIf="!task.active && showCalendar"
       mat-icon-button
       class="more-settings"
       (click)="openWorkSessionCalendar.emit()">

@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SprintService } from 'src/app/services/sprint.service';
 
+import { Sprint } from '../../../../interfaces/sprint.interface';
 import { Story } from '../../../../interfaces/story.interface';
 import { Task } from '../../../../interfaces/task.interface';
 import { User } from '../../../../interfaces/user.interface';
@@ -9,7 +11,6 @@ import { ConfirmationComponent } from '../../../../modals/confirmation/confirmat
 import { TaskCalendarComponent } from '../../../../modals/task-calendar/task-calendar.component';
 import { TaskService } from '../../../../services/task.service';
 import { RootStore } from '../../../../store/root.store';
-import { SprintService } from 'src/app/services/sprint.service';
 
 @Component({
   selector: "app-sprint-story",
@@ -18,11 +19,13 @@ import { SprintService } from 'src/app/services/sprint.service';
 })
 export class SprintStoryComponent implements OnInit {
   @Input() story: Story;
+  @Input() activeSprint: Sprint;
   @Input() complexity;
   @Input() tasks;
   @Input() userRoles;
-  @Output() editButtonClick: EventEmitter<any> = new EventEmitter();
   @Input() resolvingStories;
+
+  @Output() editButtonClick: EventEmitter<any> = new EventEmitter();
   @Output() acceptStory: EventEmitter<number> = new EventEmitter<number>();
   @Output() rejectStory: EventEmitter<any> = new EventEmitter<any>();
   @Output() rejectionComment: EventEmitter<any> = new EventEmitter<any>();
@@ -58,12 +61,11 @@ export class SprintStoryComponent implements OnInit {
     this.rejectionComment.emit(data);
   }
 
-  updateTask(data){
+  updateTask(data) {
     this.editTaskCallback.emit(data);
   }
 
-  deleteTask(taskId: number){
-
+  deleteTask(taskId: number) {
     this.taskService.deleteTask(taskId).subscribe(
       () => {
         this.snackBar.open("Naloga uspešno izbrisana", "", {
@@ -72,13 +74,13 @@ export class SprintStoryComponent implements OnInit {
         });
 
         this.rootStore.projectStore.activeProject$.subscribe((project) => {
-          this.sprintService
-          .getActiveSprint(project.id)
-          .subscribe((activeSprint) => {
-            this.deleteTaskCallback.emit(activeSprint);
-          },
-          (err)=>{});
-        })
+          this.sprintService.getActiveSprint(project.id).subscribe(
+            (activeSprint) => {
+              this.deleteTaskCallback.emit(activeSprint);
+            },
+            (err) => {}
+          );
+        });
       },
       (err) => {
         this.snackBar.open("Napaka pri brisanju naloge", "", {
@@ -182,8 +184,6 @@ export class SprintStoryComponent implements OnInit {
   }
 
   openWorkSessionCalendar(task: Task, canEdit) {
-    console.log(canEdit);
-    console.log(this.currentUser, task.assignee);
     canEdit =
       canEdit && (this.currentUser.username === task.assignee || this.isAdmin);
     console.log(canEdit);
@@ -192,6 +192,7 @@ export class SprintStoryComponent implements OnInit {
         data: {
           task,
           canEdit,
+          calendarStart: this.activeSprint.start_date,
         },
       })
       .afterClosed()

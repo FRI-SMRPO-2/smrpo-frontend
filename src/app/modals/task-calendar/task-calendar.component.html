@@ -23,12 +23,12 @@
             <td class="day-value"*ngFor="let day of datesArray.controls; let i = index" [formGroupName]="i">
               <div *ngIf="day.value.valid" style="margin: 5px 0;">
                 <input 
-                  matInput 
                   type="number" 
                   formControlName="hours" 
                   min="0" 
                   class="table-input"
                   [class.disabled]="!canEdit"
+                  [disabled]="!canEdit"
                   [class.error]="day.get('hours').invalid"
                 >
               </div>
@@ -37,14 +37,14 @@
           <tr>
             <th>Predviden čas do konca v urah</th>
             <td class="day-value"*ngFor="let day of datesArray.controls; let i = index" [formGroupName]="i">
-              <input 
-                matInput
+              <input
                 *ngIf="day.value.valid"
                 type="number"
                 min="0" 
                 formControlName="estimated_hours" 
                 class="table-input"
                 [class.disabled]="!canEdit"
+                [disabled]="!canEdit"
                 [class.error]="day.get('estimated_hours').invalid"
               >
             </td>
