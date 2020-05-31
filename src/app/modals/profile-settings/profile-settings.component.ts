@@ -86,12 +86,15 @@ export class ProfileSettingsComponent implements OnInit {
         });
       },
       (err) => {
+        console.log(err);
         if (err.error.username && err.error.username.length)
           this.username.setErrors({ duplicateName: err.error.username[0] });
         if (err.error.password2 && err.error.password2.length)
           this.form.setErrors({ passwordError: err.error.password2[0] });
         if (err.error.email && err.error.email.length)
           this.email.setErrors({ wrongEmail: err.error.email[0] });
+        if (err.error.new_password2 && err.error.new_password2.length)
+          this.password1.setErrors({ onlyNumeric: err.error.new_password2 });
       }
     );
   }

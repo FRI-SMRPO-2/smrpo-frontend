@@ -100,6 +100,8 @@ export class UserModalComponent implements OnInit {
           this.form.setErrors({ passwordError: err.error.password2[0] });
         if (err.error.email && err.error.email.length)
           this.email.setErrors({ wrongEmail: err.error.email[0] });
+        if (err.error.new_password2 && err.error.new_password2.length)
+          this.password1.setErrors({ onlyNumeric: err.error.new_password2 });
       }
     );
   }

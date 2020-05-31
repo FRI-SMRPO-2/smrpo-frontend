@@ -42,6 +42,9 @@
         <mat-error *ngIf="password1.hasError('minlength')">
           Geslo mora imeti <strong>najmanj 8</strong> znakov
         </mat-error>
+        <mat-error *ngIf="password1.hasError('onlyNumeric')">
+          {{password1.getError('onlyNumeric')}}
+        </mat-error>
       </mat-form-field>
   
       <mat-form-field appearance="standard" class="form-input">
