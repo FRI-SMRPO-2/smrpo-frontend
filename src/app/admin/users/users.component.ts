@@ -46,6 +46,10 @@ export class UsersComponent implements OnInit {
             email: data.email,
           },
         ];
+        this.snackBar.open("Dodajanje novega uporabnika uspešno", "", {
+          duration: 1500,
+          panelClass: ["snackbar-success"],
+        });
       });
   }
 
@@ -58,11 +62,16 @@ export class UsersComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((data) => {
+        if (!data) return;
         this.users[index] = {
           ...data,
           name: `${data.first_name} ${data.last_name}`,
         };
         this.users = [...this.users];
+        this.snackBar.open("Uporabnik uspešno posodobljen", "", {
+          duration: 1500,
+          panelClass: ["snackbar-success"],
+        });
       });
   }
 
@@ -82,7 +91,10 @@ export class UsersComponent implements OnInit {
             (data) => {
               this.users.splice(index, 1);
               this.users = [...this.users];
-              console.log(this.users);
+              this.snackBar.open("Uporabnik je bil uspešno izbrisan", "", {
+                duration: 1500,
+                panelClass: ["snackbar-success"],
+              });
             },
             (err) => console.log(err)
           );

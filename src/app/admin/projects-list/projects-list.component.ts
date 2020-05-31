@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ProjectModalComponent } from '../../modals/project-modal/project-modal.component';
 import { ProjectService } from '../../services/project.service';
@@ -19,7 +20,8 @@ export class ProjectsListComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +44,11 @@ export class ProjectsListComponent implements OnInit {
       .afterClosed()
       .subscribe((res) => {
         if (!res) return;
-
         this.projects = [...this.projects, this.mapUsersByRoles(res)];
+        this.snackBar.open("Dodajanje novega projekta uspešno", "", {
+          duration: 1500,
+          panelClass: ["snackbar-success"],
+        });
       });
   }
 
@@ -60,6 +65,10 @@ export class ProjectsListComponent implements OnInit {
         if (res) {
           this.projects[index] = this.mapUsersByRoles(res);
           this.projects = [...this.projects];
+          this.snackBar.open("Projekt uspešno posodobljen", "", {
+            duration: 1500,
+            panelClass: ["snackbar-success"],
+          });
         }
       });
   }
