@@ -6,16 +6,16 @@
 
     <mat-form-field  appearance="standard" class="form-input" color="accent" *ngIf="!this.data.active">
       <mat-label>Datum pričetka sprinta</mat-label>
-      <input matInput disabled [matDatepicker]="startDatePicker" formControlName="startDate" [min]="startDateMin" [max]="this.form.value.endDate" required>
+      <input matInput [matDatepicker]="startDatePicker" readonly (click)="startDatePicker.open()"  formControlName="startDate" [min]="startDateMin" [max]="this.form.value.endDate" required>
       <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker disabled="false" #startDatePicker [startAt]="startDateMin"></mat-datepicker>
+      <mat-datepicker  #startDatePicker [startAt]="startDateMin"></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="form-input" color="accent" *ngIf="!this.data.active">
       <mat-label>Datum zaključka sprinta</mat-label>
-      <input matInput disabled [matDatepicker]="endDatePicker" formControlName="endDate" [min]="this.form.value.startDate" required>
+      <input matInput [matDatepicker]="endDatePicker" readonly (click)="endDatePicker.open()" formControlName="endDate" [min]="this.form.value.startDate" required>
       <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker disabled="false" #endDatePicker [startAt]="this.form.value.startDate || startDateMin"></mat-datepicker>
+      <mat-datepicker #endDatePicker [startAt]="this.form.value.startDate || startDateMin"></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field class="form-input" appearance="standard" required>
